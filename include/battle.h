@@ -2111,6 +2111,8 @@ extern u8 HeldItemPowerUpTable[36][2];
 
 extern u16 PunchingMovesTable[24];
 
+extern u16 KickingMovesTable[19];
+
 extern u16 StrongJawMovesTable[10];
 
 extern u16 MegaLauncherMovesTable[7];

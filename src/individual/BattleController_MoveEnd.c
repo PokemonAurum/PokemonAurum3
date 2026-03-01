@@ -257,6 +257,7 @@ void LONG_CALL BattleController_MoveEndInternal(struct BattleSystem *bsys, struc
                 break;
             case ABILITY_GRIM_NEIGH:
             case ABILITY_AS_ONE_SPECTRIER:
+            case ABILITY_MENTAL_SURGE: 
                 if (ctx->oneTurnFlag[ctx->attack_client].numberOfKOs) {
                     if (ctx->battlemon[ctx->attack_client].states[STAT_SPATK] < 12) {
                         switch (ctx->oneTurnFlag[ctx->attack_client].numberOfKOs) {

@@ -695,6 +695,13 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
                 continue;
             }
 
+            // handle Kick Boxer
+            if ((AttackingMon.ability == ABILITY_KICK_BOXER)
+            && IsElementInArray(KickingMovesTable, (u16 *)&moveno, NELEMS(KickingMovesTable), sizeof(KickingMovesTable[0]))) {
+                basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__1_25);
+                continue;
+            }
+
             if ((AttackingMon.ability == ABILITY_RECKLESS)
             && ((moveEffect == MOVE_EFFECT_CRASH_ON_MISS)
                 || (moveEffect == MOVE_EFFECT_RECOIL_QUARTER)

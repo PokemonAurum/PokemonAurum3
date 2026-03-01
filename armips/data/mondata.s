@@ -205,7 +205,7 @@ mondata SPECIES_WARTORTLE, "Wartortle"
 
 mondata SPECIES_BLASTOISE, "Blastoise"
     basestats 79, 83, 100, 78, 85, 105
-    types TYPE_WATER, TYPE_WATER
+    types TYPE_WATER, TYPE_STEEL
     catchrate 45
     baseexp 0 // defined in baseexp.s
     evyields 0, 0, 0, 0, 0, 3
@@ -12930,7 +12930,7 @@ mondata SPECIES_TIRTOUGA, "Tirtouga"
 
 
 mondata SPECIES_CARRACOSTA, "Carracosta"
-    basestats 74, 108, 133, 32, 83, 65
+    basestats 77, 119, 137, 38, 83, 65
     types TYPE_WATER, TYPE_ROCK
     catchrate 45
     baseexp 0 // defined in baseexp.s
@@ -12951,7 +12951,7 @@ mondata SPECIES_CARRACOSTA, "Carracosta"
 
 
 mondata SPECIES_ARCHEN, "Archen"
-    basestats 55, 112, 45, 70, 74, 45
+    basestats 55, 112, 45, 79, 74, 45
     types TYPE_ROCK, TYPE_FLYING
     catchrate 45
     baseexp 0 // defined in baseexp.s
@@ -12962,7 +12962,7 @@ mondata SPECIES_ARCHEN, "Archen"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FLYING, EGG_GROUP_WATER_3
-    abilities ABILITY_DEFEATIST, ABILITY_NONE
+    abilities ABILITY_EMERGENCY_EXIT, ABILITY_NONE
     runchance 0
     colorflip BODY_COLOR_YELLOW, 0
     mondexentry SPECIES_ARCHEN, "It was revived from an ancient fossil.\nNot able to fly, it lived in treetops\nand hopped from one branch to another."
@@ -12983,7 +12983,7 @@ mondata SPECIES_ARCHEOPS, "Archeops"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FLYING, EGG_GROUP_WATER_3
-    abilities ABILITY_DEFEATIST, ABILITY_NONE
+    abilities ABILITY_EMERGENCY_EXIT, ABILITY_NONE
     runchance 0
     colorflip BODY_COLOR_YELLOW, 0
     mondexentry SPECIES_ARCHEOPS, "It runs better than it flies.\nIt takes off into the sky by\nrunning at a speed of 25 mph."
@@ -24126,7 +24126,7 @@ mondata SPECIES_LINOONE_GALARIAN, "-----"
     basefriendship 70
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_FIELD
-    abilities ABILITY_PICKUP,  ABILITY_GLUTTONY
+    abilities ABILITY_STEADFAST,  ABILITY_GLUTTONY
     runchance 0
     colorflip BODY_COLOR_WHITE, 0
 
@@ -25795,7 +25795,7 @@ mondata SPECIES_HOOPA_UNBOUND, "-----"
     colorflip BODY_COLOR_PURPLE, 0
 
 mondata SPECIES_ORICORIO_POM_POM, "-----"
-    basestats 75, 70, 70, 93, 98, 70
+    basestats 75, 87, 70, 98, 103, 70
     types TYPE_ELECTRIC, TYPE_FLYING
     catchrate 45
     baseexp 167
@@ -25811,12 +25811,12 @@ mondata SPECIES_ORICORIO_POM_POM, "-----"
     colorflip BODY_COLOR_YELLOW, 0
 
 mondata SPECIES_ORICORIO_PAU, "-----"
-    basestats 75, 70, 70, 93, 98, 70
+    basestats 75, 87, 70, 98, 103, 70
     types TYPE_PSYCHIC, TYPE_FLYING
     catchrate 45
     baseexp 167
     evyields 0, 0, 0, 0, 2, 0
-    items ITEM_NONE, ITEM_HONEY
+    items ITEM_ORAN_BERRY, ITEM_HONEY
     genderratio 191
     eggcycles 20
     basefriendship 70
@@ -25827,7 +25827,7 @@ mondata SPECIES_ORICORIO_PAU, "-----"
     colorflip BODY_COLOR_PINK, 0
 
 mondata SPECIES_ORICORIO_SENSU, "-----"
-    basestats 75, 70, 70, 93, 98, 70
+    basestats 75, 87, 70, 98, 103, 70
     types TYPE_GHOST, TYPE_FLYING
     catchrate 45
     baseexp 167
@@ -25859,8 +25859,8 @@ mondata SPECIES_ROCKRUFF_OWN_TEMPO, "-----"
     colorflip BODY_COLOR_BROWN, 0
 
 mondata SPECIES_LYCANROC_MIDNIGHT, "-----"
-    basestats 85, 115, 75, 82, 55, 75
-    types TYPE_ROCK, TYPE_ROCK
+    basestats 86, 115, 85, 84, 55, 75
+    types TYPE_ROCK, TYPE_DARK
     catchrate 90
     baseexp 170
     evyields 0, 2, 0, 0, 0, 0
@@ -25870,17 +25870,17 @@ mondata SPECIES_LYCANROC_MIDNIGHT, "-----"
     basefriendship 70
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_FIELD
-    abilities ABILITY_KEEN_EYE,  ABILITY_VITAL_SPIRIT
+    abilities ABILITY_KEEN_EYE,  ABILITY_SOLID_ROCK
     runchance 0
     colorflip BODY_COLOR_RED, 0
 
 mondata SPECIES_LYCANROC_DUSK, "-----"
-    basestats 75, 117, 65, 110, 55, 65
-    types TYPE_ROCK, TYPE_ROCK
+    basestats 75, 127, 65, 113, 55, 65
+    types TYPE_ROCK, TYPE_FIGHTING
     catchrate 90
     baseexp 170
     evyields 0, 2, 0, 0, 0, 0
-    items ITEM_NONE, ITEM_NONE
+    items ITEM_RARE_BONE, ITEM_NONE
     genderratio 127
     eggcycles 15
     basefriendship 70
@@ -25891,7 +25891,7 @@ mondata SPECIES_LYCANROC_DUSK, "-----"
     colorflip BODY_COLOR_BROWN, 0
 
 mondata SPECIES_WISHIWASHI_SCHOOL, "-----"
-    basestats 45, 140, 130, 30, 140, 135
+    basestats 75, 140, 130, 30, 140, 135
     types TYPE_WATER, TYPE_WATER
     catchrate 60
     baseexp 61
@@ -25907,7 +25907,7 @@ mondata SPECIES_WISHIWASHI_SCHOOL, "-----"
     colorflip BODY_COLOR_BLUE, 0
 
 mondata SPECIES_MINIOR_METEOR_ORANGE, "-----"
-    basestats 60, 60, 100, 60, 60, 100
+    basestats 60, 60, 120, 60, 60, 120
     types TYPE_ROCK, TYPE_FLYING
     catchrate 30
     baseexp 154
@@ -25923,7 +25923,7 @@ mondata SPECIES_MINIOR_METEOR_ORANGE, "-----"
     colorflip BODY_COLOR_BROWN, 1
 
 mondata SPECIES_MINIOR_METEOR_YELLOW, "-----"
-    basestats 60, 60, 100, 60, 60, 100
+    basestats 60, 60, 120, 60, 60, 120
     types TYPE_ROCK, TYPE_FLYING
     catchrate 30
     baseexp 154
@@ -25939,7 +25939,7 @@ mondata SPECIES_MINIOR_METEOR_YELLOW, "-----"
     colorflip BODY_COLOR_BROWN, 1
 
 mondata SPECIES_MINIOR_METEOR_GREEN, "-----"
-    basestats 60, 60, 100, 60, 60, 100
+    basestats 60, 60, 120, 60, 60, 120
     types TYPE_ROCK, TYPE_FLYING
     catchrate 30
     baseexp 154
@@ -25955,7 +25955,7 @@ mondata SPECIES_MINIOR_METEOR_GREEN, "-----"
     colorflip BODY_COLOR_BROWN, 1
 
 mondata SPECIES_MINIOR_METEOR_BLUE, "-----"
-    basestats 60, 60, 100, 60, 60, 100
+    basestats 60, 60, 120, 60, 60, 120
     types TYPE_ROCK, TYPE_FLYING
     catchrate 30
     baseexp 154
@@ -25971,7 +25971,7 @@ mondata SPECIES_MINIOR_METEOR_BLUE, "-----"
     colorflip BODY_COLOR_BROWN, 1
 
 mondata SPECIES_MINIOR_METEOR_INDIGO, "-----"
-    basestats 60, 60, 100, 60, 60, 100
+    basestats 60, 60, 120, 60, 60, 120
     types TYPE_ROCK, TYPE_FLYING
     catchrate 30
     baseexp 154
@@ -25987,7 +25987,7 @@ mondata SPECIES_MINIOR_METEOR_INDIGO, "-----"
     colorflip BODY_COLOR_BROWN, 1
 
 mondata SPECIES_MINIOR_METEOR_VIOLET, "-----"
-    basestats 60, 60, 100, 60, 60, 100
+    basestats 60, 60, 120, 60, 60, 120
     types TYPE_ROCK, TYPE_FLYING
     catchrate 30
     baseexp 154
@@ -26702,12 +26702,12 @@ mondata SPECIES_QWILFISH_HISUIAN, "-----"
     basefriendship 70
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_WATER_2, EGG_GROUP_WATER_2
-    abilities ABILITY_POISON_POINT, ABILITY_SWIFT_SWIM
+    abilities ABILITY_INTIMIDATE, ABILITY_SWIFT_SWIM
     runchance 0
     colorflip BODY_COLOR_GRAY, 0
 
 mondata SPECIES_SNEASEL_HISUIAN, "-----"
-    basestats 55, 95, 55, 115, 35, 75
+    basestats 55, 100, 55, 110, 35, 75
     types TYPE_FIGHTING, TYPE_POISON
     catchrate 235
     baseexp 132
