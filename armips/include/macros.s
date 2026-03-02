@@ -389,14 +389,14 @@
 .endmacro
 
 .macro monwithform,species,formid
-	.if (species > NUM_OF_MONS)
+	.if (species > NUM_OF_TOTAL_MONS_PLUS_FORMS)
 		.error "Invalid species supplied to monwithform macro.  If trying to specify a form, split up the base species and the form, i.e. \"SPECIES_ZIGZAGOON_GALARIAN\" becomes \"SPECIES_ZIGZAGOON, 1\"."
 	.endif
 	.halfword (species | (formid<<11))
 .endmacro
 
 .macro pokemon,num
-	.if (num > NUM_OF_MONS)
+	.if (num > NUM_OF_TOTAL_MONS_PLUS_FORMS)
 		.error "Invalid species supplied to pokemon macro.  If trying to specify a mon with a form (i.e. SPECIES_ZIGZAGOON_GALARIAN), use monwithform."
 	.endif
 	monwithform num, 0

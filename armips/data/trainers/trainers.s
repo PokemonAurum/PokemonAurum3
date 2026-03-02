@@ -19557,7 +19557,7 @@ trainerdata 580, "Pedro"
 trainerdata 581, "Adrian"
     trainermontype TRAINER_DATA_TYPE_NOTHING
     trainerclass TRAINERCLASS_PICNICKER
-    nummons 1
+    nummons 3
     item ITEM_NONE
     item ITEM_NONE
     item ITEM_NONE
@@ -19566,14 +19566,28 @@ trainerdata 581, "Adrian"
     battletype SINGLE_BATTLE
     endentry
 
-    party 581
-        // mon 0
-        ivs 0
-        abilityslot 0
-        level 45
-        pokemon SPECIES_SHROOMISH
-        ballseal 0
-    endparty
+party 581
+    // mon 0
+    ivs 0
+    abilityslot 0
+    level 52
+    pokemon SPECIES_BRELOOM
+    ballseal 0
+
+    // mon 1
+    ivs 0
+    abilityslot 0
+    level 53
+    pokemon SPECIES_TAUROS_AQUA
+    ballseal 0
+
+    // mon 2
+    ivs 0
+    abilityslot 0
+    level 53
+    pokemon SPECIES_DECIDUEYE_HISUIAN
+    ballseal 0
+endparty
 
 trainerdata 582, "Cheyenne"
     trainermontype TRAINER_DATA_TYPE_NOTHING
@@ -19591,8 +19605,8 @@ trainerdata 582, "Cheyenne"
         // mon 0
         ivs 0
         abilityslot 32
-        level 45
-        pokemon SPECIES_SHINX
+        level 52
+        pokemon SPECIES_LUXRAY
         ballseal 0
     endparty
 
