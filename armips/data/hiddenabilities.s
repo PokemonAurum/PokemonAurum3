@@ -1,5 +1,4 @@
-.align 2
-.global gHiddenAbilityTable
+.create "build/a028/8_07", 0
 gHiddenAbilityTable:
 
     // SPECIES_NONE
@@ -719,7 +718,7 @@ gHiddenAbilityTable:
     // SPECIES_TROPIUS
     .halfword ABILITY_HARVEST
     // SPECIES_CHIMECHO
-    .halfword ABILITY_HEAL_BELL
+    .halfword ABILITY_HEALER
     // SPECIES_ABSOL
     .halfword ABILITY_JUSTIFIED
     // SPECIES_WYNAUT
@@ -869,7 +868,7 @@ gHiddenAbilityTable:
     // SPECIES_PURUGLY
     .halfword ABILITY_OWN_TEMPO
     // SPECIES_CHINGLING
-    .halfword ABILITY_HEAL_BELL
+    .halfword ABILITY_HEALER
     // SPECIES_STUNKY
     .halfword ABILITY_STENCH
     // SPECIES_SKUNTANK
@@ -2804,3 +2803,4 @@ gHiddenAbilityTable:
     .halfword ABILITY_NONE
     // SPECIES_TERAPAGOS_STELLAR
     .halfword ABILITY_NONE
+.close
