@@ -1121,6 +1121,62 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
             // handle Swarm
             if ((movetype == TYPE_BUG) && (AttackingMon.ability == ABILITY_SWARM) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
                 attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            // handle Resolve
+            if ((movetype == TYPE_NORMAL) && (AttackingMon.ability == ABILITY_RESOLVE) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Punch Drunk
+            if ((movetype == TYPE_FIGHTING) && (AttackingMon.ability == ABILITY_PUNCH_DRUNK) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Updraft
+            if ((movetype == TYPE_FLYING) && (AttackingMon.ability == ABILITY_UPDRAFT) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Venom
+            if ((movetype == TYPE_POISON) && (AttackingMon.ability == ABILITY_VENOM) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Tremor
+            if ((movetype == TYPE_GROUND) && (AttackingMon.ability == ABILITY_TREMOR) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Geolith
+            if ((movetype == TYPE_ROCK) && (AttackingMon.ability == ABILITY_GEOLITH) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Temper
+            if ((movetype == TYPE_STEEL) && (AttackingMon.ability == ABILITY_TEMPER) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Overcharged
+            if ((movetype == TYPE_ELECTRIC) && (AttackingMon.ability == ABILITY_OVERCHARGED) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle ESP
+            if ((movetype == TYPE_PSYCHIC) && (AttackingMon.ability == ABILITY_ESP) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Snowstorm
+            if ((movetype == TYPE_ICE) && (AttackingMon.ability == ABILITY_SNOWSTORM) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Arcane
+            if ((movetype == TYPE_DRAGON) && (AttackingMon.ability == ABILITY_ARCANE) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Malice
+            if ((movetype == TYPE_DARK) && (AttackingMon.ability == ABILITY_MALICE) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Phantasm
+            if ((movetype == TYPE_GHOST) && (AttackingMon.ability == ABILITY_PHANTASM) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
+            // handle Enchanted
+            if ((movetype == TYPE_FAIRY) && (AttackingMon.ability == ABILITY_ENCHANTED) && (AttackingMon.hp <= AttackingMon.maxhp / 3)) {
+                attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
+            }
             }
 
             // handle Flash Fire
