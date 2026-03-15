@@ -233,6 +233,23 @@ BOOL MoveHitDefenderAbilityCheckInternal(void *bw, struct BattleStruct *sp, int 
             seq_no[0] = SUB_SEQ_BOOST_STATS;
             ret = TRUE;
         }
+    } else if (MoldBreakerAbilityCheck(sp, sp->attack_client, sp->defence_client, ABILITY_HYSTERIA)) {
+        if (
+            (sp->battlemon[sp->defence_client].hp)
+            && (sp->battlemon[sp->defence_client].states[STAT_SPATK] < 12)
+            && ((sp->oneSelfFlag[sp->defence_client].physical_damage) || (sp->oneSelfFlag[sp->defence_client].special_damage))
+            && !((GetBattlerAbility(sp, sp->attack_client) == ABILITY_SHEER_FORCE) && (sp->battlemon[sp->attack_client].sheer_force_flag == 1))
+            && (sp->multiHitCount <= 1)
+            && (sp->battlemon[sp->defence_client].hp <= (s32)(sp->battlemon[sp->defence_client].maxhp * 3 / 4))
+            && (
+                ((sp->battlemon[sp->defence_client].hp - (sp->oneSelfFlag[sp->defence_client].physical_damage)) > (s32)(sp->battlemon[sp->defence_client].maxhp * 3 / 4)) || ((sp->battlemon[sp->defence_client].hp - (sp->oneSelfFlag[sp->defence_client].special_damage)) > (s32)(sp->battlemon[sp->defence_client].maxhp * 3 / 4)))) {
+            sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SP_ATK_UP;
+            sp->addeffect_type = ADD_EFFECT_ABILITY;
+            sp->state_client = sp->defence_client;
+            sp->battlerIdTemp = sp->defence_client;
+            seq_no[0] = SUB_SEQ_BOOST_STATS;
+            ret = TRUE;
+        }
     } else if (MoldBreakerAbilityCheck(sp, sp->attack_client, sp->defence_client, ABILITY_ELECTROMORPHOSIS)) {
         if (/*(sp->battlemon[sp->defence_client].hp) // mon notably does not need to be alive for this ability to proc
             && */

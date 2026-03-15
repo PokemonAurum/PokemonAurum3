@@ -1534,7 +1534,15 @@ int CalcCritical(void *bw, struct BattleStruct *sp, int attacker, int defender, 
     temp = (((condition2 & STATUS2_FOCUS_ENERGY) != 0) * 2) + (hold_effect == HOLD_EFFECT_CRITRATE_UP) + critical_count + (ability == ABILITY_SUPER_LUCK)
          + (2 * ((hold_effect == HOLD_EFFECT_CHANSEY_CRITRATE_UP) && (species == SPECIES_CHANSEY)))
          + (2 * ((hold_effect == HOLD_EFFECT_FARFETCHD_CRITRATE_UP) && (species == SPECIES_FARFETCHD)));
-
+        
+ // Kitten's Claws: speed-based crit boost, physical moves only
+    if (ability == ABILITY_KITTENS_CLAWS && GetMoveSplit(sp, sp->current_move_index) == SPLIT_PHYSICAL)
+    {
+        u32 stat_stage_spd = sp->battlemon[attacker].states[STAT_SPEED];
+        u32 actual_speed = (sp->battlemon[attacker].speed * StatBoostModifiers[stat_stage_spd][0] / StatBoostModifiers[stat_stage_spd][1]) % 65536;
+        if (actual_speed >= 150) temp += 2;
+        else if (actual_speed >= 100) temp += 1;
+    }
 
     if (temp > 4 || sp->moveConditionsFlags[attacker].laserFocusTimer)
     {

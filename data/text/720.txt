@@ -329,3 +329,5 @@ Headgear
 Evaporate
 Freeze Body
 Kitten‘s Claws
+Hysteria
+Pack Leader

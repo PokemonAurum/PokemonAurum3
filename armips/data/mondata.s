@@ -15303,7 +15303,7 @@ mondata SPECIES_ESPURR, "Espurr"
 
 
 mondata SPECIES_MEOWSTIC, "Meowstic"
-    basestats 74, 48, 76, 104, 83, 81
+    basestats 74, 48, 76, 107, 84, 91
     types TYPE_PSYCHIC, TYPE_PSYCHIC
     catchrate 75
     baseexp 0 // defined in baseexp.s
@@ -15314,7 +15314,7 @@ mondata SPECIES_MEOWSTIC, "Meowstic"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_FIELD
-    abilities ABILITY_KEEN_EYE, ABILITY_INFILTRATOR
+    abilities ABILITY_ESP, ABILITY_INFILTRATOR
     runchance 0
     colorflip BODY_COLOR_BLUE, 0
     mondexentry SPECIES_MEOWSTIC, "When in danger, it raises its ears and\nreleases enough psychic power to grind\na 10-ton truck to dust."
@@ -15398,7 +15398,7 @@ mondata SPECIES_SPRITZEE, "Spritzee"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FAIRY, EGG_GROUP_FAIRY
-    abilities ABILITY_HEALER, ABILITY_NONE
+    abilities ABILITY_HEALER, ABILITY_ENCHANTED
     runchance 0
     colorflip BODY_COLOR_PINK, 0
     mondexentry SPECIES_SPRITZEE, "It emits a scent that delights those\nwho smell it. The fragrance changes\ndepending on what it has eaten."
@@ -15419,7 +15419,7 @@ mondata SPECIES_AROMATISSE, "Aromatisse"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FAIRY, EGG_GROUP_FAIRY
-    abilities ABILITY_HEALER, ABILITY_NONE
+    abilities ABILITY_HEALER, ABILITY_ENCHANTED
     runchance 0
     colorflip BODY_COLOR_PINK, 0
     mondexentry SPECIES_AROMATISSE, "It devises various scents and emits\nscents that its enemies dislike in order\nto gain an edge in battle."
@@ -15440,7 +15440,7 @@ mondata SPECIES_SWIRLIX, "Swirlix"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FAIRY, EGG_GROUP_FAIRY
-    abilities ABILITY_SWEET_VEIL, ABILITY_NONE
+    abilities ABILITY_SWEET_VEIL, ABILITY_CUTE_CHARM
     runchance 0
     colorflip BODY_COLOR_WHITE, 0
     mondexentry SPECIES_SWIRLIX, "Because it eats nothing but sweets, its\nfur is as sticky sweet as cotton\ncandy."
@@ -15461,7 +15461,7 @@ mondata SPECIES_SLURPUFF, "Slurpuff"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FAIRY, EGG_GROUP_FAIRY
-    abilities ABILITY_SWEET_VEIL, ABILITY_NONE
+    abilities ABILITY_SWEET_VEIL, ABILITY_CUTE_CHARM
     runchance 0
     colorflip BODY_COLOR_WHITE, 0
     mondexentry SPECIES_SLURPUFF, "It can distinguish the faintest of\nscents. It puts its sense of smell to\nuse by helping pastry chefs."
@@ -16689,7 +16689,7 @@ mondata SPECIES_RIBOMBEE, "Ribombee"
 
 
 mondata SPECIES_ROCKRUFF, "Rockruff"
-    basestats 45, 65, 40, 60, 30, 40
+    basestats 45, 70, 40, 69, 35, 46
     types TYPE_ROCK, TYPE_ROCK
     catchrate 190
     baseexp 0 // defined in baseexp.s
@@ -16700,18 +16700,18 @@ mondata SPECIES_ROCKRUFF, "Rockruff"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_FIELD
-    abilities ABILITY_KEEN_EYE, ABILITY_VITAL_SPIRIT
+    abilities ABILITY_BALL_FETCH, ABILITY_VITAL_SPIRIT
     runchance 0
     colorflip BODY_COLOR_BROWN, 0
     mondexentry SPECIES_ROCKRUFF, "When it rubs the rocks on its neck\nagainst you, that’s proof of its love\nfor you."
-    mondexclassification SPECIES_ROCKRUFF, "Puppy Pokémon"
+    mondexclassification SPECIES_ROCKRUFF, "Pup Pokémon"
     mondexheight SPECIES_ROCKRUFF, "1’08”"
     mondexweight SPECIES_ROCKRUFF, "20.3 lbs."
 
 
 mondata SPECIES_LYCANROC, "Lycanroc"
-    basestats 75, 115, 65, 112, 55, 65
-    types TYPE_ROCK, TYPE_ROCK
+    basestats 76, 116, 70, 119, 55, 69
+    types TYPE_ROCK, TYPE_NORMAL
     catchrate 90
     baseexp 0 // defined in baseexp.s
     evyields 0, 2, 0, 0, 0, 0
@@ -19514,7 +19514,7 @@ mondata SPECIES_CUFANT, "Cufant"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_MINERAL
-    abilities ABILITY_SHEER_FORCE, ABILITY_NONE
+    abilities ABILITY_SHEER_FORCE, ABILITY_TEMPER
     runchance 0
     colorflip BODY_COLOR_YELLOW, 0
     mondexentry SPECIES_CUFANT, "If a job requires serious strength,\nCufant will excel at it. Its copper body\ntarnishes in the rain, turning green."
@@ -19535,7 +19535,7 @@ mondata SPECIES_COPPERAJAH, "Copperajah"
     basefriendship 50
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_MINERAL
-    abilities ABILITY_SHEER_FORCE, ABILITY_NONE
+    abilities ABILITY_SHEER_FORCE, ABILITY_TEMPER
     runchance 0
     colorflip BODY_COLOR_GREEN, 0
     mondexentry SPECIES_COPPERAJAH, "These Pokémon live in herds. Their\ntrunks have incredible grip strength,\nstrong enough to crush giant rocks."
@@ -19997,7 +19997,7 @@ mondata SPECIES_URSALUNA, "Ursaluna"
     basefriendship 70
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_FIELD
-    abilities ABILITY_GUTS, ABILITY_BULLETPROOF
+    abilities ABILITY_GUTS, ABILITY_TREMOR
     runchance 0
     colorflip BODY_COLOR_BROWN, 0
     mondexentry SPECIES_URSALUNA, "I believe it was Hisui's swampy terrain that gave Ursaluna its\nburly physique and newfound capacity to manipulate peat\nat will."
@@ -24132,7 +24132,7 @@ mondata SPECIES_MEOWTH_GALARIAN, "-----"
     colorflip BODY_COLOR_BROWN, 0
 
 mondata SPECIES_PONYTA_GALARIAN, "-----"
-    basestats 50, 85, 55, 90, 65, 65
+    basestats 50, 80, 55, 100, 85, 75
     types TYPE_PSYCHIC, TYPE_PSYCHIC
     catchrate 190
     baseexp 82
@@ -24143,12 +24143,12 @@ mondata SPECIES_PONYTA_GALARIAN, "-----"
     basefriendship 70
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_FIELD
-    abilities ABILITY_RUN_AWAY,  ABILITY_PASTEL_VEIL
+    abilities ABILITY_ENCHANTED,  ABILITY_PASTEL_VEIL
     runchance 0
     colorflip BODY_COLOR_WHITE, 0
 
 mondata SPECIES_RAPIDASH_GALARIAN, "-----"
-    basestats 65, 100, 70, 105, 80, 80
+    basestats 70, 90, 70, 120, 105, 90
     types TYPE_PSYCHIC, TYPE_FAIRY
     catchrate 60
     baseexp 175
@@ -24159,7 +24159,7 @@ mondata SPECIES_RAPIDASH_GALARIAN, "-----"
     basefriendship 70
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_FIELD
-    abilities ABILITY_RUN_AWAY,  ABILITY_PASTEL_VEIL
+    abilities ABILITY_ENCHANTED,  ABILITY_PASTEL_VEIL
     runchance 0
     colorflip BODY_COLOR_WHITE, 0
 
@@ -27236,7 +27236,7 @@ mondata SPECIES_PYROAR_FEMALE, "-----"
     colorflip BODY_COLOR_BROWN, 0
 
 mondata SPECIES_MEOWSTIC_FEMALE, "-----"
-    basestats 74, 48, 76, 104, 83, 81
+    basestats 74, 48, 76, 107, 92, 84
     types TYPE_PSYCHIC, TYPE_PSYCHIC
     catchrate 75
     baseexp 163
@@ -27247,7 +27247,7 @@ mondata SPECIES_MEOWSTIC_FEMALE, "-----"
     basefriendship 70
     growthrate GROWTH_MEDIUM_FAST
     egggroups EGG_GROUP_FIELD, EGG_GROUP_FIELD
-    abilities ABILITY_KEEN_EYE,  ABILITY_INFILTRATOR
+    abilities ABILITY_ESP,  ABILITY_INFILTRATOR
     runchance 0
     colorflip BODY_COLOR_BLUE, 0
 
