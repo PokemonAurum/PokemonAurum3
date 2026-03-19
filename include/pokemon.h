@@ -19,6 +19,8 @@
 // MON_DATA_RESERVED_113 (2 bits) fields
 #define DUMMY_P2_1_HIDDEN_ABILITY_MASK (0x01)
 #define DUMMY_P2_1_HAS_HIT_NECESSARY_CRITICAL_HITS (0x02)
+#define DUMMY_P2_1_RAPID_SPIN_COUNT_MASK (0x0C) // bits 2-3, values 0-3
+#define DUMMY_P2_1_RAPID_SPIN_COUNT_SHIFT (2)
 
 // MON_DATA_RESERVED_114 (16 bits) fields
 #define DUMMY_P2_2_CHANGE_ABILITY_SLOT (0x0001)
@@ -63,6 +65,14 @@
     SetBoxMonData(boxmon, MON_DATA_RESERVED_113, (u8 *)&tempvarassumeunused); \
 }
 #define GET_MON_CRITICAL_HIT_EVOLUTION_BIT(mon) (GetMonData(mon, MON_DATA_RESERVED_113, 0) & DUMMY_P2_1_HAS_HIT_NECESSARY_CRITICAL_HITS)
+#define GET_MON_RAPID_SPIN_COUNT(mon) ((GetMonData(mon, MON_DATA_RESERVED_113, 0) & DUMMY_P2_1_RAPID_SPIN_COUNT_MASK) >> DUMMY_P2_1_RAPID_SPIN_COUNT_SHIFT)
+#define SET_MON_RAPID_SPIN_COUNT(mon, val) { \
+    u8 tempvarassumeunused = GetMonData(mon, MON_DATA_RESERVED_113, 0); \
+    tempvarassumeunused &= ~DUMMY_P2_1_RAPID_SPIN_COUNT_MASK; \
+    tempvarassumeunused |= ((val) << DUMMY_P2_1_RAPID_SPIN_COUNT_SHIFT) & DUMMY_P2_1_RAPID_SPIN_COUNT_MASK; \
+    SetMonData(mon, MON_DATA_RESERVED_113, (u8 *)&tempvarassumeunused); \
+}
+#define CLEAR_MON_RAPID_SPIN_COUNT(mon) SET_MON_RAPID_SPIN_COUNT(mon, 0)
 
 
 #define SET_MON_SWAP_ABILITY_SLOT_BIT(mon) { \
@@ -674,6 +684,8 @@ typedef enum EvoMethod
     EVO_HURT_IN_BATTLE_AMOUNT,
     //EVO_DARK_SCROLL,  // implemented through a forme-change-esque cut scene
     //EVO_WATER_SCROLL, // implemented through a forme-change-esque cut scene
+    EVO_LEVEL_DUSK_HA,
+    EVO_RAPID_SPIN_THREE_TIMES,
 } EvoMethod;
 
 typedef enum {

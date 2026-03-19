@@ -3787,9 +3787,15 @@ BOOL BtlCmd_RapidSpin(void *bw, struct BattleStruct *sp)
         SkillSequenceGosub(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_BLOW_AWAY_HAZARDS_MESSAGE);
         return FALSE;
     }
-
+    // Track consecutive Rapid Spin uses for Hitmontop evolution
+    {
+        struct PartyPokemon *mon = Party_GetMonByIndex(BattleWorkPokePartyGet(bw, sp->attack_client), sp->sel_mons_no[sp->attack_client]);
+        u8 count = GET_MON_RAPID_SPIN_COUNT(mon);
+        if (count < 3) {
+            SET_MON_RAPID_SPIN_COUNT(mon, count + 1);
+        }
+    }
     IncrementBattleScriptPtr(sp, 1);
-
     return FALSE;
 }
 
@@ -4584,26 +4590,13 @@ BOOL LONG_CALL BtlCmd_PrintMessage(struct BattleSystem *bsys, struct BattleStruc
 BOOL LONG_CALL BtlCmd_PrintAttackMessage(struct BattleSystem *bsys, struct BattleStruct *ctx)
 {
     IncrementBattleScriptPtr(ctx, 1);
-
+    // Reset Rapid Spin evolution counter if using a different move
+    if (ctx->current_move_index != MOVE_RAPID_SPIN) {
+        struct PartyPokemon *mon = Party_GetMonByIndex(BattleWorkPokePartyGet(bsys, ctx->attack_client), ctx->sel_mons_no[ctx->attack_client]);
+        CLEAR_MON_RAPID_SPIN_COUNT(mon);
+    }
     if (!(ctx->server_status_flag & BATTLE_STATUS_NO_ATTACK_MESSAGE)) {
         BattleController_EmitPrintAttackMessage(bsys, ctx);
-
-// #ifdef DEBUG_BATTLE_SCENARIOS
-// #ifdef DEBUG_AUTO_TEST_PRINTS
-//     debug_printf("PrintAttackMessage: msg_id %d, attacker %d, defender %d\n", ctx->mp.msg_id, ctx->attack_client, ctx->defence_client);
-// #endif
-//     struct TestBattleScenario *scenario = TestBattle_GetCurrentScenario();
-//     if (scenario != NULL && TestBattle_HasMoreExpectations()) {
-//         // debug_printf("Has more expectations\n")
-//         if (scenario->expectations[scenario->expectationPassCount].expectationType == EXPECTATION_TYPE_ATTACK_MESSAGE) {
-//             if (scenario->expectations[scenario->expectationPassCount].expectationValue.messageID == ctx->mp.msg_id) {
-//                 scenario->expectationPassCount++;
-//             }
-//             // debug_printf("\n");
-//         }
-//     }
-// #endif // DEBUG_BATTLE_SCENARIOS
-
     }
 
     ctx->server_status_flag |= BATTLE_STATUS_NO_ATTACK_MESSAGE;
@@ -4762,6 +4755,11 @@ BOOL btl_scr_cmd_114_stuffCheeks(void *bsys, struct BattleStruct *ctx)
             script = SUB_SEQ_ITEM_RECOVER_FRZ;
         }
         break;
+    case HOLD_EFFECT_FROSTBITE_RESTORE: // permafrost berry
+        if (ctx->battlemon[ctx->attack_client].condition & STATUS_FROSTBITE) {
+            script = SUB_SEQ_ITEM_RECOVER_FROSTBITE;
+        }
+        break;
     case HOLD_EFFECT_PP_RESTORE: // leppa berry
     {
         int index;
@@ -4799,6 +4797,9 @@ BOOL btl_scr_cmd_114_stuffCheeks(void *bsys, struct BattleStruct *ctx)
             }
             if (ctx->battlemon[ctx->attack_client].condition & STATUS_FREEZE) {
                 script = SUB_SEQ_ITEM_RECOVER_FRZ;
+            }
+            if (ctx->battlemon[ctx->attack_client].condition & STATUS_FROSTBITE) {
+                script = SUB_SEQ_ITEM_RECOVER_FROSTBITE;
             }
             if (ctx->battlemon[ctx->attack_client].condition2 & STATUS2_CONFUSION) {
                 script = SUB_SEQ_ITEM_RECOVER_CNF;

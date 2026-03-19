@@ -2576,6 +2576,7 @@
 #define ITEM_HAWLUCHITE                   2570
 #define ITEM_FALINITE                     2571
 #define ITEM_GLIMMORITE                   2572
+#define ITEM_PERMAFROST_BERRY             2573
 
 #define MAX_BASE_ITEM_NUM ITEM_BRIARS_BOOK
 

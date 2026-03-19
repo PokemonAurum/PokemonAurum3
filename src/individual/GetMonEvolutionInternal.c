@@ -254,6 +254,18 @@ u16 GetMonEvolutionInternal(struct Party *party, struct PartyPokemon *pokemon, u
                     }
                 }
                 break;
+            case EVO_LEVEL_DUSK_HA:
+                {
+                    struct RTCTime time;
+                    GF_RTC_CopyTime(&time);
+                    if (time.hour == 17 && evoTable[i].param <= level) {
+                        if (GET_MON_SWAP_ABILITY_SLOT_BIT(pokemon)) {
+                            target = evoTable[i].target & 0x7FF;
+                            *method_ret = EVO_LEVEL_DUSK_HA;
+                        }
+                    }
+                }
+                break;
             case EVO_LEVEL_RAIN:
                 if (evoTable[i].param <= level)
                 {

@@ -317,6 +317,12 @@ BOOL LONG_CALL TryUseHeldItem(void *bw, struct BattleStruct *ctx, int battlerId)
                 ret = TRUE;
             }
             break;
+        case HOLD_EFFECT_FROSTBITE_RESTORE: // permafrost berry
+            if (ctx->battlemon[battlerId].condition & STATUS_FROSTBITE) {
+                script = SUB_SEQ_ITEM_RECOVER_FROSTBITE;
+                ret = TRUE;
+            }
+            break;
         case HOLD_EFFECT_PP_RESTORE: // leppa berry
         {
             int index;
@@ -356,6 +362,9 @@ BOOL LONG_CALL TryUseHeldItem(void *bw, struct BattleStruct *ctx, int battlerId)
                 }
                 if (ctx->battlemon[battlerId].condition & STATUS_FREEZE) {
                     script = SUB_SEQ_ITEM_RECOVER_FRZ;
+                }
+                if (ctx->battlemon[ctx->attack_client].condition & STATUS_FROSTBITE) {
+                    script = SUB_SEQ_ITEM_RECOVER_FROSTBITE;
                 }
                 if (ctx->battlemon[battlerId].condition2 & STATUS2_CONFUSION) {
                     script = SUB_SEQ_ITEM_RECOVER_CNF;

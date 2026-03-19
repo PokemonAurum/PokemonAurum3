@@ -493,7 +493,8 @@
 #define SUB_SEQ_USER_DEF_DOWN_1_SPEED_UP_1            (483)
 #define SUB_SEQ_APPLY_FROSTBITE                       (484)
 #define SUB_SEQ_FROSTBITE_DAMAGE                      (485)
-#define MAX_BASE_SUBSCRIPT_NUM 485
+#define SUB_SEQ_ITEM_RECOVER_FROSTBITE                (486)
+#define MAX_BASE_SUBSCRIPT_NUM 486
 
 // define your custom subscripts below like this
 // #define MOVE_SUBSCRIPT_CUSTOM_1 (MAX_BASE_SUBSCRIPT_NUM + 1)

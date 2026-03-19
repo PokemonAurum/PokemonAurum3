@@ -15,6 +15,46 @@
 
 
 static BOOL IntimidateCheckHelper(struct BattleStruct *sp, u32 client);
+static int CountDogPokemonInParty(void *bw, u32 client_no) {
+    struct Party *party = BattleWorkPokePartyGet(bw, client_no);
+    int count = party->count;
+    int dog_count = 0;
+    for (int i = 0; i < count; i++) {
+        u16 species = GetMonData(Party_GetMonByIndex(party, i), MON_DATA_SPECIES, NULL);
+        switch (species) {
+            case SPECIES_GROWLITHE: case SPECIES_ARCANINE:
+            case SPECIES_GROWLITHE_HISUIAN: case SPECIES_ARCANINE_HISUIAN: case SPECIES_ARCANINE_LORD:
+            case SPECIES_EEVEE: case SPECIES_EEVEE_PARTNER:
+            case SPECIES_VAPOREON: case SPECIES_JOLTEON: case SPECIES_FLAREON:
+            case SPECIES_ESPEON: case SPECIES_UMBREON:
+            case SPECIES_LEAFEON: case SPECIES_GLACEON: case SPECIES_SYLVEON:
+            case SPECIES_SNUBBULL: case SPECIES_GRANBULL:
+            case SPECIES_HOUNDOUR: case SPECIES_HOUNDOOM: case SPECIES_MEGA_HOUNDOOM:
+            case SPECIES_POOCHYENA: case SPECIES_MIGHTYENA:
+            case SPECIES_ELECTRIKE: case SPECIES_MANECTRIC: case SPECIES_MEGA_MANECTRIC:
+            case SPECIES_NICKIT: case SPECIES_THIEVUL:
+            case SPECIES_LILLIPUP: case SPECIES_HERDIER: case SPECIES_STOUTLAND:
+            case SPECIES_ZORUA: case SPECIES_ZOROARK:
+            case SPECIES_ZORUA_HISUIAN: case SPECIES_ZOROARK_HISUIAN:
+            case SPECIES_FENNEKIN: case SPECIES_BRAIXEN: case SPECIES_DELPHOX: case SPECIES_MEGA_DELPHOX:
+            case SPECIES_FURFROU: case SPECIES_FURFROU_HEART: case SPECIES_FURFROU_STAR:
+            case SPECIES_FURFROU_DIAMOND: case SPECIES_FURFROU_DEBUTANTE: case SPECIES_FURFROU_MATRON:
+            case SPECIES_FURFROU_DANDY: case SPECIES_FURFROU_LA_REINE: case SPECIES_FURFROU_KABUKI: case SPECIES_FURFROU_PHARAOH:
+            case SPECIES_ROCKRUFF: case SPECIES_LYCANROC: case SPECIES_LYCANROC_MIDNIGHT: case SPECIES_LYCANROC_DUSK:
+            case SPECIES_YAMPER: case SPECIES_BOLTUND:
+            case SPECIES_ZACIAN: case SPECIES_ZACIAN_CROWNED:
+            case SPECIES_ZAMAZENTA: case SPECIES_ZAMAZENTA_CROWNED:
+            case SPECIES_FIDOUGH: case SPECIES_DACHSBUN:
+            case SPECIES_MASCHIFF: case SPECIES_MABOSSTIFF:
+            case SPECIES_GREAVARD: case SPECIES_HOUNDSTONE:
+                dog_count++;
+                break;
+            default:
+                break;
+        }
+    }
+    return dog_count;
+}
 static BOOL IsValidImposterTarget(void *bw, struct BattleStruct *sp, u32 client);
 
 extern struct ILLUSION_STRUCT gIllusionStruct;
@@ -652,6 +692,38 @@ int UNUSED SwitchInAbilityCheck(void *bw, struct BattleStruct *sp)
                                 default:
                                     break;
                             }
+                    // Pack Leader
+                    {
+                        if ((sp->battlemon[client_no].hp) && (GetBattlerAbility(sp, client_no) == ABILITY_PACK_LEADER)) {
+                            int dogs = CountDogPokemonInParty(bw, client_no);
+                            if (dogs > 0) {
+                                u32 client_idx = SanitizeClientForTeamAccess(bw, client_no);
+                                u32 mon_idx = sp->sel_mons_no[client_no];
+                                if (sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderAtkFlag == FALSE) {
+                                    sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderAtkFlag = TRUE;
+                                    if (dogs >= 5) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP_3;
+                                    else if (dogs >= 3) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP_2;
+                                    else sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP;
+                                    sp->addeffect_type = ADD_STATUS_ABILITY;
+                                    sp->state_client = client_no;
+                                    scriptnum = SUB_SEQ_BOOST_STATS;
+                                    ret = SWITCH_IN_CHECK_MOVE_SCRIPT;
+                                    break;
+                                }
+                                if (sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderSpeFlag == FALSE) {
+                                    sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderSpeFlag = TRUE;
+                                    if (dogs >= 5) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SPEED_UP_3;
+                                    else if (dogs >= 3) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SPEED_UP_2;
+                                    else sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SPEED_UP;
+                                    sp->addeffect_type = ADD_STATUS_ABILITY;
+                                    sp->state_client = client_no;
+                                    scriptnum = SUB_SEQ_BOOST_STATS;
+                                    ret = SWITCH_IN_CHECK_MOVE_SCRIPT;
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
                             if (ret == SWITCH_IN_CHECK_MOVE_SCRIPT) {
                                 sp->battlemon[client_no].ability_activated_flag = 1;
