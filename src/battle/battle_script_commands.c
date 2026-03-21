@@ -4590,8 +4590,8 @@ BOOL LONG_CALL BtlCmd_PrintMessage(struct BattleSystem *bsys, struct BattleStruc
 BOOL LONG_CALL BtlCmd_PrintAttackMessage(struct BattleSystem *bsys, struct BattleStruct *ctx)
 {
     IncrementBattleScriptPtr(ctx, 1);
-    // Reset Rapid Spin evolution counter if using a different move
-    if (ctx->current_move_index != MOVE_RAPID_SPIN) {
+    // Reset Rapid Spin evolution counter if using a different move (player's party only)
+    if (ctx->current_move_index != MOVE_RAPID_SPIN && !IsClientEnemy(bsys, ctx->attack_client)) {
         struct PartyPokemon *mon = Party_GetMonByIndex(BattleWorkPokePartyGet(bsys, ctx->attack_client), ctx->sel_mons_no[ctx->attack_client]);
         CLEAR_MON_RAPID_SPIN_COUNT(mon);
     }

@@ -1620,3 +1620,15 @@ The opposing {STRVAR_1 1, 0, 0} concentrated\nintensely!
 The effects of Throat Chop prevent\n{STRVAR_1 1, 0, 0} from using certain moves!
 The effects of Throat Chop prevent\nthe wild {STRVAR_1 1, 0, 0}\ffrom using certain moves!
 The effects of Throat Chop prevent\nthe opposing {STRVAR_1 1, 0, 0}\ffrom using certain moves!
+{STRVAR_1 1, 0, 0} got frostbite!
+The wild {STRVAR_1 1, 0, 0}\ngot frostbite!
+The opposing {STRVAR_1 1, 0, 0}\ngot frostbite!
+{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\ngave {STRVAR_1 1, 2, 0} frostbite!
+{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\ngave the wild {STRVAR_1 1, 2, 0} frostbite!
+{STRVAR_1 1, 0, 0}’s {STRVAR_1 5, 1, 0}\ngave the opposing {STRVAR_1 1, 2, 0} frostbite!
+{STRVAR_1 1, 0, 0} is hurt\nby its frostbite!
+The wild {STRVAR_1 1, 0, 0} is hurt\nby its frostbite!
+The opposing {STRVAR_1 1, 0, 0} is hurt\nby its frostbite!
+{STRVAR_1 1, 0, 0}’s {STRVAR_1 8, 1, 0}\nhealed its frostbite!
+The wild {STRVAR_1 1, 0, 0}’s\n{STRVAR_1 8, 1, 0} healed its frostbite!
+The opposing {STRVAR_1 1, 0, 0}’s\n{STRVAR_1 8, 1, 0} healed its frostbite!

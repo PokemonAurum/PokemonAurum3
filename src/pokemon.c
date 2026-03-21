@@ -501,7 +501,7 @@ void LONG_CALL SetBoxMonAbility(struct BoxPokemon *boxmon) // actually takes box
     {
         has_hidden_ability = GET_BOX_MON_HIDDEN_ABILITY_BIT(boxmon);
         // Amrita Nectar: 20% chance of hidden ability for 6 encounters
-        if (!has_hidden_ability && CheckScriptFlag(AMRITA_NECTAR_FLAG) == 1)
+        if (!has_hidden_ability && gFieldSysPtr != NULL && CheckScriptFlag(AMRITA_NECTAR_FLAG) == 1)
         {
             u16 counter = VarGet(gFieldSysPtr, VAR_AMRITA_NECTAR_COUNTER);
             if ((gf_rand() % 100) < 20)

@@ -12,7 +12,7 @@ _000:
 _020:
     UpdateVar OPCODE_MUL, BSCRIPT_VAR_HP_CALC, -1
     // {0} is hurt by its frostbite!
-    PrintMessage 95, TAG_NICKNAME, BATTLER_CATEGORY_MSG_TEMP
+    PrintMessage 1629, TAG_NICKNAME, BATTLER_CATEGORY_MSG_TEMP
     Wait
     WaitButtonABTime 30
     PlayBattleAnimation BATTLER_CATEGORY_MSG_TEMP, BATTLE_ANIMATION_FROZEN
