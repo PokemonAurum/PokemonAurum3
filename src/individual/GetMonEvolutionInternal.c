@@ -368,6 +368,13 @@ u16 GetMonEvolutionInternal(struct Party *party, struct PartyPokemon *pokemon, u
                     }
                 }
                 break;
+            case EVO_RAPID_SPIN_THREE_TIMES:
+                if (evoTable[i].param <= level && GET_MON_RAPID_SPIN_COUNT(pokemon) >= 3) 
+                {
+                    target = evoTable[i].target & 0x7FF;
+                    *method_ret = EVO_RAPID_SPIN_THREE_TIMES;
+                }
+                break;
             }
             if (target != SPECIES_NONE) {
                 break;

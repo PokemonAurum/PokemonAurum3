@@ -491,16 +491,34 @@ void LONG_CALL SetBoxMonAbility(struct BoxPokemon *boxmon) // actually takes box
     ability1 = PokeFormNoPersonalParaGet(mons_no, form, PERSONAL_ABILITY_1);
     ability2 = PokeFormNoPersonalParaGet(mons_no, form, PERSONAL_ABILITY_2);
 
-    if (CheckScriptFlag(HIDDEN_ABILITIES_FLAG) == 1)
+ if (CheckScriptFlag(HIDDEN_ABILITIES_FLAG) == 1)
     {
         SET_BOX_MON_HIDDEN_ABILITY_BIT(boxmon)
         has_hidden_ability = 1;
-        // need to clear this script flag because this function is used for in-battle form change ability resets as well, which shouldn't happen normally
         ClearScriptFlag(HIDDEN_ABILITIES_FLAG);
     }
     else
     {
-        has_hidden_ability = GET_BOX_MON_HIDDEN_ABILITY_BIT(boxmon); // dummy_p2_1 & hidden ability mask
+        has_hidden_ability = GET_BOX_MON_HIDDEN_ABILITY_BIT(boxmon);
+        // Amrita Nectar: 20% chance of hidden ability for 6 encounters
+        if (!has_hidden_ability && CheckScriptFlag(AMRITA_NECTAR_FLAG) == 1)
+        {
+            u16 counter = VarGet(gFieldSysPtr, VAR_AMRITA_NECTAR_COUNTER);
+            if ((gf_rand() % 100) < 20)
+            {
+                SET_BOX_MON_HIDDEN_ABILITY_BIT(boxmon)
+                has_hidden_ability = 1;
+            }
+            if (counter <= 1)
+            {
+                ClearScriptFlag(AMRITA_NECTAR_FLAG);
+                VarSet(gFieldSysPtr, VAR_AMRITA_NECTAR_COUNTER, 0);
+            }
+            else
+            {
+                VarSet(gFieldSysPtr, VAR_AMRITA_NECTAR_COUNTER, counter - 1);
+            }
+        }
     }
     ability_swapped = GET_BOX_MON_SWAP_ABILITY_SLOT_BIT(boxmon);
     mons_no = PokeOtherFormMonsNoGet(mons_no, form);

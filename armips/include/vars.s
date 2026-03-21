@@ -377,8 +377,9 @@ VAR_UNK_416C equ                       0x416C
 VAR_UNK_416D equ                       0x416D
 VAR_UNK_416E equ                       0x416E
 VAR_UNK_416F equ                       0x416F
+VAR_AMRITA_NECTAR_COUNTER equ          0x4170
 
-NUM_VARS equ                           (0x170)
+NUM_VARS equ                           (0x171)
 
 SPECIAL_VAR_BASE equ                   0x8000
 NUM_SPECIAL_VARS equ                   14

@@ -536,3 +536,4 @@ a {COLOR 255}Red Orb{COLOR 0}
 a {COLOR 255}Blue Orb{COLOR 0}
 an {COLOR 255}Enigma Stone{COLOR 0}
 a {COLOR 255}Permafrost Berry{COLOR 0}
+an {COLOR 255}Amrita Nectar{COLOR 0}

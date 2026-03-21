@@ -2577,13 +2577,12 @@
 #define ITEM_FALINITE                     2571
 #define ITEM_GLIMMORITE                   2572
 #define ITEM_PERMAFROST_BERRY             2573
+#define ITEM_AMRITA_NECTAR                2574
 
-#define MAX_BASE_ITEM_NUM ITEM_BRIARS_BOOK
+#define MAX_TOTAL_ITEM_NUM ITEM_AMRITA_NECTAR
 
 // define your custom move effects below like this
 // #define ITEM_CUSTOM_1 (MAX_BASE_ITEM_NUM + 1)
-
-#define MAX_TOTAL_ITEM_NUM ITEM_BRIARS_BOOK
 
 
 #define NUM_MEGA_STONES 48 // includes the pixie plate

@@ -36,6 +36,8 @@
 #define HIDDEN_ABILITIES
 #define HIDDEN_ABILITIES_FLAG 2600
 #define HIDDEN_ABILITIES_STARTERS_FLAG 2601
+#define AMRITA_NECTAR_FLAG 2602
+#define VAR_AMRITA_NECTAR_COUNTER 0x4170
 
 // MEGA_EVOLUTIONS defines whether or not Pokémon that are able to mega evolve will be able to do so.
 // commenting this line out essentially disables mega evolutions and maintains default behavior with respect to them.  leaving this as-is will introduce mega evolutions when applied to the game.
