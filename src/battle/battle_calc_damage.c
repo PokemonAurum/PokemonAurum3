@@ -462,11 +462,12 @@ void CalcDamageOverall(void *bw, struct BattleStruct *sp) {
 #endif  // DEBUG_DAMAGE_ROLLS
         }
     }
-    
-    // 6.8b Frostbite Modifier
+
+    // 6.8.1 Frostbite Modifier
+
     if (movesplit == SPLIT_SPECIAL) {
-        // frostbite halves special damage, mirrors burn for physical
-        if ((sp->battlemon[attacker].condition & STATUS_FROSTBITE) && (attackerAbility != ABILITY_GUTS) && (moveno != MOVE_FACADE)) {
+        // frostbite halves special damage, mirroring burn's effect on physical damage
+        if (sp->battlemon[attacker].condition & STATUS_FROSTBITE) {
             damage = QMul_RoundDown(damage, UQ412__0_5);
 #ifdef DEBUG_DAMAGE_ROLLS
             for (int u = 0; u < 16; u++)
@@ -477,9 +478,24 @@ void CalcDamageOverall(void *bw, struct BattleStruct *sp) {
         }
     }
 
+    // 6.8.2 Migraine Modifier
+
+    if (movesplit == SPLIT_SPECIAL) {
+        // migraine reduces special damage by 20%
+        if (sp->battlemon[attacker].condition3 & CONDITION3_MIGRAINE) {
+            damage = QMul_RoundDown(damage, UQ412__0_8);
+#ifdef DEBUG_DAMAGE_ROLLS
+            for (int u = 0; u < 16; u++)
+            {
+                predamage[u] = QMul_RoundDown(predamage[u], UQ412__0_8);
+            }
+#endif  // DEBUG_DAMAGE_ROLLS
+        }
+    }
+
 #ifdef DEBUG_DAMAGE_CALC
     debug_printf("\n=================\n");
-    debug_printf("[CalcBaseDamage] 6.8 Burn Modifier\n");
+    debug_printf("[CalcBaseDamage] 6.8.1/6.8.2 Frostbite/Migraine Modifier\n");
     debug_printf("[CalcBaseDamage] damage: %d\n", damage);
 #endif
 
@@ -830,6 +846,30 @@ void CalcDamageOverall(void *bw, struct BattleStruct *sp) {
     debug_printf("[CalcBaseDamage] Step 10.5. Tera Raid boss's shield\n");
     debug_printf("[CalcBaseDamage] damage: %d\n", damage);
 #endif
+
+    // Allergies: 1.25x damage taken from custom powder/wind/spore moves
+    if (sp->battlemon[defender].condition3 & CONDITION3_ALLERGIES) {
+        if (IsAllergiesDamagingMove(moveno)) {
+            damage = QMul_RoundDown(damage, UQ412__1_25);
+#ifdef DEBUG_DAMAGE_ROLLS
+            for (int u = 0; u < 16; u++)
+            {
+                predamage[u] = QMul_RoundDown(predamage[u], UQ412__1_25);
+            }
+#endif  // DEBUG_DAMAGE_ROLLS
+        }
+    }
+
+    // Psyshock deals double damage against Migraine-afflicted targets
+    if (moveno == MOVE_PSYSHOCK && (sp->battlemon[defender].condition3 & CONDITION3_MIGRAINE)) {
+        damage = QMul_RoundDown(damage, UQ412__2_0);
+#ifdef DEBUG_DAMAGE_ROLLS
+        for (int u = 0; u < 16; u++)
+        {
+            predamage[u] = QMul_RoundDown(predamage[u], UQ412__2_0);
+        }
+#endif  // DEBUG_DAMAGE_ROLLS
+    }
 
     // Step 11. One Damage Check
 

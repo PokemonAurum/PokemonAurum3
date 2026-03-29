@@ -759,7 +759,17 @@ BOOL CalcAccuracy(void *bw, struct BattleStruct *sp, int attacker, int defender,
             }
         }
     }
-
+    
+    // Blinded: attacker has -25% accuracy, defender has +25% evasion effectively
+    if (sp->battlemon[attacker].condition3 & CONDITION3_BLINDED) {
+        accuracyModifier = UQ412__0_75; // 75% accuracy
+    }
+    if (sp->battlemon[defender].condition3 & CONDITION3_BLINDED) {
+        // Blinded defender is harder to hit — treated as +1 evasion stage effectively
+        stat_stage_evasion--;
+        if (stat_stage_evasion < -6) stat_stage_evasion = -6;
+    }
+    
     // 7. Apply a modifier to the value from step 5) with the result of step 6). That is, pokeRound[(step 5 * step 6) / 4096], where pokeRound means do standard rounding, but round down on 0.5. The resulting value can be greater than 100.
 
     accuracy = QMul_RoundDown(accuracy, accuracyModifier);
@@ -2253,6 +2263,26 @@ BOOL LONG_CALL IsPowderMove(u32 moveIndex) {
         }
     }
     return output;
+}
+
+const u16 AllergiesDamagingMovesList[] = {
+    MOVE_SILVER_WIND,
+    MOVE_POLLEN_PUFF,
+    MOVE_FAIRY_WIND,
+    MOVE_LEAFAGE,
+    MOVE_MAGICAL_LEAF,
+    MOVE_POISON_STING,
+    MOVE_POISON_TAIL,
+    MOVE_SLUDGE,
+};
+
+BOOL LONG_CALL IsAllergiesDamagingMove(u32 moveIndex) {
+    for (u16 i = 0; i < NELEMS(AllergiesDamagingMovesList); i++) {
+        if (moveIndex == AllergiesDamagingMovesList[i]) {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 /**

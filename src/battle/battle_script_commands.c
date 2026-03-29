@@ -743,6 +743,29 @@ BOOL BattleScriptCommandHandler(void *bw, struct BattleStruct *sp)
         }
 #endif //DEBUG_BATTLE_SCRIPT_COMMANDS
 
+       // Opcode 66 intercept: remap SetHealthbarStatus animation for custom condition3 statuses
+        if (command == 66)
+        {
+            int battlerCategory = sp->SkillSeqWork[sp->skill_seq_no + 1];
+            int battler = GrabClientFromBattleScriptParam(bw, sp, battlerCategory);
+            if (battler >= 0 && battler < BATTLER_MAX)
+            {
+                u8 c3 = sp->battlemon[battler].condition3;
+                if (c3 & CONDITION3_DRENCHED)
+                    sp->SkillSeqWork[sp->skill_seq_no + 2] = BATTLE_ANIMATION_DRENCHED;
+                else if (c3 & CONDITION3_FATIGUE)
+                    sp->SkillSeqWork[sp->skill_seq_no + 2] = BATTLE_ANIMATION_FATIGUE;
+                else if (sp->battlemon[battler].winded_turns > 0)
+                    sp->SkillSeqWork[sp->skill_seq_no + 2] = BATTLE_ANIMATION_WINDED;
+                else if (c3 & CONDITION3_PESTER)
+                    sp->SkillSeqWork[sp->skill_seq_no + 2] = BATTLE_ANIMATION_PESTER;
+                else if (c3 & CONDITION3_SCARED)
+                    sp->SkillSeqWork[sp->skill_seq_no + 2] = BATTLE_ANIMATION_SCARED;
+                else if (sp->battlemon[battler].idolize_turns > 0)
+                    sp->SkillSeqWork[sp->skill_seq_no + 2] = BATTLE_ANIMATION_IDOLIZE;
+            }
+        }
+
         if (command < START_OF_NEW_BTL_SCR_CMDS)
         {
             ret = BattleScriptCmdTable[command](bw, sp);

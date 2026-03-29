@@ -1638,3 +1638,57 @@ The opposing {STRVAR_1 1, 0, 0} is winded\nand cannot move!
 {STRVAR_1 1, 0, 0} shook off\nthe wind!
 The wild {STRVAR_1 1, 0, 0} shook off\nthe wind!
 The opposing {STRVAR_1 1, 0, 0} shook off\nthe wind!
+{STRVAR_1 1, 0, 0} is drenched!
+The wild {STRVAR_1 1, 0, 0} is drenched!
+The opposing {STRVAR_1 1, 0, 0} is drenched!
+{STRVAR_1 1, 0, 0} is hurt by\nthe drenching!
+The wild {STRVAR_1 1, 0, 0} is hurt by\nthe drenching!
+The opposing {STRVAR_1 1, 0, 0} is hurt\nby the drenching!
+{STRVAR_1 1, 0, 0} became fatigued!
+The wild {STRVAR_1 1, 0, 0}\nbecame fatigued!
+The opposing {STRVAR_1 1, 0, 0}\nbecame fatigued!
+{STRVAR_1 1, 0, 0}’s fatigue is\nweighing it down!
+The wild {STRVAR_1 1, 0, 0}’s fatigue\nis weighing it down!
+The opposing {STRVAR_1 1, 0, 0}’s fatigue\nis weighing it down!
+{STRVAR_1 1, 0, 0} is itchy!
+The wild {STRVAR_1 1, 0, 0} is\ntoo itchy to move!
+The opposing {STRVAR_1 1, 0, 0} is\nitchy!
+{STRVAR_1 1, 0, 0} is hurt by\nthe itchy!
+The wild {STRVAR_1 1, 0, 0} is scratching\nthemselves hard!
+The opposing {STRVAR_1 1, 0, 0} is hurt\nby the scratching!
+{STRVAR_1 1, 0, 0} became scared!
+The wild {STRVAR_1 1, 0, 0}\nbecame scared!
+The opposing {STRVAR_1 1, 0, 0}\nbecame scared!
+{STRVAR_1 1, 0, 0} fled in fear!
+The wild {STRVAR_1 1, 0, 0}\nfled in fear!
+The opposing {STRVAR_1 1, 0, 0}\nfled in fear!
+{STRVAR_1 1, 0, 0} is blinded!
+The wild {STRVAR_1 1, 0, 0}\nis blinded!
+The opposing {STRVAR_1 1, 0, 0}\nis blinded!
+{STRVAR_1 1, 0, 0} is idolizing\n{STRVAR_1 1, 1, 0}!
+The wild {STRVAR_1 1, 0, 0} is idolizing\n{STRVAR_1 1, 1, 0}!
+The opposing {STRVAR_1 1, 0, 0} is\nidolizing {STRVAR_1 1, 1, 0}!
+{STRVAR_1 1, 0, 0} snapped out\nof its idolizing!
+The wild {STRVAR_1 1, 0, 0} snapped\nout of its idolizing!
+The opposing {STRVAR_1 1, 0, 0} snapped\nout of its idolizing!
+{STRVAR_1 1, 0, 0}’s fatigue is\nweighing it down!
+The wild {STRVAR_1 1, 0, 0}’s fatigue\nis weighing it down!
+The opposing {STRVAR_1 1, 0, 0}’s fatigue\nis weighing it down!
+{STRVAR_1 1, 0, 0}’s allergies are\nacting up!
+The wild {STRVAR_1 1, 0, 0}’s allergies\nare acting up!
+The opposing {STRVAR_1 1, 0, 0}’s allergies\nare acting up!
+{STRVAR_1 1, 0, 0} can’t move!\nIt’s idolizing {STRVAR_1 1, 1, 0}!
+The wild {STRVAR_1 1, 0, 0} can’t move!\nIt’s idolizing {STRVAR_1 1, 1, 0}!
+The opposing {STRVAR_1 1, 0, 0} can’t move!\nIt’s idolizing {STRVAR_1 1, 1, 0}!
+{STRVAR_1 1, 0, 0} is awestruck!
+The wild {STRVAR_1 1, 0, 0}\nis too\nawestruck to move!
+The opposing {STRVAR_1 1, 0, 0}is too\nawestruck to move!
+{STRVAR_1 1, 0, 0} shook off\nthe awe!
+The wild {STRVAR_1 1, 0, 0} got\nahold of itself!
+The opposing {STRVAR_1 1, 0, 0} got\nahold of itself!
+{STRVAR_1 1, 0, 0} has a migraine!
+The wild {STRVAR_1 1, 0, 0}\nhas a migraine!
+The opposing {STRVAR_1 1, 0, 0}\nhas a migraine!
+{STRVAR_1 1, 0, 0} is hurt by\nits migraine!
+The wild {STRVAR_1 1, 0, 0} is hurt\nby its migraine!
+The opposing {STRVAR_1 1, 0, 0} is hurt\nby its migraine!

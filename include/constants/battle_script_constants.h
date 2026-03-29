@@ -496,7 +496,27 @@
 #define SUB_SEQ_ITEM_RECOVER_FROSTBITE                (486)
 #define SUB_SEQ_WINDED_CANT_MOVE                      (487)  // "{mon} is buffeted by wind and can't move!"
 #define SUB_SEQ_WINDED_END                            (488)  // "{mon} is no longer winded!"
-#define MAX_BASE_SUBSCRIPT_NUM 488
+#define SUB_SEQ_APPLY_DRENCHED                        (489)
+#define SUB_SEQ_DRENCHED_DAMAGE                       (490)
+#define SUB_SEQ_APPLY_FATIGUE                         (491)
+#define SUB_SEQ_FATIGUE_ATK_DROP                      (492)
+#define SUB_SEQ_APPLY_PESTER                          (493)
+#define SUB_SEQ_PESTER_DAMAGE                         (494)
+#define SUB_SEQ_APPLY_SCARED                          (495)
+#define SUB_SEQ_SCARED_SWITCH                         (496)
+#define SUB_SEQ_APPLY_BLINDED                         (497)
+#define SUB_SEQ_APPLY_IDOLIZE                         (498)
+#define SUB_SEQ_IDOLIZE_CANT_MOVE                     (499)
+#define SUB_SEQ_IDOLIZE_END                           (500)
+#define SUB_SEQ_APPLY_ALLERGIES                       (501)
+#define SUB_SEQ_ALLERGIES_STAT_DROP                   (502)
+#define SUB_SEQ_APPLY_AWESTRUCK                       (503)
+#define SUB_SEQ_AWESTRUCK_END                         (504)
+#define SUB_SEQ_APPLY_MIGRAINE                        (505)
+#define SUB_SEQ_MIGRAINE_DAMAGE                       (506)
+#define SUB_SEQ_PESTER_CANT_MOVE                      (507)
+#define SUB_SEQ_AWESTRUCK_CANT_MOVE                   (508)
+#define MAX_BASE_SUBSCRIPT_NUM 508
 
 // define your custom subscripts below like this
 // #define MOVE_SUBSCRIPT_CUSTOM_1 (MAX_BASE_SUBSCRIPT_NUM + 1)
@@ -753,6 +773,10 @@
 #define BATTLE_ANIMATION_PESTER      BATTLE_ANIMATION_POISONED   // Bug — temp remap
 #define BATTLE_ANIMATION_SCARED      BATTLE_ANIMATION_PARALYZED  // Ghost — temp remap
 #define BATTLE_ANIMATION_IDOLIZE     BATTLE_ANIMATION_INFATUATED // Fairy - temp remap
+#define BATTLE_ANIMATION_BLINDED     BATTLE_ANIMATION_ASLEEP     // Dark — temp remap (dark bar)
+#define BATTLE_ANIMATION_ALLERGIES   BATTLE_ANIMATION_FROZEN     // Grass — temp remap (blue bar)
+#define BATTLE_ANIMATION_AWESTRUCK   BATTLE_ANIMATION_PARALYZED  // Dragon — temp remap (indigo bar)
+#define BATTLE_ANIMATION_MIGRAINE    BATTLE_ANIMATION_BURNED     // Psychic — temp remap (pink bar)
 #define BATTLE_ANIMATION_CONFUSED           6
 #define BATTLE_ANIMATION_INFATUATED         7
 #define BATTLE_ANIMATION_LEVEL_UP           8

@@ -59,6 +59,14 @@ enum EndTurnResolutionOrder {
     ENDTURN_FOURTH_EVENT_BLOCK,
     ENDTURN_ION_DELUGE_FADING,
     ENDTURN_WINDED,
+    ENDTURN_DRENCHED,
+    ENDTURN_FATIGUE,
+    ENDTURN_PESTER,
+    ENDTURN_SCARED,
+    ENDTURN_IDOLIZE,
+    ENDTURN_ALLERGIES,
+    ENDTURN_AWESTRUCK,
+    ENDTURN_MIGRAINE,
     ENDTURN_END,
 };
 
@@ -1988,6 +1996,176 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                             sp->next_server_seq_no = sp->server_seq_no;
                             sp->server_seq_no = 22;
                             ret = 1;
+                        }
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_DRENCHED: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_DRENCHED) && sp->battlemon[battlerId].hp != 0) {
+                        sp->battlerIdTemp = battlerId;
+                        sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp * -1, 16);
+                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_DRENCHED_DAMAGE);
+                        sp->next_server_seq_no = sp->server_seq_no;
+                        sp->server_seq_no = 22;
+                        ret = 1;
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_FATIGUE: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_FATIGUE) && sp->battlemon[battlerId].hp != 0) {
+                        sp->battlerIdTemp = battlerId;
+                        sp->state_client = battlerId;
+                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_FATIGUE_ATK_DROP);
+                        sp->next_server_seq_no = sp->server_seq_no;
+                        sp->server_seq_no = 22;
+                        ret = 1;
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_PESTER: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_PESTER) && sp->battlemon[battlerId].hp != 0) {
+                        sp->battlerIdTemp = battlerId;
+                        sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp * -1, 8);
+                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_PESTER_DAMAGE);
+                        sp->next_server_seq_no = sp->server_seq_no;
+                        sp->server_seq_no = 22;
+                        ret = 1;
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_SCARED: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_SCARED) && sp->battlemon[battlerId].hp != 0) {
+                        if (BattleRand(bw) % 4 == 0) {
+                            sp->battlerIdTemp = battlerId;
+                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_SCARED_SWITCH);
+                            sp->next_server_seq_no = sp->server_seq_no;
+                            sp->server_seq_no = 22;
+                            ret = 1;
+                        }
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_IDOLIZE: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if (sp->battlemon[battlerId].idolize_turns > 0) {
+                        sp->battlemon[battlerId].idolize_turns--;
+                        if (sp->battlemon[battlerId].idolize_turns == 0) {
+                            sp->battlemon[battlerId].condition3 &= ~CONDITION3_IDOLIZE;
+                            sp->battlerIdTemp = battlerId;
+                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_IDOLIZE_END);
+                            sp->next_server_seq_no = sp->server_seq_no;
+                            sp->server_seq_no = 22;
+                            ret = 1;
+                        }
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_ALLERGIES: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_ALLERGIES) && sp->battlemon[battlerId].hp != 0) {
+                        u8 stat_choice = BattleRand(bw) % 4;
+                        u8 stat_ptr = (stat_choice == 0) ? 0x16 :  // MOVE_SUBSCRIPT_PTR_ATTACK_DOWN_1_STAGE
+                                      (stat_choice == 1) ? 0x17 :  // MOVE_SUBSCRIPT_PTR_DEFENSE_DOWN_1_STAGE
+                                      (stat_choice == 2) ? 0x18 :  // MOVE_SUBSCRIPT_PTR_SPEED_DOWN_1_STAGE
+                                                           0x1A;   // MOVE_SUBSCRIPT_PTR_SP_DEFENSE_DOWN_1_STAGE
+                        sp->battlerIdTemp = battlerId;
+                        sp->state_client = battlerId;
+                        sp->waza_work = stat_ptr;
+                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_ALLERGIES_STAT_DROP);
+                        sp->next_server_seq_no = sp->server_seq_no;
+                        sp->server_seq_no = 22;
+                        ret = 1;
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_AWESTRUCK: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if (sp->battlemon[battlerId].awestruck_turns > 0) {
+                        sp->battlemon[battlerId].awestruck_turns--;
+                        if (sp->battlemon[battlerId].awestruck_turns == 0) {
+                            sp->battlerIdTemp = battlerId;
+                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_AWESTRUCK_END);
+                            sp->next_server_seq_no = sp->server_seq_no;
+                            sp->server_seq_no = 22;
+                            ret = 1;
+                        }
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_MIGRAINE: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if (sp->battlemon[battlerId].migraine_turns > 0 && sp->battlemon[battlerId].hp != 0) {
+                        sp->battlemon[battlerId].migraine_turns--;
+                        if (sp->battlemon[battlerId].migraine_turns == 0) {
+                            sp->battlemon[battlerId].condition3 &= ~CONDITION3_MIGRAINE;
                         }
                     }
                     sp->scc_work++;

@@ -83,6 +83,9 @@ void BattleController_CheckImprison(struct BattleSystem *bsys, struct BattleStru
 void BattleController_CheckConfusion(struct BattleSystem *bsys, struct BattleStruct *ctx);
 void BattleController_CheckParalysis(struct BattleSystem *bsys, struct BattleStruct *ctx);
 void BattleController_CheckWinded(struct BattleSystem *bsys, struct BattleStruct *ctx);
+void BattleController_CheckPester(struct BattleSystem *bsys, struct BattleStruct *ctx);
+void BattleController_CheckIdolize(struct BattleSystem *bsys, struct BattleStruct *ctx);
+void BattleController_CheckAwestruck(struct BattleSystem *bsys, struct BattleStruct *ctx);
 void BattleController_CheckInfatuation(struct BattleSystem *bsys, struct BattleStruct *ctx);
 void BattleController_CheckStanceChange(struct BattleSystem *bsys, struct BattleStruct *ctx);
 BOOL BattlerController_RedirectTarget(struct BattleSystem *bsys, struct BattleStruct *ctx);
@@ -444,6 +447,36 @@ void __attribute__((section (".init"))) BattleController_BeforeMove(struct Battl
             if ((ctx->waza_out_check_on_off & SYSCTL_SKIP_STATUS_CHECK) == FALSE) {
                 BattleController_CheckWinded(bsys, ctx);
             }
+                    case BEFORE_MOVE_STATE_PESTER: {
+#ifdef DEBUG_BEFORE_MOVE_LOGIC
+            debug_printf("In BEFORE_MOVE_STATE_PESTER\n");
+#endif
+            if ((ctx->waza_out_check_on_off & SYSCTL_SKIP_STATUS_CHECK) == FALSE) {
+                BattleController_CheckPester(bsys, ctx);
+            }
+            ctx->wb_seq_no++;
+            return;
+        }
+        case BEFORE_MOVE_STATE_IDOLIZE: {
+#ifdef DEBUG_BEFORE_MOVE_LOGIC
+            debug_printf("In BEFORE_MOVE_STATE_IDOLIZE\n");
+#endif
+            if ((ctx->waza_out_check_on_off & SYSCTL_SKIP_STATUS_CHECK) == FALSE) {
+                BattleController_CheckIdolize(bsys, ctx);
+            }
+            ctx->wb_seq_no++;
+            return;
+        }
+        case BEFORE_MOVE_STATE_AWESTRUCK: {
+#ifdef DEBUG_BEFORE_MOVE_LOGIC
+            debug_printf("In BEFORE_MOVE_STATE_AWESTRUCK\n");
+#endif
+            if ((ctx->waza_out_check_on_off & SYSCTL_SKIP_STATUS_CHECK) == FALSE) {
+                BattleController_CheckAwestruck(bsys, ctx);
+            }
+            ctx->wb_seq_no++;
+            return;
+        }
             ctx->wb_seq_no++;
             return;
         }
@@ -1468,6 +1501,51 @@ void BattleController_CheckParalysis(struct BattleSystem *bsys, struct BattleStr
 void BattleController_CheckWinded(struct BattleSystem *bsys, struct BattleStruct *ctx) {
     if (ctx->battlemon[ctx->attack_client].winded_turns > 0) {
         if (BattleRand(bsys) % 2 == 0) {
+            ctx->moveOutCheck[ctx->attack_client].stoppedFromParalysis = TRUE;
+            LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WINDED_CANT_MOVE);
+            ctx->server_seq_no = CONTROLLER_COMMAND_RUN_SCRIPT;
+            ctx->next_server_seq_no = CONTROLLER_COMMAND_39;
+            ctx->wb_seq_no = BEFORE_MOVE_START;
+            CopyBattleMonToPartyMon(bsys, ctx, ctx->attack_client);
+            ctx->server_status_flag |= BATTLE_STATUS_CHECK_LOOP_ONLY_ONCE;
+            ctx->waza_status_flag |= MOVE_STATUS_NO_MORE_WORK;
+        }
+    }
+}
+
+void BattleController_CheckPester(struct BattleSystem *bsys, struct BattleStruct *ctx) {
+    if (ctx->battlemon[ctx->attack_client].condition3 & CONDITION3_PESTER) {
+        if (BattleRand(bsys) % 100 < 15) {
+            ctx->moveOutCheck[ctx->attack_client].stoppedFromParalysis = TRUE;
+            LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WINDED_CANT_MOVE);
+            ctx->server_seq_no = CONTROLLER_COMMAND_RUN_SCRIPT;
+            ctx->next_server_seq_no = CONTROLLER_COMMAND_39;
+            ctx->wb_seq_no = BEFORE_MOVE_START;
+            CopyBattleMonToPartyMon(bsys, ctx, ctx->attack_client);
+            ctx->server_status_flag |= BATTLE_STATUS_CHECK_LOOP_ONLY_ONCE;
+            ctx->waza_status_flag |= MOVE_STATUS_NO_MORE_WORK;
+        }
+    }
+}
+
+void BattleController_CheckIdolize(struct BattleSystem *bsys, struct BattleStruct *ctx) {
+    if (ctx->battlemon[ctx->attack_client].idolize_turns > 0) {
+        if (BattleRand(bsys) % 100 < 35) {
+            ctx->moveOutCheck[ctx->attack_client].stoppedFromParalysis = TRUE;
+            LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_IDOLIZE_CANT_MOVE);
+            ctx->server_seq_no = CONTROLLER_COMMAND_RUN_SCRIPT;
+            ctx->next_server_seq_no = CONTROLLER_COMMAND_39;
+            ctx->wb_seq_no = BEFORE_MOVE_START;
+            CopyBattleMonToPartyMon(bsys, ctx, ctx->attack_client);
+            ctx->server_status_flag |= BATTLE_STATUS_CHECK_LOOP_ONLY_ONCE;
+            ctx->waza_status_flag |= MOVE_STATUS_NO_MORE_WORK;
+        }
+    }
+}
+
+void BattleController_CheckAwestruck(struct BattleSystem *bsys, struct BattleStruct *ctx) {
+    if (ctx->battlemon[ctx->attack_client].awestruck_turns > 0) {
+        if (BattleRand(bsys) % 100 < 15) {
             ctx->moveOutCheck[ctx->attack_client].stoppedFromParalysis = TRUE;
             LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WINDED_CANT_MOVE);
             ctx->server_seq_no = CONTROLLER_COMMAND_RUN_SCRIPT;

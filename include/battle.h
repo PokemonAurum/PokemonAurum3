@@ -280,17 +280,20 @@
 #define STATUS_ANY_PERSISTENT  (STATUS_SLEEP | STATUS_POISON_ALL | STATUS_BURN | STATUS_FREEZE | STATUS_PARALYSIS | STATUS_FROSTBITE)
 
 // Custom volatile status conditions stored in battlemon[x].condition3
-#define CONDITION3_DRENCHED   (1 << 0)  // Water   — Speed drop on apply + 1/16 HP/turn
-#define CONDITION3_FATIGUE    (1 << 1)  // Fighting — Attack drops each turn
-#define CONDITION3_PESTER     (1 << 2)  // Bug     — 1/16 HP/turn + 25% can't move
-#define CONDITION3_SCARED     (1 << 3)  // Ghost   — 20% forced switch end of turn
-#define CONDITION3_IDOLIZE    (1 << 4)  // Fairy   — exclusive, uses idolize_turns counter
-#define CONDITION3_BLINDED    (1 << 5)  // Dark    — cuts accuracy & evasion (stackable)
-#define CONDITION3_ALLERGIES  (1 << 6)  // Grass   — random stat drop end of turn (stackable)
-#define CONDITION3_AWESTRUCK  (1 << 7)  // Dragon  — blocks stat raises (stackable)
+#define CONDITION3_DRENCHED   (1 << 0)  // Water    — exclusive, Speed drop on apply + 1/8 HP/turn
+#define CONDITION3_FATIGUE    (1 << 1)  // Fighting — exclusive, blocks/reduces Attack raises
+#define CONDITION3_PESTER     (1 << 2)  // Bug      — exclusive, 15% can't move + 1/8 HP/turn
+#define CONDITION3_SCARED     (1 << 3)  // Ghost    — exclusive, 25% forced switch end of turn
+#define CONDITION3_IDOLIZE    (1 << 4)  // Fairy    — exclusive, 35% can't move 3-5 turns
+#define CONDITION3_MIGRAINE   (1 << 5)  // Psychic  — exclusive, SpAtk -20%, 1/10 HP on status move, 4 turns
+#define CONDITION3_BLINDED    (1 << 6)  // Dark     — stackable, -2 evasion + 30% accuracy cut
+#define CONDITION3_ALLERGIES  (1 << 7)  // Grass    — stackable, random stat drop + 1.25x powder damage
 
-#define CONDITION3_ALL_EXCLUSIVE  (CONDITION3_DRENCHED | CONDITION3_FATIGUE | CONDITION3_PESTER | CONDITION3_SCARED | CONDITION3_IDOLIZE)
-#define CONDITION3_ALL            (CONDITION3_ALL_EXCLUSIVE | CONDITION3_BLINDED | CONDITION3_ALLERGIES | CONDITION3_AWESTRUCK)
+// Awestruck (Dragon) — stackable, tracked by awestruck_turns > 0
+// Winded (Flying)    — exclusive, tracked by winded_turns > 0
+
+#define CONDITION3_ALL_EXCLUSIVE  (CONDITION3_DRENCHED | CONDITION3_FATIGUE | CONDITION3_PESTER | CONDITION3_SCARED | CONDITION3_IDOLIZE | CONDITION3_MIGRAINE)
+#define CONDITION3_ALL            (CONDITION3_ALL_EXCLUSIVE | CONDITION3_BLINDED | CONDITION3_ALLERGIES)
 
 #define STATUS_POISON_COUNT_SHIFT 8
 
@@ -883,12 +886,12 @@ struct BattlePokemon
                u8 condition3;                /**< custom volatile status conditions (CONDITION3_* constants) */
 
                /** switch in flags to mark it as having been done */
-    /* 0x28 */ u32 winded_turns : 3;         /**< turns remaining for Winded condition (0 = inactive) */
-               u32 awestruck_turns : 3;      /**< turns remaining for Awestruck condition (0 = inactive) */
+    /* 0x28 */ u32 winded_turns : 2;         /**< turns remaining for Winded (0=inactive, 1=2turns, 2=3turns) */
+               u32 awestruck_turns : 2;      /**< turns remaining for Awestruck (0=inactive, 1=4turns, 2=5turns) */
                u32 slow_start_flag : 1;      /**< slow start has printed its message */
                u32 slow_start_end_flag : 1;  /**< slow start should end */
-               u32 condition3_migraine : 1;  /**< Migraine volatile status flag */
-               u32 paddingForNow2 : 2;       /**< free for future use */
+               u32 migraine_turns : 3;       /**< turns remaining for Migraine (0=inactive, 1-4) */
+               u32 idolize_turns : 2;        /**< turns remaining for Idolize (0=inactive, 1=3turns, 2=4turns, 3=5turns) */             
                u32 canMega : 1;              /**< the BattlePokemon can mega */
                u32 sheer_force_flag : 1;     /**< keep track of sheer force activation */
                u32 imposter_flag : 1;        /**< imposter has activated */
@@ -1908,6 +1911,9 @@ enum {
     BEFORE_MOVE_STATE_PARALYSIS,
     BEFORE_MOVE_STATE_INFATUATION,
     BEFORE_MOVE_STATE_WINDED,   // custom — 50% can't move
+    BEFORE_MOVE_STATE_PESTER,
+    BEFORE_MOVE_STATE_IDOLIZE,
+    BEFORE_MOVE_STATE_AWESTRUCK,
     // BEFORE_MOVE_STATE_SLEEP_TALK_SNORE_ANNOUNCEMENT,
     BEFORE_MOVE_STATE_ANNOUNCE_SUB_MOVE,
     BEFORE_MOVE_STATE_THAW_OUT_BY_MOVE,
@@ -3355,6 +3361,13 @@ BOOL LONG_CALL IsValidParentalBondMove(void *bw, struct BattleStruct *sp, BOOL c
  * @return TRUE if it is a Powder move
 */
 BOOL LONG_CALL IsPowderMove(u32 moveIndex);
+
+/**
+ * @brief Check if the current move is an Allergies-triggering damaging move
+ * @param moveIndex move index
+ * @return TRUE if it triggers the Allergies damage bonus
+*/
+BOOL LONG_CALL IsAllergiesDamagingMove(u32 moveIndex);
 
 /**
  * @brief Check if the current move is a Weight move
