@@ -1522,11 +1522,14 @@
     .long \arg_1
     .endm
 
-    .equ BASE_ENGINE_BTL_SCR_CMDS_MAX, 277
+    .equ BTL_SCR_CMD_CLEAR_CONDITION3, 278
 
-    // .macro YourCustomCommand
-    // .long (BASE_ENGINE_BTL_SCR_CMDS_MAX + 1)
-    // .endm
+    .macro ClearCondition3 arg_0
+    .long BTL_SCR_CMD_CLEAR_CONDITION3
+    .long \arg_0
+    .endm
+
+    .equ BASE_ENGINE_BTL_SCR_CMDS_MAX, 278
 
 
 .endif

@@ -113,6 +113,7 @@ BOOL btl_scr_cmd_112_HandleBurnUp(void* bsys UNUSED, struct BattleStruct* ctx);
 BOOL btl_scr_cmd_113_HandleDoubleShock(void* bsys UNUSED, struct BattleStruct* ctx);
 BOOL btl_scr_cmd_114_stuffCheeks(void *bsys, struct BattleStruct *ctx);
 BOOL btl_scr_cmd_115_setMoveConditionFlag(void *bsys, struct BattleStruct *ctx);
+BOOL btl_scr_cmd_116_clearcondition3(void *bw, struct BattleStruct *sp);
 BOOL BtlCmd_GoToMoveScript(struct BattleSystem *bsys, struct BattleStruct *ctx);
 BOOL BtlCmd_WeatherHPRecovery(void *bw, struct BattleStruct *sp);
 BOOL BtlCmd_CalcWeatherBallParams(void *bw, struct BattleStruct *sp);
@@ -491,7 +492,7 @@ const btl_scr_cmd_func NewBattleScriptCmdTable[] =
     [0x113 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_113_HandleDoubleShock,
     [0x114 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_114_stuffCheeks,
     [0x115 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_115_setMoveConditionFlag,
-    // [BASE_ENGINE_BTL_SCR_CMDS_MAX - START_OF_NEW_BTL_SCR_CMDS + 1] = btl_scr_cmd_custom_01_your_custom_command,
+    [0x116 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_116_clearcondition3,
 };
 
 // entries before 0xFFFE are banned for mimic and metronome--after is just banned for metronome.  table ends with 0xFFFF
@@ -5014,6 +5015,18 @@ BOOL btl_scr_cmd_115_setMoveConditionFlag(void *bsys, struct BattleStruct *ctx)
     }
 
      return FALSE;
+}
+
+BOOL btl_scr_cmd_116_clearcondition3(void *bw, struct BattleStruct *sp) {
+    IncrementBattleScriptPtr(sp, 1);
+    int side    = read_battle_script_param(sp);
+    int battler = GrabClientFromBattleScriptParam(bw, sp, side);
+    sp->battlemon[battler].condition3      = 0;
+    sp->battlemon[battler].winded_turns    = 0;
+    sp->battlemon[battler].awestruck_turns = 0;
+    sp->battlemon[battler].migraine_turns  = 0;
+    sp->battlemon[battler].idolize_turns   = 0;
+    return FALSE;
 }
 
 BOOL BtlCmd_CopyStatStages(struct BattleSystem *bsys UNUSED, struct BattleStruct *ctx)
