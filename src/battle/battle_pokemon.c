@@ -1011,6 +1011,11 @@ while (currentScenario != NULL && TestBattle_HasMoreExpectations()) {
             // debug_printf("Form matches expectation\n");
             currentScenario->expectationPassCount++;
         }
+    } else if (currentScenario->expectations[currentScenario->expectationPassCount].expectationType == EXPECTATION_TYPE_CONDITION3_CLEAR) {
+        u8 battler = currentScenario->expectations[currentScenario->expectationPassCount].battlerIDOrPartySlot;
+        if (battler < CLIENT_MAX && bw->sp != NULL && bw->sp->battlemon[battler].condition3 == 0) {
+            currentScenario->expectationPassCount++;
+        }
     } else {
         // debug_printf("Break\n");
         break;

@@ -278,6 +278,9 @@
 #define STATUS_CAN_SYNCHRONIZE (STATUS_POISON | STATUS_BURN | STATUS_PARALYSIS)
 #define STATUS_ANY_PERSISTENT  (STATUS_SLEEP | STATUS_POISON_ALL | STATUS_BURN | STATUS_FREEZE | STATUS_PARALYSIS)
 
+#define HasVolatileStatusCondition(battleMon) ((((battleMon).condition3) & CONDITION3_ALL_EXCLUSIVE) != 0)
+#define HasAnyPersistentOrVolatileStatusCondition(battleMon) (((((battleMon).condition) & STATUS_ANY_PERSISTENT) != 0) || HasVolatileStatusCondition(battleMon))
+
 #define STATUS_POISON_COUNT_SHIFT 8
 
 // Self Turns Flags

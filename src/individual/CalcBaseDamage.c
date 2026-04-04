@@ -411,7 +411,7 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
 
     switch (moveno) {
         case MOVE_FACADE:
-            if ((AttackingMon.condition & STATUS_FACADE_BOOST)) {
+            if ((AttackingMon.condition & STATUS_FACADE_BOOST) || HasVolatileStatusCondition(sp->battlemon[attacker])) {
                 basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__2_0);
             }
             break;
@@ -1079,7 +1079,7 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
 
             // handle Guts
             // TODO: Is Freeze affected? (It doesn't matter)
-            if ((AttackingMon.ability == ABILITY_GUTS) && (AttackingMon.condition) && (movesplit == SPLIT_PHYSICAL)) {
+            if ((AttackingMon.ability == ABILITY_GUTS) && HasAnyPersistentOrVolatileStatusCondition(sp->battlemon[attacker]) && (movesplit == SPLIT_PHYSICAL)) {
                 attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
             }
 
@@ -1430,7 +1430,7 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
 
             // handle Marvel Scale
             if ((MoldBreakerAbilityCheckInternal(attacker, defender, AttackingMon.ability, DefendingMon.ability, moveno, movesplit, ABILITY_MARVEL_SCALE) == TRUE)
-            && (DefendingMon.condition)
+            && HasAnyPersistentOrVolatileStatusCondition(sp->battlemon[defender])
             && (movesplit == SPLIT_PHYSICAL)) {
                 defenseModifier = QMul_RoundUp(defenseModifier, UQ412__1_5);
             }

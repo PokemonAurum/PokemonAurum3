@@ -19,7 +19,7 @@
 
 // Battle action for scripted tests
 struct PACKED BattleAction {
-    u8 action;  // 0-3 = move slot, 4-9 = switch to party slot (action - 4)
+    u8 action;  // 0-3 = move slot, 4-9 = switch to party slot (action - 4), 10 = use item
     u8 target;  // Battler ID (0-3)
 };
 
@@ -42,6 +42,7 @@ enum ExpectationType {
     EXPECTATION_TYPE_MESSAGE,
     EXPECTATION_TYPE_MESSAGE_CONTAINS,
     EXPECTATION_TYPE_ATTACK_MESSAGE,
+    EXPECTATION_TYPE_CONDITION3_CLEAR,
     EXPECTATION_OVERWORLD_FORM,
 };
 
@@ -92,6 +93,7 @@ struct PACKED TestBattleScenario {
 #define ACTION_SWITCH_SLOT_3 7
 #define ACTION_SWITCH_SLOT_4 8
 #define ACTION_SWITCH_SLOT_5 9
+#define ACTION_USE_ITEM      10
 #define ACTION_NONE          0xFF  // Sentinel value to mark end of script
 
 // Battler position constants

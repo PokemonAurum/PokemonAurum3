@@ -2240,6 +2240,7 @@ BOOL btl_scr_cmd_d0_checkshouldleavewith1hp(void *bw, struct BattleStruct *sp)
 BOOL BtlCmd_TryRestoreStatusOnSwitch(struct BattleSystem *bw, struct BattleStruct *sp)
 {
     int side, client_no, address, ability, condition;
+    BOOL hasVolatileStatus;
     struct PartyPokemon *pp;
 
     IncrementBattleScriptPtr(sp, 1);
@@ -2252,6 +2253,7 @@ BOOL BtlCmd_TryRestoreStatusOnSwitch(struct BattleSystem *bw, struct BattleStruc
         pp = BattleWorkPokemonParamGet(bw, client_no, sp->sel_mons_no[client_no]);
         ability = GetMonData(pp, MON_DATA_ABILITY, NULL);
         condition = GetMonData(pp, MON_DATA_STATUS, NULL);
+        hasVolatileStatus = HasVolatileStatusCondition(sp->battlemon[client_no]);
 
         // handle meloetta pirouette form changing back to normal when switched out
         if ((sp->battlemon[client_no].species == SPECIES_MELOETTA)
@@ -2268,6 +2270,16 @@ BOOL BtlCmd_TryRestoreStatusOnSwitch(struct BattleSystem *bw, struct BattleStruc
          && (CheckStatusRecoverFromAbilityOnSwitch(sp, ability, condition) == FALSE))
         {
             IncrementBattleScriptPtr(sp, address);
+        }
+
+        if ((ability == ABILITY_NATURAL_CURE) && hasVolatileStatus)
+        {
+            sp->battlemon[client_no].condition3 &= ~CONDITION3_ALL_EXCLUSIVE;
+            sp->battlemon[client_no].winded_turns = 0;
+            sp->battlemon[client_no].awestruck_turns = 0;
+            sp->battlemon[client_no].migraine_turns = 0;
+            sp->battlemon[client_no].idolize_turns = 0;
+            sp->battlemon[client_no].fatigue_turns = 0;
         }
 
         // handle regenerator--mon restores 1/3 hp on switch
