@@ -28,7 +28,6 @@ enum EndTurnResolutionOrder {
     ENDTURN_LEECH_SEED,
     ENDTURN_POISON,
     ENDTURN_BURN,
-    ENDTURN_FROSTBITE, 
     ENDTURN_NIGHTMARE,
     ENDTURN_CURSE,
     ENDTURN_TRAPPING_DAMAGE,
@@ -58,15 +57,6 @@ enum EndTurnResolutionOrder {
     ENDTURN_FORM_CHANGE,
     ENDTURN_FOURTH_EVENT_BLOCK,
     ENDTURN_ION_DELUGE_FADING,
-    ENDTURN_WINDED,
-    ENDTURN_DRENCHED,
-    ENDTURN_FATIGUE,
-    ENDTURN_PESTER,
-    ENDTURN_SCARED,
-    ENDTURN_IDOLIZE,
-    ENDTURN_ALLERGIES,
-    ENDTURN_AWESTRUCK,
-    ENDTURN_MIGRAINE,
     ENDTURN_END,
 };
 
@@ -112,15 +102,6 @@ enum FourthEventBlockResolutionOrder {
     FOURTH_EVENT_BLOCK_END,
 };
 
-static void ClearExclusiveCondition3Status(struct BattlePokemon *battleMon)
-{
-    battleMon->condition3 &= ~CONDITION3_ALL_EXCLUSIVE;
-    battleMon->winded_turns = 0;
-    battleMon->awestruck_turns = 0;
-    battleMon->migraine_turns = 0;
-    battleMon->idolize_turns = 0;
-    battleMon->fatigue_turns = 0;
-}
 void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
     int ret = 0;
     int side;
@@ -223,8 +204,8 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 #endif
 
                 if (sp->field_condition & WEATHER_RAIN_ANY) {
-                    sp->mp.msg_id = BATTLE_MSG_RAIN_CONTINUES_TO_FALL;  // Rain continues to fall.
-                    sp->mp.msg_tag = TAG_NONE;
+                    sp->mp.id = BATTLE_MSG_RAIN_CONTINUES_TO_FALL;  // Rain continues to fall.
+                    sp->mp.tag = TAG_NONE;
                     LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WEATHER_EOT_EFFECT);
                     sp->next_server_seq_no = sp->server_seq_no;
                     sp->server_seq_no = 22;
@@ -233,8 +214,8 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 }
 
                 if (sp->field_condition & WEATHER_SANDSTORM_ANY) {
-                    sp->mp.msg_id = BATTLE_MSG_SANDSTORM_RAGES;  // The sandstorm rages.
-                    sp->mp.msg_tag = TAG_NONE;
+                    sp->mp.id = BATTLE_MSG_SANDSTORM_RAGES;  // The sandstorm rages.
+                    sp->mp.tag = TAG_NONE;
                     LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WEATHER_EOT_EFFECT);
                     sp->next_server_seq_no = sp->server_seq_no;
                     sp->server_seq_no = 22;
@@ -243,8 +224,8 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 }
 
                 if (sp->field_condition & WEATHER_SUNNY_ANY) {
-                    sp->mp.msg_id = BATTLE_MSG_SUNLIGHT_IS_STRONG;  // The sunlight is strong.
-                    sp->mp.msg_tag = TAG_NONE;
+                    sp->mp.id = BATTLE_MSG_SUNLIGHT_IS_STRONG;  // The sunlight is strong.
+                    sp->mp.tag = TAG_NONE;
                     LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WEATHER_EOT_EFFECT);
                     sp->next_server_seq_no = sp->server_seq_no;
                     sp->server_seq_no = 22;
@@ -253,8 +234,8 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 }
 
                 if (sp->field_condition & WEATHER_HAIL_ANY) {
-                    sp->mp.msg_id = BATTLE_MSG_HAIL_CONTINUES_TO_FALL;  // Hail continues to fall.
-                    sp->mp.msg_tag = TAG_NONE;
+                    sp->mp.id = BATTLE_MSG_HAIL_CONTINUES_TO_FALL;  // Hail continues to fall.
+                    sp->mp.tag = TAG_NONE;
                     LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WEATHER_EOT_EFFECT);
                     sp->next_server_seq_no = sp->server_seq_no;
                     sp->server_seq_no = 22;
@@ -272,8 +253,8 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 }
 
                 if (sp->field_condition & FIELD_STATUS_FOG) {
-                    sp->mp.msg_id = BATTLE_MSG_FOG_IS_DEEP;  // The fog is deep...
-                    sp->mp.msg_tag = TAG_NONE;
+                    sp->mp.id = BATTLE_MSG_FOG_IS_DEEP;  // The fog is deep...
+                    sp->mp.tag = TAG_NONE;
                     LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WEATHER_EOT_EFFECT);
                     sp->next_server_seq_no = sp->server_seq_no;
                     sp->server_seq_no = 22;
@@ -282,8 +263,8 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 }
 
                 if (sp->field_condition & WEATHER_STRONG_WINDS) {
-                    sp->mp.msg_id = BATTLE_MSG_STRONG_WINDS_BLOW_ON;  // The strong winds blow on!
-                    sp->mp.msg_tag = TAG_NONE;
+                    sp->mp.id = BATTLE_MSG_STRONG_WINDS_BLOW_ON;  // The strong winds blow on!
+                    sp->mp.tag = TAG_NONE;
                     LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WEATHER_EOT_EFFECT);
                     sp->next_server_seq_no = sp->server_seq_no;
                     sp->server_seq_no = 22;
@@ -343,10 +324,10 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                                     debug_printf(buf);
 #endif
                                     sp->side_condition[IsClientEnemy(bw, futureCondition.affectedClient)] &= ~SIDE_STATUS_FUTURE_SIGHT;
-                                    sp->mp.msg_id = BATTLE_MSG_TOOK_DOOM_DESIRE;  // Seadra took the Doom Desire attack!
-                                    sp->mp.msg_tag = TAG_NICKNAME_MOVE;
-                                    sp->mp.msg_para[0] = CreateNicknameTag(sp, futureCondition.affectedClient);
-                                    sp->mp.msg_para[1] = sp->fcc.future_prediction_wazano[futureCondition.affectedClient];
+                                    sp->mp.id = BATTLE_MSG_TOOK_DOOM_DESIRE;  // Seadra took the Doom Desire attack!
+                                    sp->mp.tag = TAG_NICKNAME_MOVE;
+                                    sp->mp.param[0] = CreateNicknameTag(sp, futureCondition.affectedClient);
+                                    sp->mp.param[1] = sp->fcc.future_prediction_wazano[futureCondition.affectedClient];
                                     sp->battlerIdTemp = futureCondition.affectedClient;
                                     sp->attack_client_work = sp->fcc.future_prediction_client_no[futureCondition.affectedClient];
                                     sp->waza_work = sp->fcc.future_prediction_wazano[futureCondition.affectedClient];
@@ -373,9 +354,9 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                                         debug_printf(buf);
 #endif
                                         sp->battlerIdTemp = futureCondition.affectedClient;
-                                        sp->mp.msg_tag = TAG_NICKNAME;
-                                        sp->mp.msg_id = BATTLE_MSG_WISH_CAME_TRUE;  // "{STRVAR_1 1, 0, 0}’s wish\ncame true!"
-                                        sp->mp.msg_para[0] = futureCondition.affectedClient | (sp->fcc.wish_sel_mons[futureCondition.affectedClient] << 8);
+                                        sp->mp.tag = TAG_NICKNAME;
+                                        sp->mp.id = BATTLE_MSG_WISH_CAME_TRUE;  // "{STRVAR_1 1, 0, 0}’s wish\ncame true!"
+                                        sp->mp.param[0] = futureCondition.affectedClient | (sp->fcc.wish_sel_mons[futureCondition.affectedClient] << 8);
                                         sp->hp_calc_work = BattleDamageDivide(sp->battlemon[futureCondition.affectedClient].maxhp, 2);
                                         LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WISH_HEAL);
                                         sp->next_server_seq_no = sp->server_seq_no;
@@ -414,10 +395,10 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                         sp->fcc.future_prediction_count[battlerId]--;
                         if (sp->battlemon[battlerId].hp != 0) {
                             sp->side_condition[IsClientEnemy(bw, battlerId)] &= ~SIDE_STATUS_FUTURE_SIGHT;
-                            sp->mp.msg_id = 475;  // Seadra took the Doom Desire attack!
-                            sp->mp.msg_tag = TAG_NICKNAME_MOVE;
-                            sp->mp.msg_para[0] = CreateNicknameTag(sp, battlerId);
-                            sp->mp.msg_para[1] = sp->fcc.future_prediction_wazano[battlerId];
+                            sp->mp.id = 475;  // Seadra took the Doom Desire attack!
+                            sp->mp.tag = TAG_NICKNAME_MOVE;
+                            sp->mp.param[0] = CreateNicknameTag(sp, battlerId);
+                            sp->mp.param[1] = sp->fcc.future_prediction_wazano[battlerId];
                             sp->client_work = battlerId;
                             sp->attack_client_work = sp->fcc.future_prediction_client_no[battlerId];
                             sp->waza_work = sp->fcc.future_prediction_wazano[battlerId];
@@ -442,9 +423,9 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                             sp->fcc.wish_count[battlerId]--;
                             if (sp->battlemon[battlerId].hp) {
                                 sp->client_work = battlerId;
-                                sp->mp.msg_tag = TAG_NICKNAME;
-                                sp->mp.msg_id = BATTLE_MSG_WISH_CAME_TRUE;  // "{STRVAR_1 1, 0, 0}’s wish\ncame true!"
-                                sp->mp.msg_para[0] = battlerId | (sp->fcc.wish_sel_mons[battlerId] << 8);
+                                sp->mp.tag = TAG_NICKNAME;
+                                sp->mp.id = BATTLE_MSG_WISH_CAME_TRUE;  // "{STRVAR_1 1, 0, 0}’s wish\ncame true!"
+                                sp->mp.param[0] = battlerId | (sp->fcc.wish_sel_mons[battlerId] << 8);
                                 sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp, 2);
                                 LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WISH_HEAL);
                                 sp->next_server_seq_no = sp->server_seq_no;
@@ -572,49 +553,30 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
 
                             switch (GetBattlerAbility(sp, battlerId)) {
                                 case ABILITY_SHED_SKIN:
-                                case ABILITY_HYDRATION: {
-                                    BOOL selfHasPersistentStatus = (sp->battlemon[battlerId].condition & STATUS_ANY_PERSISTENT) != 0;
-                                    BOOL selfHasVolatileStatus = HasVolatileStatusCondition(sp->battlemon[battlerId]);
-
+                                case ABILITY_HYDRATION:
                                     if ((GetBattlerAbility(sp, battlerId) == ABILITY_SHED_SKIN
-                                    && (selfHasPersistentStatus || selfHasVolatileStatus)
+                                    && sp->battlemon[battlerId].condition & STATUS_ANY_PERSISTENT
                                     && sp->battlemon[battlerId].hp
                                     && (BattleRand(bw) % 3 == 0))  // Generation V onward: Shed Skin has a 1/3 chance of curing the Pokémon.
                                     || (GetBattlerAbility(sp, battlerId) == ABILITY_HYDRATION
-                                    && (selfHasPersistentStatus || selfHasVolatileStatus)
                                     && sp->field_condition & WEATHER_RAIN_ANY
-                                    && sp->battlemon[battlerId].hp)) {
-                                        if (selfHasVolatileStatus) {
-                                            ClearExclusiveCondition3Status(&sp->battlemon[battlerId]);
-                                        }
-                                        if (selfHasPersistentStatus) {
-                                            seq_no = SUB_SEQ_SHED_SKIN;
-                                            ret = TRUE;
-                                        }
+                                    && sp->battlemon[battlerId].hp
+                                    && (u8)sp->battlemon[battlerId].condition)) {
+                                        seq_no = SUB_SEQ_SHED_SKIN;
+                                        ret = TRUE;
                                     }
                                     break;
-                                }
-                                case ABILITY_HEALER: {
-                                    int allyBattlerId = BATTLER_ALLY(battlerId);
-                                    BOOL allyHasPersistentStatus = (sp->battlemon[allyBattlerId].condition & STATUS_ANY_PERSISTENT) != 0;
-                                    BOOL allyHasVolatileStatus = HasVolatileStatusCondition(sp->battlemon[allyBattlerId]);
-
-                                    if ((allyHasPersistentStatus || allyHasVolatileStatus)
+                                case ABILITY_HEALER:
+                                    if ((sp->battlemon[BATTLER_ALLY(battlerId)].condition & STATUS_ANY_PERSISTENT) // if the partner of the client has a status condition
                                     && (sp->battlemon[battlerId].hp)
-                                    && (sp->battlemon[allyBattlerId].hp)
+                                    && (sp->battlemon[BATTLER_ALLY(battlerId)].hp)
                                     && (BattleRand(bw) % 10 < 3)) // 30% chance
                                     {
-                                        if (allyHasVolatileStatus) {
-                                            ClearExclusiveCondition3Status(&sp->battlemon[allyBattlerId]);
-                                        }
-                                        if (allyHasPersistentStatus) {
-                                            battlerId = allyBattlerId;
-                                            seq_no = SUB_SEQ_HANDLE_HEALER;
-                                            ret = TRUE;
-                                        }
+                                        battlerId = BATTLER_ALLY(battlerId);
+                                        seq_no = SUB_SEQ_HANDLE_HEALER;
+                                        ret = TRUE;
                                     }
                                     break;
-                                }
                                 default:
                                     break;
                             }
@@ -820,14 +782,14 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 while (sp->scc_work < client_set_max) {
                     battlerId = sp->turnOrder[sp->scc_work];
 
-                    if ((sp->battlemon[battlerId].condition & STATUS_POISON) && sp->battlemon[battlerId].hp != 0 && GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
+                    if ((sp->battlemon[battlerId].condition & STATUS_POISON) && sp->battlemon[battlerId].hp != 0) {
                         sp->battlerIdTemp = battlerId;
                         sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp * -1, 8);
                         LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_POISON_DAMAGE);
                         sp->next_server_seq_no = sp->server_seq_no;
                         sp->server_seq_no = 22;
                         ret = 1;
-                    } else if ((sp->battlemon[battlerId].condition & STATUS_BAD_POISON) && sp->battlemon[battlerId].hp != 0 && GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
+                    } else if ((sp->battlemon[battlerId].condition & STATUS_BAD_POISON) && sp->battlemon[battlerId].hp != 0) {
                         sp->battlerIdTemp = battlerId;
                         sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp, 16);
                         if ((sp->battlemon[battlerId].condition & STATUS_POISON_COUNT) != STATUS_POISON_COUNT) {
@@ -860,7 +822,7 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 while (sp->scc_work < client_set_max) {
                     battlerId = sp->turnOrder[sp->scc_work];
 
-                    if ((sp->battlemon[battlerId].condition & STATUS_BURN) && sp->battlemon[battlerId].hp != 0 && GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
+                    if ((sp->battlemon[battlerId].condition & STATUS_BURN) && sp->battlemon[battlerId].hp != 0) {
                         sp->battlerIdTemp = battlerId;
                         LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_BURN_DAMAGE);
                         sp->next_server_seq_no = sp->server_seq_no;
@@ -872,29 +834,6 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                     break;
                 }
 
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
-            case ENDTURN_FROSTBITE: {
-                #ifdef DEBUG_ENDTURN_LOGIC
-                sprintf(buf, "In ENDTURN_FROSTBITE\n");
-                debug_printf(buf);
-                #endif
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if ((sp->battlemon[battlerId].condition & STATUS_FROSTBITE) && sp->battlemon[battlerId].hp != 0 && GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
-                        sp->battlerIdTemp = battlerId;
-                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_FROSTBITE_DAMAGE);
-                        sp->next_server_seq_no = sp->server_seq_no;
-                        sp->server_seq_no = 22;
-                        ret = 1;
-                    }
-                    sp->scc_work++;
-                    break;
-                }
                 if (sp->scc_work >= client_set_max) {
                     sp->scc_work = 0;
                     sp->fcc_seq_no++;
@@ -973,9 +912,9 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                         sp->binding_turns[battlerId]--;
                         if (sp->binding_turns[battlerId]) {
                             sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp * -1, 8);
-                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_CLAMP_DAMAGE);
+                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_BIND_DAMAGE);
                         } else {
-                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_CLAMP_END);
+                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_BIND_END);
                         }
                         sp->waza_work = sp->battlemon[battlerId].moveeffect.bindingMove;
                         sp->battlerIdTemp = battlerId;
@@ -2013,221 +1952,6 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 sp->fcc_seq_no++;
                 break;
             }
-            case ENDTURN_WINDED: {
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if (sp->battlemon[battlerId].winded_turns > 0) {
-                        sp->battlemon[battlerId].winded_turns--;
-                        if (sp->battlemon[battlerId].winded_turns == 0) {
-                            sp->battlerIdTemp = battlerId;
-                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WINDED_END);
-                            sp->next_server_seq_no = sp->server_seq_no;
-                            sp->server_seq_no = 22;
-                            ret = 1;
-                        }
-                    }
-                    sp->scc_work++;
-                    break;
-                }
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
-            case ENDTURN_DRENCHED: {
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_DRENCHED)
-                        && sp->battlemon[battlerId].hp != 0
-                        && GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
-                        sp->battlerIdTemp = battlerId;
-                        sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp * -1, 16);
-                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_DRENCHED_DAMAGE);
-                        sp->next_server_seq_no = sp->server_seq_no;
-                        sp->server_seq_no = 22;
-                        ret = 1;
-                    }
-                    sp->scc_work++;
-                    break;
-                }
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
-            case ENDTURN_FATIGUE: {
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_FATIGUE)
-                        && sp->battlemon[battlerId].hp != 0) {
-                        sp->battlemon[battlerId].fatigue_turns--;
-                        if (sp->battlemon[battlerId].fatigue_turns == 0) {
-                            sp->battlemon[battlerId].condition3 &= ~CONDITION3_FATIGUE;
-                            sp->battlerIdTemp = battlerId;
-                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_FATIGUE_END);
-                            sp->next_server_seq_no = sp->server_seq_no;
-                            sp->server_seq_no = 22;
-                            ret = 1;
-                        } else if (GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
-                            sp->battlerIdTemp = battlerId;
-                            sp->state_client = battlerId;
-                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_FATIGUE_ATK_DROP);
-                            sp->next_server_seq_no = sp->server_seq_no;
-                            sp->server_seq_no = 22;
-                            ret = 1;
-                        }
-                    }
-                    sp->scc_work++;
-                    break;
-                }
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
-            case ENDTURN_PESTER: {
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_PESTER)
-                        && sp->battlemon[battlerId].hp != 0
-                        && GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
-                        sp->battlerIdTemp = battlerId;
-                        sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp * -1, 8);
-                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_PESTER_DAMAGE);
-                        sp->next_server_seq_no = sp->server_seq_no;
-                        sp->server_seq_no = 22;
-                        ret = 1;
-                    }
-                    sp->scc_work++;
-                    break;
-                }
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
-            case ENDTURN_SCARED: {
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_SCARED) && sp->battlemon[battlerId].hp != 0) {
-                        if (BattleRand(bw) % 4 == 0) {
-                            sp->battlerIdTemp = battlerId;
-                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_SCARED_SWITCH);
-                            sp->next_server_seq_no = sp->server_seq_no;
-                            sp->server_seq_no = 22;
-                            ret = 1;
-                        }
-                    }
-                    sp->scc_work++;
-                    break;
-                }
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
-            case ENDTURN_IDOLIZE: {
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if (sp->battlemon[battlerId].idolize_turns > 0) {
-                        sp->battlemon[battlerId].idolize_turns--;
-                        if (sp->battlemon[battlerId].idolize_turns == 0) {
-                            sp->battlemon[battlerId].condition3 &= ~CONDITION3_IDOLIZE;
-                            sp->battlerIdTemp = battlerId;
-                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_IDOLIZE_END);
-                            sp->next_server_seq_no = sp->server_seq_no;
-                            sp->server_seq_no = 22;
-                            ret = 1;
-                        }
-                    }
-                    sp->scc_work++;
-                    break;
-                }
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
-            case ENDTURN_ALLERGIES: {
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_ALLERGIES)
-                      && sp->battlemon[battlerId].hp != 0
-                      && GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
-                        u8 stat_choice = BattleRand(bw) % 4;
-                        u8 stat_ptr = (stat_choice == 0) ? 0x16 :  // MOVE_SUBSCRIPT_PTR_ATTACK_DOWN_1_STAGE
-                                      (stat_choice == 1) ? 0x17 :  // MOVE_SUBSCRIPT_PTR_DEFENSE_DOWN_1_STAGE
-                                      (stat_choice == 2) ? 0x18 :  // MOVE_SUBSCRIPT_PTR_SPEED_DOWN_1_STAGE
-                                                           0x1A;   // MOVE_SUBSCRIPT_PTR_SP_DEFENSE_DOWN_1_STAGE
-                        sp->battlerIdTemp = battlerId;
-                        sp->state_client = battlerId;
-                        sp->waza_work = stat_ptr;
-                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_ALLERGIES_STAT_DROP);
-                        sp->next_server_seq_no = sp->server_seq_no;
-                        sp->server_seq_no = 22;
-                        ret = 1;
-                    }
-                    sp->scc_work++;
-                    break;
-                }
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
-            case ENDTURN_AWESTRUCK: {
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if (sp->battlemon[battlerId].awestruck_turns > 0) {
-                        sp->battlemon[battlerId].awestruck_turns--;
-                        if (sp->battlemon[battlerId].awestruck_turns == 0) {
-                            sp->battlerIdTemp = battlerId;
-                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_AWESTRUCK_END);
-                            sp->next_server_seq_no = sp->server_seq_no;
-                            sp->server_seq_no = 22;
-                            ret = 1;
-                        }
-                    }
-                    sp->scc_work++;
-                    break;
-                }
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
-            case ENDTURN_MIGRAINE: {
-                while (sp->scc_work < client_set_max) {
-                    battlerId = sp->turnOrder[sp->scc_work];
-                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_MIGRAINE)
-                      && sp->battlemon[battlerId].hp != 0) {
-                        sp->battlemon[battlerId].migraine_turns--;
-                        if (sp->battlemon[battlerId].migraine_turns == 0) {
-                            sp->battlemon[battlerId].condition3 &= ~CONDITION3_MIGRAINE;
-                            sp->battlerIdTemp = battlerId;
-                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_MIGRAINE_END);
-                            sp->next_server_seq_no = sp->server_seq_no;
-                            sp->server_seq_no = 22;
-                            ret = 1;
-                        }
-                    }
-                    sp->scc_work++;
-                    break;
-                }
-                if (sp->scc_work >= client_set_max) {
-                    sp->scc_work = 0;
-                    sp->fcc_seq_no++;
-                }
-                break;
-            }
             case ENDTURN_END: {
 #ifdef DEBUG_ENDTURN_LOGIC
                 sprintf(buf, "In ENDTURN_END\n");
@@ -2239,7 +1963,6 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                     sp->battlemon[i].moveeffect.custapBerryFlag = 0;
                     sp->numberOfTurnsClientHasCurrentAbility[i] = sp->numberOfTurnsClientHasCurrentAbility[i] + 1;
 
-                    sp->moveConditionsFlags[i].endTurnMoveEffectActivated = 0;
                     sp->moveConditionsFlags[i].moveFailureLastTurn = sp->moveConditionsFlags[i].moveFailureThisTurn;
                     sp->moveConditionsFlags[i].moveFailureThisTurn = 0;
                     sp->moveConditionsFlags[i].powderBlockingFireMove = 0;
@@ -2250,6 +1973,7 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                     if (sp->moveConditionsFlags[i].throatChopTimer > 0) {
                         sp->moveConditionsFlags[i].throatChopTimer--;
                     }
+                    sp->moveConditionsFlags[i].dragonDartsStatus = 0;
                 }
 
                 sp->playerSideHasFaintedTeammateLastTurn = sp->playerSideHasFaintedTeammateThisTurn;

@@ -1013,9 +1013,13 @@ while (currentScenario != NULL && TestBattle_HasMoreExpectations()) {
         }
     } else if (currentScenario->expectations[currentScenario->expectationPassCount].expectationType == EXPECTATION_TYPE_CONDITION3_CLEAR) {
         u8 battler = currentScenario->expectations[currentScenario->expectationPassCount].battlerIDOrPartySlot;
-        if (battler < CLIENT_MAX && bw->sp != NULL && bw->sp->battlemon[battler].condition3 == 0) {
+#if HG_ENGINE_HAS_CONDITION3_STATUS
+        if (battler < CLIENT_MAX && bw->sp != NULL && HasVolatileStatusCondition(bw->sp->battlemon[battler]) == 0) {
             currentScenario->expectationPassCount++;
         }
+#else
+        (void)battler;
+#endif
     } else {
         // debug_printf("Break\n");
         break;
