@@ -278,15 +278,21 @@
 #define STATUS_CAN_SYNCHRONIZE (STATUS_POISON | STATUS_BURN | STATUS_PARALYSIS)
 #define STATUS_ANY_PERSISTENT  (STATUS_SLEEP | STATUS_POISON_ALL | STATUS_BURN | STATUS_FREEZE | STATUS_PARALYSIS)
 
-#ifndef HG_ENGINE_HAS_CONDITION3_STATUS
-#define HG_ENGINE_HAS_CONDITION3_STATUS 0
-#endif
+// Custom volatile status conditions stored in battlemon[x].condition3
+#define CONDITION3_DRENCHED   (1 << 0)  // Water    — exclusive, Speed drop on apply + 1/8 HP/turn
+#define CONDITION3_FATIGUE    (1 << 1)  // Fighting — exclusive, blocks/reduces Attack raises
+#define CONDITION3_PESTER     (1 << 2)  // Bug      — exclusive, 15% can't move + 1/8 HP/turn
+#define CONDITION3_SCARED     (1 << 3)  // Ghost    — exclusive, 25% forced switch end of turn
+#define CONDITION3_IDOLIZE    (1 << 4)  // Fairy    — exclusive, 35% can't move 3-5 turns
+#define CONDITION3_MIGRAINE   (1 << 5)  // Psychic  — exclusive, SpAtk -20%, 1/10 HP on status move, 4 turns
+#define CONDITION3_BLINDED    (1 << 6)  // Dark     — stackable, -2 evasion + 30% accuracy cut
+#define CONDITION3_ALLERGIES  (1 << 7)  // Grass    — stackable, random stat drop + 1.25x powder damage
+// Awestruck (Dragon) — stackable, tracked by awestruck_turns > 0
+// Winded (Flying)    — exclusive, tracked by winded_turns > 0
+#define CONDITION3_ALL_EXCLUSIVE  (CONDITION3_DRENCHED | CONDITION3_FATIGUE | CONDITION3_PESTER | CONDITION3_SCARED | CONDITION3_IDOLIZE | CONDITION3_MIGRAINE)
+#define CONDITION3_ALL            (CONDITION3_ALL_EXCLUSIVE | CONDITION3_BLINDED | CONDITION3_ALLERGIES)
 
-#if HG_ENGINE_HAS_CONDITION3_STATUS
 #define HasVolatileStatusCondition(battleMon) ((((battleMon).condition3) & CONDITION3_ALL_EXCLUSIVE) != 0)
-#else
-#define HasVolatileStatusCondition(battleMon) (0)
-#endif
 
 #define HasAnyPersistentOrVolatileStatusCondition(battleMon) (((((battleMon).condition) & STATUS_ANY_PERSISTENT) != 0) || HasVolatileStatusCondition(battleMon))
 
@@ -930,13 +936,16 @@ struct BattlePokemon
     /* 0x25 */ u8 type2;                     /**< second type */
     /* 0x26 */ u8 form_no : 5;               /**< form id */
                u8 rare : 1;                  /**< shininess */
-               u8 dummy;                     /**< free - used to be ability index */
+               u8 fatigue_turns : 2;         /**< turns remaining for Fatigue (0=inactive, 1-3) */
+               u8 condition3;                /**< custom volatile status conditions (CONDITION3_* constants) */
 
                /** switch in flags to mark it as having been done */
-    /* 0x28 */ u32 paddingForNow1 : 6;
+    /* 0x28 */ u32 winded_turns : 2;         /**< turns remaining for Winded (0=inactive, 1=2turns, 2=3turns) */
+               u32 awestruck_turns : 2;      /**< turns remaining for Awestruck (0=inactive, 1=4turns, 2=5turns) */
                u32 slow_start_flag : 1;      /**< slow start has printed its message */
                u32 slow_start_end_flag : 1;  /**< slow start should end */
-               u32 paddingForNow2 : 3;
+               u32 migraine_turns : 3;       /**< turns remaining for Migraine (0=inactive, 1-4) */
+               u32 idolize_turns : 2;        /**< turns remaining for Idolize (0=inactive, 1=3turns, 2=4turns, 3=5turns) */
                u32 canMega : 1;              /**< the BattlePokemon can mega */
                u32 sheer_force_flag : 1;     /**< keep track of sheer force activation */
                u32 imposter_flag : 1;        /**< imposter has activated */
