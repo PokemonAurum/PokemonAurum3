@@ -32,6 +32,8 @@ enum EndTurnResolutionOrder {
     ENDTURN_CURSE,
     ENDTURN_TRAPPING_DAMAGE,
     ENDTURN_OCTOLOCK,
+    ENDTURN_SPLINTER_DAMAGE,
+    ENDTURN_SPLINTER_DEF_DROP,
     ENDTURN_TAUNT_FADING,
     ENDTURN_TORMENT_FADING,
     ENDTURN_ENCORE_FADING,
@@ -562,6 +564,8 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                                     && sp->field_condition & WEATHER_RAIN_ANY
                                     && sp->battlemon[battlerId].hp
                                     && (u8)sp->battlemon[battlerId].condition)) {
+                                        sp->battlemon[battlerId].condition3 &= ~CONDITION3_ALL_EXCLUSIVE;
+                                        sp->battlemon[battlerId].condition2 &= ~(STATUS2_SPLINTER | STATUS2_BRITTLE);
                                         seq_no = SUB_SEQ_SHED_SKIN;
                                         ret = TRUE;
                                     }
@@ -630,6 +634,7 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
 
                                 if (seq_no == SUB_SEQ_HANDLE_HEALER) {
                                     sp->battlemon[battlerId].condition3 &= ~CONDITION3_ALL_EXCLUSIVE;
+                                    sp->battlemon[battlerId].condition2 &= ~(STATUS2_SPLINTER | STATUS2_BRITTLE);
                                     sp->battlemon[battlerId].winded_turns = 0;
                                     sp->battlemon[battlerId].awestruck_turns = 0;
                                     sp->battlemon[battlerId].migraine_turns = 0;
@@ -952,6 +957,69 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                 #endif
 
                 sp->fcc_seq_no++;
+                break;
+            }
+            case ENDTURN_SPLINTER_DAMAGE: {
+                #ifdef DEBUG_ENDTURN_LOGIC
+                sprintf(buf, "In ENDTURN_SPLINTER_DAMAGE\n");
+                debug_printf(buf);
+                #endif
+
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+
+                    if ((sp->battlemon[battlerId].condition2 & STATUS2_SPLINTER) && sp->battlemon[battlerId].hp != 0) {
+                        int divisor = ((sp->battlemon[battlerId].type1 == TYPE_ROCK)
+                                    || (sp->battlemon[battlerId].type2 == TYPE_ROCK)) ? 12 : 16;
+                        sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp * -1, divisor);
+                        sp->battlerIdTemp = battlerId;
+                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_SPLINTER_DAMAGE);
+                        sp->next_server_seq_no = sp->server_seq_no;
+                        sp->server_seq_no = 22;
+                        ret = 1;
+                    }
+
+                    sp->scc_work++;
+                    break;
+                }
+
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_SPLINTER_DEF_DROP: {
+                #ifdef DEBUG_ENDTURN_LOGIC
+                sprintf(buf, "In ENDTURN_SPLINTER_DEF_DROP\n");
+                debug_printf(buf);
+                #endif
+
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+
+                    if ((sp->battlemon[battlerId].condition2 & STATUS2_SPLINTER)
+                        && sp->battlemon[battlerId].hp != 0
+                        && sp->battlemon[battlerId].states[STAT_DEFENSE] > 3
+                        && (BattleRand(bw) % 5 == 0)) {
+                        sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_DEFENSE_DOWN;
+                        sp->addeffect_type = ADD_EFFECT_ABILITY;
+                        sp->state_client = battlerId;
+                        sp->battlerIdTemp = battlerId;
+                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_BOOST_STATS);
+                        sp->next_server_seq_no = sp->server_seq_no;
+                        sp->server_seq_no = 22;
+                        ret = 1;
+                    }
+
+                    sp->scc_work++;
+                    break;
+                }
+
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
                 break;
             }
             case ENDTURN_TAUNT_FADING: {

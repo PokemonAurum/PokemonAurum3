@@ -364,5 +364,18 @@ BOOL MoveHitDefenderAbilityCheckInternal(void *bw, struct BattleStruct *sp, int 
         }
     }
 
+    // Brittle: attacker takes 1/20 max HP on contact (fires even if an ability already triggered)
+    if (!ret
+        && (sp->battlemon[sp->defence_client].condition2 & STATUS2_BRITTLE)
+        && sp->battlemon[sp->attack_client].hp != 0
+        && (GetBattlerAbility(sp, sp->attack_client) != ABILITY_MAGIC_GUARD)
+        && ((sp->oneSelfFlag[sp->defence_client].physical_damage) || (sp->oneSelfFlag[sp->defence_client].special_damage))
+        && (IsContactBeingMade(GetBattlerAbility(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->defence_client), sp->current_move_index, sp->moveTbl[sp->current_move_index].flag))) {
+        sp->hp_calc_work = BattleDamageDivide(sp->battlemon[sp->attack_client].maxhp * -1, 20);
+        sp->battlerIdTemp = sp->attack_client;
+        seq_no[0] = SUB_SEQ_BRITTLE_CONTACT;
+        ret = TRUE;
+    }
+
     return ret;
 }

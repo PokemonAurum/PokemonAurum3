@@ -511,6 +511,8 @@
 
 // define your custom subscripts below like this
 // #define MOVE_SUBSCRIPT_CUSTOM_1 (MAX_BASE_SUBSCRIPT_NUM + 1)
+#define SUB_SEQ_SPLINTER_DAMAGE      (MAX_BASE_SUBSCRIPT_NUM + 1)  // 499: end-of-turn HP loss from Splinter status
+#define SUB_SEQ_BRITTLE_CONTACT      (MAX_BASE_SUBSCRIPT_NUM + 2)  // 500: contact recoil damage to attacker from Brittle status
 
 
 // add status effect constants--used in battle effect scripts to queue up a subscript through the table in src/moves.c

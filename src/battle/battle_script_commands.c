@@ -2275,6 +2275,7 @@ BOOL BtlCmd_TryRestoreStatusOnSwitch(struct BattleSystem *bw, struct BattleStruc
         if ((ability == ABILITY_NATURAL_CURE) && hasVolatileStatus)
         {
             sp->battlemon[client_no].condition3 &= ~CONDITION3_ALL_EXCLUSIVE;
+            sp->battlemon[client_no].condition2 &= ~(STATUS2_SPLINTER | STATUS2_BRITTLE);
             sp->battlemon[client_no].winded_turns = 0;
             sp->battlemon[client_no].awestruck_turns = 0;
             sp->battlemon[client_no].migraine_turns = 0;

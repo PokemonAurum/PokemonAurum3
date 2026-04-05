@@ -33,14 +33,14 @@ struct PACKED TestBattlePokemon {
     u16 moves[4];
     u16 hp;              // 0 = full HP
     u32 status;          // STATUS_BURN, STATUS_POISON, STATUS_SLEEP, etc.
-    u32 condition2;      // STATUS2_RECHARGE, STATUS2_CONFUSION, etc. (can be OR'd)
+    u32 condition2;      // STATUS2_RECHARGE, STATUS2_CONFUSION, STATUS2_SPLINTER, STATUS2_BRITTLE, etc. (can be OR'd)
     u32 condition3;      // CONDITION3_DRENCHED, CONDITION3_FATIGUE, etc. (can be OR'd)
     u8 winded_turns;     // initial Winded turn counter (0 = not active)
     u8 awestruck_turns;  // initial Awestruck turn counter (0 = not active)
     u8 migraine_turns;   // initial Migraine turn counter (0 = not active)
     u8 idolize_turns;    // initial Idolize turn counter (0 = not active)
     u8 fatigue_turns;    // initial Fatigue turn counter (0 = not active)
-    u8 _cond3_pad[3];    // alignment padding
+    u8 _pad[3];          // padding
     u32 moveEffectFlags; // MOVE_EFFECT_FLAG_LEECH_SEED_ACTIVE, etc. (can be OR'd)
 };
 

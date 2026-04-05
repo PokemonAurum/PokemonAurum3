@@ -292,7 +292,9 @@
 #define CONDITION3_ALL_EXCLUSIVE  (CONDITION3_DRENCHED | CONDITION3_FATIGUE | CONDITION3_PESTER | CONDITION3_SCARED | CONDITION3_IDOLIZE | CONDITION3_MIGRAINE)
 #define CONDITION3_ALL            (CONDITION3_ALL_EXCLUSIVE | CONDITION3_BLINDED | CONDITION3_ALLERGIES)
 
-#define HasVolatileStatusCondition(battleMon) ((((battleMon).condition3) & CONDITION3_ALL_EXCLUSIVE) != 0)
+#define HasVolatileStatusCondition(battleMon) \
+    ((((battleMon).condition3) & CONDITION3_ALL_EXCLUSIVE) != 0 \
+  || (((battleMon).condition2) & (STATUS2_SPLINTER | STATUS2_BRITTLE)) != 0)
 
 #define HasAnyPersistentOrVolatileStatusCondition(battleMon) (((((battleMon).condition) & STATUS_ANY_PERSISTENT) != 0) || HasVolatileStatusCondition(battleMon))
 
@@ -337,7 +339,9 @@
 #define STATUS2_UPROAR (0x00000070)
 #define STATUS2_RAMPAGE_TURNS (0x00000C00)
 #define STATUS2_LOCKED_INTO_MOVE (0x00001000)
-#define STATUS2_BINDING_TURNS (0x0000E000) // no longer used, see sp->binding_turns
+#define STATUS2_SPLINTER      (0x00002000) // bit 13 — Rock/Steel volatile: end-of-turn HP loss + chance Def drop (stored in condition2)
+#define STATUS2_BRITTLE       (0x00004000) // bit 14 — volatile: contact recoil to attacker + 0.5x Def in calc (stored in condition2)
+// bit 15 (0x8000) unused — old STATUS2_BINDING_TURNS high bit, see sp->binding_turns
 #define STATUS2_ATTRACT (0x000f0000)
 #define STATUS2_FOCUS_ENERGY (0x00100000)
 #define STATUS2_TRANSFORMED (0x00200000)
@@ -906,7 +910,7 @@ struct __attribute__((packed)) battle_moveflag
     /* 0x2c */ u16 transformGender;          /**< pokémon sex stored for transform purposes */
 // padding at 2e
     /* 0x30 */ int itemHpRecover;            /**< how much hp was just restored by an item */
-}; // size = 0x34
+}; // size = 0x38
 
 
 /**
@@ -938,9 +942,7 @@ struct BattlePokemon
     /* 0x26 */ u8 form_no : 5;               /**< form id */
                u8 rare : 1;                  /**< shininess */
                u8 fatigue_turns : 2;         /**< turns remaining for Fatigue (0=inactive, 1-3) */
-               u8 condition3;                /**< custom volatile status conditions (CONDITION3_* constants) */
-
-               /** switch in flags to mark it as having been done */
+    /* 0x27 */ u8 condition3;                /**< custom volatile status conditions (CONDITION3_* constants) */
     /* 0x28 */ u32 winded_turns : 2;         /**< turns remaining for Winded (0=inactive, 1=2turns, 2=3turns) */
                u32 awestruck_turns : 2;      /**< turns remaining for Awestruck (0=inactive, 1=4turns, 2=5turns) */
                u32 slow_start_flag : 1;      /**< slow start has printed its message */
@@ -967,13 +969,13 @@ struct BattlePokemon
     /* 0x4c */ s32 hp;                       /**< current hp */
     /* 0x50 */ u32 maxhp;                    /**< max hp */
     /* 0x54 */ u16 oyaname[8];               /**< OT name */
-    /* 0x64 */ u32 exp; //68                 /**< total experience */
+    /* 0x64 */ u32 exp;                      /**< total experience */
     /* 0x68 */ u32 personal_rnd;             /**< personality id */
-    /* 0x6C */ u32 condition;                /**< non-volatile status conditions (STATUS_* constants) */ // status
+    /* 0x6c */ u32 condition;                /**< non-volatile status conditions (STATUS_* constants) */ // status
     /* 0x70 */ u32 condition2;               /**< most other status conditions (STATUS2_* constants) */  // status2
     /* 0x74 */ u32 id_no;                    /**< OT ID */
     /* 0x78 */ u16 item;                     /**< held item */
-    /* 0x7a */ u16 ability;                  /**< ability index -- moved from 0x27 */
+    /* 0x7a */ u16 ability;                  /**< ability index */
     /* 0x7c */ u8 hit_count;
     /* 0x7d */ u8 message_flag;
     /* 0x7e */ u8 sex : 4;                   /**< sex for rivalry purposes etc. */
@@ -981,10 +983,10 @@ struct BattlePokemon
     /* 0x7f */ u8 get_ball;                  /**< caught ball */
     /* 0x80 */ u32 effect_of_moves;          /**< move effect trackers (see MOVE_EFFECT_* constants) */ // moveEffectFlags
     /* 0x84 */ u32 effect_of_moves_temp;     /**< storage for effect_of_moves */
-    /* 0x88 */ struct battle_moveflag moveeffect;   // unk88
+    /* 0x88 */ struct battle_moveflag moveeffect;   // unk8c (sizeof == 0x38, not 0x34 as the comment previously claimed)
 }; // size = 0xc0
 _Static_assert(sizeof(struct BattlePokemon) == 0xc0,
-    "BattlePokemon size mismatch - check condition3/turn counter fields");
+    "BattlePokemon size must stay 0xc0 — battlemon[CLIENT_MAX] in BattleStruct is 0x300 bytes total");
 
 typedef struct {
     u32 alloc_size;
