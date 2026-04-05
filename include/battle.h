@@ -982,6 +982,8 @@ struct BattlePokemon
     /* 0x84 */ u32 effect_of_moves_temp;     /**< storage for effect_of_moves */
     /* 0x88 */ struct battle_moveflag moveeffect;   // unk88
 }; // size = 0xc0
+_Static_assert(sizeof(struct BattlePokemon) == 0xc0,
+    "BattlePokemon size mismatch - check condition3/turn counter fields");
 
 typedef struct {
     u32 alloc_size;

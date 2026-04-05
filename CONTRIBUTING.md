@@ -100,3 +100,18 @@ There is a lot of good faith currently in the PR process that puts a little effo
 This is roughly adapted from [`pokeemerald-expansion`'s CONTRIBUTING.md](https://github.com/rh-hideout/pokeemerald-expansion/blob/master/CONTRIBUTING.md)
 
 The process is intentionally less formal in `hg-engine`.
+
+## Adding fields to BattlePokemon
+
+`struct BattlePokemon` in `include/battle.h` must remain exactly `0xc0` bytes. A `_Static_assert` enforces this at compile time — if you see a size mismatch error, you have added or removed bits from the struct.
+
+The `condition3` system fields are packed into the 0x26-0x28 region:
+
+- **0x26 byte**: `form_no:5`, `rare:1`, `fatigue_turns:2`, then `condition3` (full byte at 0x27)
+- **0x28 word**: `winded_turns:2`, `awestruck_turns:2`, then existing flags, then `migraine_turns:3`, `idolize_turns:2` — all 32 bits consumed exactly
+
+Rules:
+- Never add padding or dummy bytes to this region without updating all `CONDITION3_*` users.
+- Never gate `CONDITION3_*` constants behind a feature flag — they are required unconditionally by `battle_script_commands.c`, `other_battle_calculators.c`, and others.
+- Any new condition3 flag or turn counter must fit within the existing layout or require an explicit, reviewed struct resize that updates the `_Static_assert` and all hardcoded offset references in `BattleStruct`.
+- When adding fields to `TestBattlePokemon` to match new `BattlePokemon` fields, always add them to both structs in the same commit.
