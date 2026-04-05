@@ -567,7 +567,7 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                                     }
                                     break;
                                 case ABILITY_HEALER:
-                                    if ((sp->battlemon[BATTLER_ALLY(battlerId)].condition & STATUS_ANY_PERSISTENT) // if the partner of the client has a status condition
+                                    if (HasAnyPersistentOrVolatileStatusCondition(sp->battlemon[BATTLER_ALLY(battlerId)]) // if the partner of the client has a status condition
                                     && (sp->battlemon[battlerId].hp)
                                     && (sp->battlemon[BATTLER_ALLY(battlerId)].hp)
                                     && (BattleRand(bw) % 10 < 3)) // 30% chance
@@ -616,6 +616,8 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                                     #endif
 
                                     sp->msg_work = MSG_HEAL_PARALYSIS;
+                                } else if (HasVolatileStatusCondition(sp->battlemon[battlerId])) {
+                                    sp->msg_work = MSG_HEAL_CONDITION3;
                                 } else {
                                     #ifdef DEBUG_ENDTURN_LOGIC
                                     sprintf(buf, "In MSG_HEAL_FROZEN\n");
@@ -625,6 +627,15 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                                     sp->msg_work = MSG_HEAL_FROZEN;
                                 }
                                 sp->battlerIdTemp = battlerId;
+
+                                if (seq_no == SUB_SEQ_HANDLE_HEALER) {
+                                    sp->battlemon[battlerId].condition3 &= ~CONDITION3_ALL_EXCLUSIVE;
+                                    sp->battlemon[battlerId].winded_turns = 0;
+                                    sp->battlemon[battlerId].awestruck_turns = 0;
+                                    sp->battlemon[battlerId].migraine_turns = 0;
+                                    sp->battlemon[battlerId].idolize_turns = 0;
+                                    sp->battlemon[battlerId].fatigue_turns = 0;
+                                }
 
                                 LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, seq_no);
                                 sp->next_server_seq_no = sp->server_seq_no;
