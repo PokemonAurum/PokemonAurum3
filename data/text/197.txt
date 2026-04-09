@@ -1714,3 +1714,6 @@ The opposing {STRVAR_1 1, 0, 0} is\nno longer tormented!
 {STRVAR_1 1, 0, 0} is no longer\nprevented from healing!
 The wild {STRVAR_1 1, 0, 0} is no longer\nprevented from healing!
 The opposing {STRVAR_1 1, 0, 0} is no longer\nprevented from healing!
+{STRVAR_1 1, 0, 0} became\nFatigued!
+The wild {STRVAR_1 1, 0, 0}\nbecame Fatigued!
+The opposing {STRVAR_1 1, 0, 0}\nbecame Fatigued!

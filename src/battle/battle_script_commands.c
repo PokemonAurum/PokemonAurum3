@@ -127,6 +127,9 @@ BOOL btl_scr_cmd_11C_BatchUpdateHealthBar(void* bsys, struct BattleStruct* ctx);
 BOOL btl_scr_cmd_11D_BatchUpdateHealthBarValue(void* bsys, struct BattleStruct* ctx);
 BOOL btl_scr_cmd_11E_BatchFollowupMessage(void* bsys UNUSED, struct BattleStruct* ctx);
 BOOL btl_scr_cmd_11F_BatchEffectivenessMessage(void* bsys, struct BattleStruct* ctx);
+BOOL btl_scr_cmd_120_InflictCondition3(void *bsys, struct BattleStruct *ctx);
+BOOL btl_scr_cmd_121_SetCondition3Counter(void *bsys, struct BattleStruct *ctx);
+BOOL btl_scr_cmd_122_CheckCondition3Flag(void *bsys, struct BattleStruct *ctx);
 BOOL BtlCmd_GoToMoveScript(struct BattleSystem *bsys, struct BattleStruct *ctx);
 BOOL BtlCmd_WeatherHPRecovery(void *bw, struct BattleStruct *sp);
 BOOL BtlCmd_CalcWeatherBallParams(void *bw, struct BattleStruct *sp);
@@ -522,6 +525,9 @@ const btl_scr_cmd_func NewBattleScriptCmdTable[] =
     [0x117 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_117_activateparadoxability,
     [0x118 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_118_resetparadoxability,
     [0x119 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_119_SetCurrentMoveDoneSwitchingFlag,
+    [0x120 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_120_InflictCondition3,
+    [0x121 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_121_SetCondition3Counter,
+    [0x122 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_122_CheckCondition3Flag,
     [0x11A - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_11A_TrySynchronizeStatus,
     [0x11B - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_11B_TryCureStatusBerry,
     [0x11C - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_11C_BatchUpdateHealthBar,
@@ -5326,5 +5332,59 @@ BOOL BtlCmd_TryFaintMon(struct BattleSystem *bsys, struct BattleStruct *ctx)
         UpdateFriendshipFainted(bsys, ctx, battlerId);
     }
 
+    return FALSE;
+}
+
+BOOL btl_scr_cmd_120_InflictCondition3(void *bsys, struct BattleStruct *ctx)
+{
+    IncrementBattleScriptPtr(ctx, 1);
+    int side = read_battle_script_param(ctx);
+    int flags = read_battle_script_param(ctx);
+    int client_no = GrabClientFromBattleScriptParam(bsys, ctx, side);
+    ctx->battlemon[client_no].condition3 |= flags;
+    return FALSE;
+}
+
+BOOL btl_scr_cmd_121_SetCondition3Counter(void *bsys, struct BattleStruct *ctx)
+{
+    IncrementBattleScriptPtr(ctx, 1);
+    int side = read_battle_script_param(ctx);
+    int counter_type = read_battle_script_param(ctx);
+    int value = read_battle_script_param(ctx);
+    int client_no = GrabClientFromBattleScriptParam(bsys, ctx, side);
+    switch (counter_type)
+    {
+    case CONDITION3_CTR_WINDED:
+        ctx->battlemon[client_no].winded_turns = value;
+        break;
+    case CONDITION3_CTR_AWESTRUCK:
+        ctx->battlemon[client_no].awestruck_turns = value;
+        break;
+    case CONDITION3_CTR_MIGRAINE:
+        ctx->battlemon[client_no].migraine_turns = value;
+        break;
+    case CONDITION3_CTR_IDOLIZE:
+        ctx->battlemon[client_no].idolize_turns = value;
+        break;
+    case CONDITION3_CTR_FATIGUE:
+        ctx->battlemon[client_no].fatigue_turns = value;
+        break;
+    }
+    return FALSE;
+}
+
+// Jump to address if the battler already has any of the given CONDITION3_* flags.
+// Use instead of CompareMonDataToValue BMON_DATA_CONDITION3: BattlePokemonParamGet
+// is a ROM function and cannot access the new condition3 field.
+BOOL btl_scr_cmd_122_CheckCondition3Flag(void *bsys, struct BattleStruct *ctx)
+{
+    IncrementBattleScriptPtr(ctx, 1);
+    int side    = read_battle_script_param(ctx);
+    int flags   = read_battle_script_param(ctx);
+    int address = read_battle_script_param(ctx);
+    int client_no = GrabClientFromBattleScriptParam(bsys, ctx, side);
+    if (ctx->battlemon[client_no].condition3 & flags) {
+        IncrementBattleScriptPtr(ctx, address);
+    }
     return FALSE;
 }

@@ -624,6 +624,9 @@
 .equ BMON_DATA_FORM, 0x62
 .equ BMON_DATA_UNUSED_99, 0x63
 .equ BMON_DATA_TEMP, 0x64
+// condition3 cannot be read via CompareMonDataToValue (BattlePokemonParamGet is ROM-only).
+// Use GotoIfHasCondition3 (opcode 290) instead.
+.equ BMON_DATA_CONDITION3, 0x65  // next free slot after BMON_DATA_TEMP; reserved for documentation
 
 
 .equ MOVE_EFFECT_FLAG_NONE, 0x0
@@ -1503,8 +1506,9 @@
 .equ BATTLE_SUBSCRIPT_BATCH_FOLLOWUP, 496
 .equ BATTLE_SUBSCRIPT_SUBSTITUTE_FADES, 497
 .equ BATTLE_SUBSCRIPT_HANDLE_WIMP_OUT, 498
+.equ BATTLE_SUBSCRIPT_INFLICT_FATIGUE, 499
 
-.equ MAX_BASE_SUBSCRIPT_NUM, 498
+.equ MAX_BASE_SUBSCRIPT_NUM, 499
 
 // define your custom subscripts below like this
 // .equ MOVE_SUBSCRIPT_CUSTOM_1, (MAX_BASE_SUBSCRIPT_NUM + 1)
@@ -1752,5 +1756,26 @@
 .equ HAZARD_IDX_STEALTH_ROCK, 3
 .equ HAZARD_IDX_STICKY_WEB, 4
 .equ HAZARD_IDX_SHARP_STEEL, 5
+
+// STATUS2 bits for custom volatile statuses stored in condition2
+.equ STATUS2_SPLINTER, 0x00002000   // bit 13 — Rock/Steel: end-of-turn HP loss + chance Def drop
+.equ STATUS2_BRITTLE,  0x00004000   // bit 14 — contact recoil to attacker + 0.5x Def in calc
+
+// condition3 flag bits (u8 at BattlePokemon+0x27)
+.equ CONDITION3_DRENCHED,  (1 << 0)  // Water    — exclusive
+.equ CONDITION3_FATIGUE,   (1 << 1)  // Fighting — exclusive
+.equ CONDITION3_PESTER,    (1 << 2)  // Bug      — exclusive
+.equ CONDITION3_SCARED,    (1 << 3)  // Ghost    — exclusive
+.equ CONDITION3_IDOLIZE,   (1 << 4)  // Fairy    — exclusive
+.equ CONDITION3_MIGRAINE,  (1 << 5)  // Psychic  — exclusive
+.equ CONDITION3_BLINDED,   (1 << 6)  // Dark     — stackable
+.equ CONDITION3_ALLERGIES, (1 << 7)  // Grass    — stackable, self-triggered, bypasses Wonder Guard
+
+// Turn-counter type IDs for SetCondition3Counter (opcode 0x121)
+.equ CONDITION3_CTR_WINDED,    0
+.equ CONDITION3_CTR_AWESTRUCK, 1
+.equ CONDITION3_CTR_MIGRAINE,  2
+.equ CONDITION3_CTR_IDOLIZE,   3
+.equ CONDITION3_CTR_FATIGUE,   4
 
 .endif

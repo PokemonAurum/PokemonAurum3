@@ -507,12 +507,13 @@
 #define SUB_SEQ_SUBSTITUTE_FADES                      (497)
 #define SUB_SEQ_HANDLE_WIMP_OUT                       (498)
 
-#define MAX_BASE_SUBSCRIPT_NUM 498
+#define MAX_BASE_SUBSCRIPT_NUM 499
+#define SUB_SEQ_INFLICT_FATIGUE      (499)  // Fighting condition3 status infliction
 
 // define your custom subscripts below like this
 // #define MOVE_SUBSCRIPT_CUSTOM_1 (MAX_BASE_SUBSCRIPT_NUM + 1)
-#define SUB_SEQ_SPLINTER_DAMAGE      (MAX_BASE_SUBSCRIPT_NUM + 1)  // 499: end-of-turn HP loss from Splinter status
-#define SUB_SEQ_BRITTLE_CONTACT      (MAX_BASE_SUBSCRIPT_NUM + 2)  // 500: contact recoil damage to attacker from Brittle status
+#define SUB_SEQ_SPLINTER_DAMAGE      (MAX_BASE_SUBSCRIPT_NUM + 1)  // 500: end-of-turn HP loss from Splinter status
+#define SUB_SEQ_BRITTLE_CONTACT      (MAX_BASE_SUBSCRIPT_NUM + 2)  // 501: contact recoil damage to attacker from Brittle status
 
 
 // add status effect constants--used in battle effect scripts to queue up a subscript through the table in src/moves.c

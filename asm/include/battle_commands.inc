@@ -1574,11 +1574,34 @@
     .long (((\arg_2 - .) / 4) - 1)
     .endm
 
-    .equ BASE_ENGINE_BTL_SCR_CMDS_MAX, 287
+    // Sets one or more condition3 flag bits on a battler.
+    // Wonder Guard must be checked BEFORE calling this in the infliction subscript.
+    .macro InflictCondition3 battler_cat, flags
+    .long 288
+    .long \battler_cat
+    .long \flags
+    .endm
 
-    // .macro YourCustomCommand
-    // .long (BASE_ENGINE_BTL_SCR_CMDS_MAX + 1)
-    // .endm
+    // Sets a named condition3 turn counter (CONDITION3_CTR_*) on a battler.
+    // Wonder Guard must be checked BEFORE calling this in the infliction subscript.
+    .macro SetCondition3Counter battler_cat, counter_type, value
+    .long 289
+    .long \battler_cat
+    .long \counter_type
+    .long \value
+    .endm
+
+    // Jump to label if battler already has any of the given CONDITION3_* flag bits set.
+    // Use this instead of CompareMonDataToValue BMON_DATA_CONDITION3, because
+    // BattlePokemonParamGet (ROM function) cannot access the new condition3 field.
+    .macro GotoIfHasCondition3 battler_cat, flags, label
+    .long 290
+    .long \battler_cat
+    .long \flags
+    .long (((\label - .) / 4) - 1)
+    .endm
+
+    .equ BASE_ENGINE_BTL_SCR_CMDS_MAX, 290
 
 
 .endif
