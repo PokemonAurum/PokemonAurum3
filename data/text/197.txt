@@ -1717,3 +1717,21 @@ The opposing {STRVAR_1 1, 0, 0} is no longer\nprevented from healing!
 {STRVAR_1 1, 0, 0} became\nFatigued!
 The wild {STRVAR_1 1, 0, 0}\nbecame Fatigued!
 The opposing {STRVAR_1 1, 0, 0}\nbecame Fatigued!
+{STRVAR_1 1, 0, 0} developed\na Migraine!
+The wild {STRVAR_1 1, 0, 0}\ndeveloped a Migraine!
+The opposing {STRVAR_1 1, 0, 0}\ndeveloped a Migraine!
+{STRVAR_1 1, 0, 0} became\ncaptivated!
+The wild {STRVAR_1 1, 0, 0}\nbecame captivated!
+The opposing {STRVAR_1 1, 0, 0}\nbecame captivated!
+{STRVAR_1 1, 0, 0} became\nDrenched!
+The wild {STRVAR_1 1, 0, 0}\nbecame Drenched!
+The opposing {STRVAR_1 1, 0, 0}\nbecame Drenched!
+{STRVAR_1 1, 0, 0} became\nScared!
+The wild {STRVAR_1 1, 0, 0}\nbecame Scared!
+The opposing {STRVAR_1 1, 0, 0}\nbecame Scared!
+{STRVAR_1 1, 0, 0} got\nSplinters!
+The wild {STRVAR_1 1, 0, 0}\ngot Splinters!
+The opposing {STRVAR_1 1, 0, 0}\ngot Splinters!
+{STRVAR_1 1, 0, 0} became\nBrittle!
+The wild {STRVAR_1 1, 0, 0}\nbecame Brittle!
+The opposing {STRVAR_1 1, 0, 0}\nbecame Brittle!
