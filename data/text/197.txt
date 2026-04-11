@@ -1750,9 +1750,9 @@ The opposing {STRVAR_1 1, 0, 0}\ndried off!
 {STRVAR_1 1, 0, 0} is no longer\nfrightened.
 The wild {STRVAR_1 1, 0, 0}\nis no longer frightened.
 The opposing {STRVAR_1 1, 0, 0}\nis no longer frightened.
-{STRVAR_1 1, 0, 0}'s Splinters\nwere removed!
-The wild {STRVAR_1 1, 0, 0}'s\nSplinters were removed!
-The opposing {STRVAR_1 1, 0, 0}'s\nSplinters were removed!
+{STRVAR_1 1, 0, 0} had its\nSplinters removed!
+The wild {STRVAR_1 1, 0, 0}\nhad its Splinters removed!
+The opposing {STRVAR_1 1, 0, 0}\nhad its Splinters removed!
 {STRVAR_1 1, 0, 0} is no longer\nBrittle!
 The wild {STRVAR_1 1, 0, 0}\nis no longer Brittle!
 The opposing {STRVAR_1 1, 0, 0}\nis no longer Brittle!

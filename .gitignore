@@ -102,3 +102,5 @@ changelog
 /armips/include/generated/
 /include/constants/generated/
 test_logs.txt
+.dual-graph/
+.dual-graph-context/
