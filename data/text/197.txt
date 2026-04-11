@@ -1735,3 +1735,24 @@ The opposing {STRVAR_1 1, 0, 0}\ngot Splinters!
 {STRVAR_1 1, 0, 0} became\nBrittle!
 The wild {STRVAR_1 1, 0, 0}\nbecame Brittle!
 The opposing {STRVAR_1 1, 0, 0}\nbecame Brittle!
+{STRVAR_1 1, 0, 0} is no\nlonger Fatigued!
+The wild {STRVAR_1 1, 0, 0}\nis no longer Fatigued!
+The opposing {STRVAR_1 1, 0, 0}\nis no longer Fatigued!
+{STRVAR_1 1, 0, 0} recovered from\nits Migraine!
+The wild {STRVAR_1 1, 0, 0}\nrecovered from its Migraine!
+The opposing {STRVAR_1 1, 0, 0}\nrecovered from its Migraine!
+{STRVAR_1 1, 0, 0} is no longer\nstar-struck.
+The wild {STRVAR_1 1, 0, 0}\nis no longer star-struck.
+The opposing {STRVAR_1 1, 0, 0}\nis no longer star-struck.
+{STRVAR_1 1, 0, 0} dried off!
+The wild {STRVAR_1 1, 0, 0}\ndried off!
+The opposing {STRVAR_1 1, 0, 0}\ndried off!
+{STRVAR_1 1, 0, 0} is no longer\nfrightened.
+The wild {STRVAR_1 1, 0, 0}\nis no longer frightened.
+The opposing {STRVAR_1 1, 0, 0}\nis no longer frightened.
+{STRVAR_1 1, 0, 0}'s Splinters\nwere removed!
+The wild {STRVAR_1 1, 0, 0}'s\nSplinters were removed!
+The opposing {STRVAR_1 1, 0, 0}'s\nSplinters were removed!
+{STRVAR_1 1, 0, 0} is no longer\nBrittle!
+The wild {STRVAR_1 1, 0, 0}\nis no longer Brittle!
+The opposing {STRVAR_1 1, 0, 0}\nis no longer Brittle!
