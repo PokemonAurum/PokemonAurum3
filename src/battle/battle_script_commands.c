@@ -130,6 +130,7 @@ BOOL btl_scr_cmd_11F_BatchEffectivenessMessage(void* bsys, struct BattleStruct* 
 BOOL btl_scr_cmd_120_InflictCondition3(void *bsys, struct BattleStruct *ctx);
 BOOL btl_scr_cmd_121_SetCondition3Counter(void *bsys, struct BattleStruct *ctx);
 BOOL btl_scr_cmd_122_CheckCondition3Flag(void *bsys, struct BattleStruct *ctx);
+BOOL btl_scr_cmd_123_ClearCondition3(void *bsys, struct BattleStruct *ctx);
 BOOL BtlCmd_GoToMoveScript(struct BattleSystem *bsys, struct BattleStruct *ctx);
 BOOL BtlCmd_WeatherHPRecovery(void *bw, struct BattleStruct *sp);
 BOOL BtlCmd_CalcWeatherBallParams(void *bw, struct BattleStruct *sp);
@@ -528,6 +529,7 @@ const btl_scr_cmd_func NewBattleScriptCmdTable[] =
     [0x120 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_120_InflictCondition3,
     [0x121 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_121_SetCondition3Counter,
     [0x122 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_122_CheckCondition3Flag,
+    [0x123 - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_123_ClearCondition3,
     [0x11A - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_11A_TrySynchronizeStatus,
     [0x11B - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_11B_TryCureStatusBerry,
     [0x11C - START_OF_NEW_BTL_SCR_CMDS] = btl_scr_cmd_11C_BatchUpdateHealthBar,
@@ -5370,6 +5372,22 @@ BOOL btl_scr_cmd_121_SetCondition3Counter(void *bsys, struct BattleStruct *ctx)
         ctx->battlemon[client_no].fatigue_turns = value;
         break;
     }
+    return FALSE;
+}
+
+// Zeroes condition3 and all associated turn counters for a battler.
+// Use for Full Heal / Full Restore and any other full-cure effect.
+BOOL btl_scr_cmd_123_ClearCondition3(void *bsys, struct BattleStruct *ctx)
+{
+    IncrementBattleScriptPtr(ctx, 1);
+    int side = read_battle_script_param(ctx);
+    int client_no = GrabClientFromBattleScriptParam(bsys, ctx, side);
+    ctx->battlemon[client_no].condition3      = 0;
+    ctx->battlemon[client_no].fatigue_turns   = 0;
+    ctx->battlemon[client_no].winded_turns    = 0;
+    ctx->battlemon[client_no].awestruck_turns = 0;
+    ctx->battlemon[client_no].migraine_turns  = 0;
+    ctx->battlemon[client_no].idolize_turns   = 0;
     return FALSE;
 }
 

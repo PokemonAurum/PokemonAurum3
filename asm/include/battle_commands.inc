@@ -1601,7 +1601,14 @@
     .long (((\label - .) / 4) - 1)
     .endm
 
-    .equ BASE_ENGINE_BTL_SCR_CMDS_MAX, 290
+    // Zeroes condition3 and all associated turn counters for a battler.
+    // Use for Full Heal / Full Restore and any other full-cure effect.
+    .macro ClearCondition3 battler_cat
+    .long 291
+    .long \battler_cat
+    .endm
+
+    .equ BASE_ENGINE_BTL_SCR_CMDS_MAX, 291
 
 
 .endif
