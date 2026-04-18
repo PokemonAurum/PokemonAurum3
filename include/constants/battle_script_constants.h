@@ -526,7 +526,44 @@
 
 // define your custom subscripts below like this
 // #define MOVE_SUBSCRIPT_CUSTOM_1 (MAX_BASE_SUBSCRIPT_NUM + 1)
+#define SUB_SEQ_SPLINTER_DAMAGE        (MAX_BASE_SUBSCRIPT_NUM + 1)  // 514: end-of-turn HP loss from Splinter status
+#define SUB_SEQ_BRITTLE_CONTACT        (MAX_BASE_SUBSCRIPT_NUM + 2)  // 515: contact recoil damage to attacker from Brittle status
+#define SUB_SEQ_APPLY_FROSTBITE        (MAX_BASE_SUBSCRIPT_NUM + 3)  // 516: apply Frostbite status
+#define SUB_SEQ_FROSTBITE_DAMAGE       (MAX_BASE_SUBSCRIPT_NUM + 4)  // 517: end-of-turn HP loss from Frostbite
+#define SUB_SEQ_ITEM_RECOVER_FROSTBITE (MAX_BASE_SUBSCRIPT_NUM + 5)  // 518: held item clears Frostbite
 
+// Animation/effect layer subscripts (519-549): called from gate-layer infliction subscripts (0499-0513)
+#define SUB_SEQ_FROSTBITE_ANIM              (519)  // print+anim+healthbar for Frostbite infliction
+#define SUB_SEQ_FROSTBITE_DAMAGE_ANIM       (520)  // end-of-turn HP loss from Frostbite
+#define SUB_SEQ_HELD_ITEM_FROSTBITE_RESTORE (521)  // held item clears Frostbite (anim+message)
+#define SUB_SEQ_WINDED_CANT_MOVE            (522)  // Winded move-prevention message+anim
+#define SUB_SEQ_WINDED_END                  (523)  // Winded clears: print+clear healthbar
+#define SUB_SEQ_APPLY_DRENCHED              (524)  // print+anim+healthbar+Speed-1 for Drenched
+#define SUB_SEQ_DRENCHED_DAMAGE             (525)  // end-of-turn HP loss from Drenched
+#define SUB_SEQ_APPLY_FATIGUE               (526)  // print+anim+healthbar for Fatigue infliction
+#define SUB_SEQ_FATIGUE_ATK_DROP            (527)  // end-of-turn Attack-1 from Fatigue
+#define SUB_SEQ_APPLY_PESTER                (528)  // print+anim+healthbar for Pester infliction
+#define SUB_SEQ_PESTER_DAMAGE               (529)  // end-of-turn HP loss from Pester
+#define SUB_SEQ_APPLY_SCARED                (530)  // print+anim+healthbar for Scared infliction
+#define SUB_SEQ_SCARED_SWITCH               (531)  // Scared forces switch/flee
+#define SUB_SEQ_APPLY_BLINDED               (532)  // print+anim+Evasion-2 for Blinded infliction
+#define SUB_SEQ_APPLY_IDOLIZE               (533)  // print+anim+healthbar for Idolize infliction
+#define SUB_SEQ_IDOLIZE_CANT_MOVE           (534)  // Idolize move-prevention message+anim
+#define SUB_SEQ_IDOLIZE_END                 (535)  // Idolize clears: print+clear healthbar
+#define SUB_SEQ_APPLY_ALLERGIES             (536)  // print+anim for Allergies infliction
+#define SUB_SEQ_ALLERGIES_STAT_DROP         (537)  // end-of-turn random stat drop from Allergies
+#define SUB_SEQ_APPLY_AWESTRUCK             (538)  // print+anim for Awestruck infliction
+#define SUB_SEQ_AWESTRUCK_END               (539)  // Awestruck clears: print message
+#define SUB_SEQ_APPLY_MIGRAINE              (540)  // print+anim for Migraine infliction
+#define SUB_SEQ_MIGRAINE_DAMAGE             (541)  // end-of-turn HP loss from Migraine
+#define SUB_SEQ_PESTER_CANT_MOVE            (542)  // Pester move-prevention message+anim
+#define SUB_SEQ_AWESTRUCK_CANT_MOVE         (543)  // Awestruck move-prevention message+anim
+#define SUB_SEQ_BLINDED_MISS                (544)  // Blinded accuracy-fail message
+#define SUB_SEQ_PESTER_MISS                 (545)  // Pester accuracy-fail message
+#define SUB_SEQ_WINDED_MISS                 (546)  // Winded accuracy-fail message
+#define SUB_SEQ_MIGRAINE_END                (547)  // Migraine clears: print+clear healthbar
+#define SUB_SEQ_SCARED_CANT_MOVE            (548)  // Scared move-prevention message+anim
+#define SUB_SEQ_FATIGUE_END                 (549)  // Fatigue clears: print+clear healthbar
 
 // add status effect constants--used in battle effect scripts to queue up a subscript through the table in src/moves.c
 
@@ -753,6 +790,8 @@
 
 // define your custom subscripts below like this
 // #define MOVE_SUBSCRIPT_PTR_CUSTOM_1 (MAX_BASE_SUBSCRIPT_PTR_NUM + 1)
+
+#define ADD_STATUS_EFF_APPLY_FROSTBITE (MAX_BASE_SUBSCRIPT_PTR_NUM + 1)  // 217
 
 // additional effect constants
 #define ADD_STATUS_NONE (0)

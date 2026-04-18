@@ -1,0 +1,16 @@
+.include "asm/include/battle_commands.inc"
+
+.data
+
+_000:
+    // {0}'s allergies are acting up!
+    PrintMessage 1679, TAG_NICKNAME, BATTLER_CATEGORY_MSG_TEMP
+    Wait
+    WaitButtonABTime 30
+    PlayBattleAnimation BATTLER_CATEGORY_MSG_TEMP, BATTLE_ANIMATION_ALLERGIES
+    Wait
+    Call BATTLE_SUBSCRIPT_UPDATE_STAT_STAGE
+    UpdateVar OPCODE_FLAG_OFF, BSCRIPT_VAR_BATTLE_STATUS_2, BATTLE_STATUS2_UPDATE_STAT_STAGES
+    UpdateVar OPCODE_FLAG_OFF, BSCRIPT_VAR_BATTLE_STATUS_2, BATTLE_STATUS2_STAT_STAGE_CHANGE_SHOWN
+    End
+    

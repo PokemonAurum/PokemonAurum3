@@ -21,6 +21,7 @@ int CalcBaseDamage(void *bw, struct BattleStruct *sp, int moveno, u32 side_cond,
 //u16 GetBattleMonItem(struct BattleStruct *sp, int client_no);
 void CalcDamageOverall(void *bw, struct BattleStruct *sp);
 int AdjustDamageForRoll(void *bw, struct BattleStruct *sp, int damage);
+BOOL IsAllergiesDamagingMove(u32 moveIndex);
 
 
 int CalcBaseDamage(void *bw, struct BattleStruct *sp, int moveno, u32 side_cond UNUSED,

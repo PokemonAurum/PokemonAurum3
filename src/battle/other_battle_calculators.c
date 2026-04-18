@@ -2293,7 +2293,7 @@ const u16 AllergiesDamagingMovesList[] = {
     MOVE_SLUDGE,
 };
 
-BOOL LONG_CALL IsAllergiesDamagingMove(u32 moveIndex) {
+BOOL IsAllergiesDamagingMove(u32 moveIndex) {
     for (u16 i = 0; i < NELEMS(AllergiesDamagingMovesList); i++) {
         if (moveIndex == AllergiesDamagingMovesList[i]) {
             return TRUE;

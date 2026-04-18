@@ -141,4 +141,9 @@
 #define BATTLE_MSG_HURT_BY_FROSTBITE            (1629)
 #define BATTLE_MSG_ITEM_HEALED_FROSTBITE        (1632)
 
+#define BATTLE_MSG_GOT_FROSTBITE                (1759)
+#define BATTLE_MSG_ITEM_GAVE_FROSTBITE          (1762)
+#define BATTLE_MSG_HURT_BY_FROSTBITE            (1765)
+#define BATTLE_MSG_ITEM_HEALED_FROSTBITE        (1768)
+
 #endif
