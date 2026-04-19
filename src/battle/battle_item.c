@@ -416,12 +416,6 @@ BOOL LONG_CALL TryUseHeldItem(void *bw, struct BattleStruct *ctx, int battlerId)
             }
             break;
         }
-        case HOLD_EFFECT_PRZ_RESTORE:
-        case HOLD_EFFECT_SLP_RESTORE:
-        case HOLD_EFFECT_PSN_RESTORE:
-        case HOLD_EFFECT_BRN_RESTORE:
-        case HOLD_EFFECT_FRZ_RESTORE:
-        case HOLD_EFFECT_FROSTBITE_RESTORE:
         case HOLD_EFFECT_CONFUSE_RESTORE:
         case HOLD_EFFECT_STATUS_RESTORE:
             ret = GetHeldItemStatusRecoverySubscript(ctx, battlerId, &script);

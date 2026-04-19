@@ -261,6 +261,7 @@
 #define STATUS_PARALYSIS    (1 << 6)
 #define STATUS_BAD_POISON   (1 << 7)
 #define STATUS_POISON_COUNT (15 << 8)
+#define STATUS_FROSTBITE    (1 << 12)
 
 #define CONDITION_NONE      0
 #define CONDITION_SLEEP     1
@@ -273,10 +274,26 @@
 #define STATUS_NOT_SLEEP  ~STATUS_SLEEP
 #define STATUS_POISON_ALL (STATUS_POISON | STATUS_BAD_POISON | STATUS_POISON_COUNT)
 
-#define STATUS_ALL             (STATUS_SLEEP | STATUS_POISON | STATUS_BURN | STATUS_FREEZE | STATUS_PARALYSIS | STATUS_BAD_POISON)
-#define STATUS_FACADE_BOOST    (STATUS_POISON | STATUS_BAD_POISON | STATUS_BURN | STATUS_PARALYSIS)
+#define STATUS_ALL             (STATUS_SLEEP | STATUS_POISON | STATUS_BURN | STATUS_FREEZE | STATUS_PARALYSIS | STATUS_BAD_POISON | STATUS_FROSTBITE)
+#define STATUS_FACADE_BOOST    (STATUS_POISON | STATUS_BAD_POISON | STATUS_BURN | STATUS_PARALYSIS | STATUS_FROSTBITE)
 #define STATUS_CAN_SYNCHRONIZE (STATUS_POISON | STATUS_BURN | STATUS_PARALYSIS)
-#define STATUS_ANY_PERSISTENT  (STATUS_SLEEP | STATUS_POISON_ALL | STATUS_BURN | STATUS_FREEZE | STATUS_PARALYSIS)
+#define STATUS_ANY_PERSISTENT  (STATUS_SLEEP | STATUS_POISON_ALL | STATUS_BURN | STATUS_FREEZE | STATUS_PARALYSIS | STATUS_FROSTBITE)
+// Custom volatile status conditions stored in battlemon[x].condition3
+#define CONDITION3_DRENCHED   (1 << 0)  // Water    — exclusive, Speed drop on apply + 1/8 HP/turn
+#define CONDITION3_FATIGUE    (1 << 1)  // Fighting — exclusive, blocks/reduces Attack raises
+#define CONDITION3_PESTER     (1 << 2)  // Bug      — exclusive, 15% can't move + 1/8 HP/turn
+#define CONDITION3_SCARED     (1 << 3)  // Ghost    — exclusive, 25% forced switch end of turn
+#define CONDITION3_IDOLIZE    (1 << 4)  // Fairy    — exclusive, 35% can't move 3-5 turns
+#define CONDITION3_MIGRAINE   (1 << 5)  // Psychic  — exclusive, SpAtk -20%, 1/10 HP on status move, 4 turns
+#define CONDITION3_BLINDED    (1 << 6)  // Dark     — stackable, -2 evasion + 30% accuracy cut
+#define CONDITION3_ALLERGIES  (1 << 7)  // Grass    — stackable, random stat drop + 1.25x powder damage
+
+// Awestruck (Dragon) — stackable, tracked by awestruck_turns > 0
+// Winded (Flying)    — exclusive, tracked by winded_turns > 0
+
+#define CONDITION3_ALL_EXCLUSIVE  (CONDITION3_DRENCHED | CONDITION3_FATIGUE | CONDITION3_PESTER | CONDITION3_SCARED | CONDITION3_IDOLIZE | CONDITION3_MIGRAINE)
+#define CONDITION3_ALL            (CONDITION3_ALL_EXCLUSIVE | CONDITION3_BLINDED | CONDITION3_ALLERGIES)
+
 
 #define STATUS_POISON_COUNT_SHIFT 8
 
@@ -735,6 +752,8 @@ enum
     MSG_HEAL_BURN,
     MSG_HEAL_PARALYSIS,
     MSG_HEAL_FROZEN,
+    MSG_HEAL_FROSTBITE,
+    MSG_HEAL_CONDITION3,
 };
 
 
@@ -949,6 +968,14 @@ struct BattlePokemon
     /* 0x68 */ u32 personal_rnd;             /**< personality id */
     /* 0x6C */ u32 condition;                /**< non-volatile status conditions (STATUS_* constants) */ // status
     /* 0x70 */ u32 condition2;               /**< most other status conditions (STATUS2_* constants) */  // status2
+               u8 condition3;                /**< custom volatile status conditions (CONDITION3_* constants) */
+               u8 winded_turns : 2;          /**< turns remaining for Winded (0=inactive, 1=2turns, 2=3turns) */
+               u8 awestruck_turns : 2;       /**< turns remaining for Awestruck (0=inactive, 1=4turns, 2=5turns) */
+               u8 migraine_turns : 3;        /**< turns remaining for Migraine (0=inactive, 1-4) */
+               u8 : 1;
+               u8 fatigue_turns : 3;         /**< turns remaining for Fatigue (0=inactive, 1-7) */
+               u8 idolize_turns : 3;         /**< turns remaining for Idolize (0=inactive, 1-7) */
+               u8 : 2;
     /* 0x74 */ u32 id_no;                    /**< OT ID */
     /* 0x78 */ u16 item;                     /**< held item */
     /* 0x7a */ u16 ability;                  /**< ability index -- moved from 0x27 */
@@ -1001,12 +1028,13 @@ struct __attribute__((packed)) tcb_skill_intp_work
 
 typedef struct BattleMessage {
     /* 0x00 */ u8 unk0;
-    /* 0x01 */ u8 tag;
-    /* 0x02 */ u16 id;
-    /* 0x04 */ int param[6];
+    /* 0x01 */ u8 msg_tag;
+    /* 0x02 */ u16 msg_id;
+    /* 0x04 */ int msg_para[6];
     /* 0x1C */ int numDigits;
-    /* 0x20 */ int battlerId;
+    /* 0x20 */ int msg_client;
 } BattleMessage; /* size 0x24 */
+typedef BattleMessage MESSAGE_PARAM;
 
 typedef struct
 {
@@ -1273,6 +1301,8 @@ typedef struct OnceOnlyAbilityFlags {
     BOOL intrepidSwordFlag;
     BOOL dauntlessShieldFlag;
     BOOL superSweetSyrupFlag;
+    BOOL packLeaderAtkFlag;
+    BOOL packLeaderSpeFlag;
 } OnceOnlyAbilityFlags;
 
 typedef struct OnceOnlyMoveConditionFlags {
@@ -1298,7 +1328,8 @@ typedef struct MoveConditionsFlags {
     u8 throatChopTimer : 2;
 
     u8 dragonDartsStatus : 3;
-    u8 padding : 5;
+    u8 endTurnMoveEffectActivated : 1;
+    u8 padding : 4;
 } MoveConditionsFlags;
 
 
@@ -1937,6 +1968,7 @@ enum
     SWOAK_SEQ_THAW_ICE,
     SWOAK_SEQ_CHECK_HEALING_ITEMS,
     SWOAK_SEQ_CLEAR_MAGIC_COAT,
+    SWOAK_SEQ_MIGRAINE_CHECK,
 };
 
 
@@ -2075,6 +2107,11 @@ enum {
     BEFORE_MOVE_STATE_CONFUSION_SELF_HIT_OR_WEAR_OFF,
     BEFORE_MOVE_STATE_PARALYSIS,
     BEFORE_MOVE_STATE_INFATUATION,
+    BEFORE_MOVE_STATE_WINDED,
+    BEFORE_MOVE_STATE_PESTER,
+    BEFORE_MOVE_STATE_IDOLIZE,
+    BEFORE_MOVE_STATE_AWESTRUCK,
+    BEFORE_MOVE_STATE_SCARED,
     // BEFORE_MOVE_STATE_SLEEP_TALK_SNORE_ANNOUNCEMENT,
     BEFORE_MOVE_STATE_ANNOUNCE_SUB_MOVE,
     BEFORE_MOVE_STATE_THAW_OUT_BY_MOVE,
@@ -2116,6 +2153,7 @@ enum {
     BEFORE_MOVE_STATE_ABILITY_FAILURES_2,
     BEFORE_MOVE_STATE_TYPE_CHART_IMMUNITY,
     BEFORE_MOVE_STATE_LEVITATE,
+    BEFORE_MOVE_STATE_EVAPORATE,
     BEFORE_MOVE_STATE_AIR_BALLOON_TELEKINESIS_MAGNET_RISE,
     BEFORE_MOVE_STATE_SAFETY_GOGGLES,
     BEFORE_MOVE_STATE_ABILITY_FAILURES_3,
@@ -2301,6 +2339,7 @@ extern u8 TypeEffectivenessTable[][3];
 extern u8 HeldItemPowerUpTable[36][2];
 
 extern u16 PunchingMovesTable[24];
+extern u16 KickingMovesTable[19];
 
 extern u16 StrongJawMovesTable[10];
 

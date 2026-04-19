@@ -3767,7 +3767,7 @@ BOOL LONG_CALL AbilityCantSupress(int ability) {
     return FALSE;
 }
 
-void BattleSystem_BufferMessage(struct BattleSystem *bsys, MESSAGE_PARAM *msg) {
+void BattleSystem_BufferMessage(struct BattleSystem *bsys, BattleMessage *msg) {
     // debug_printf("In BattleSystem_BufferMessage\n");
 
     u32 ovyId, offset;
@@ -3893,7 +3893,7 @@ BOOL LONG_CALL CanKnockOffApply(struct BattleStruct *sp, int attacker, int defen
  * @param sp global battle structure
  * @return TRUE/FALSE
 */
-BOOL LONG_CALL IsAnyBattleMonHit(struct BattleStruct* ctx)
+BOOL LONG_CALL IsAnyBattleMonHit(struct BattleSystem *bsys UNUSED, struct BattleStruct* ctx)
 {
     u8 i = 0;
     if ((IS_TARGET_BOTH_MOVE(ctx) || IS_TARGET_FOES_AND_ALLY_MOVE(ctx)))

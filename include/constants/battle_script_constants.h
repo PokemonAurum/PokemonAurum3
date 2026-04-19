@@ -491,51 +491,18 @@
 #define SUB_SEQ_LASER_FOCUS                           (481)
 #define SUB_SEQ_MOVE_FAIL_THROAT_CHOP                 (482)
 #define SUB_SEQ_USER_DEF_DOWN_1_SPEED_UP_1            (483)
-#define SUB_SEQ_APPLY_FROSTBITE                       (484)
-#define SUB_SEQ_FROSTBITE_DAMAGE                      (485)
-#define SUB_SEQ_ITEM_RECOVER_FROSTBITE                (486)
-#define SUB_SEQ_WINDED_CANT_MOVE                      (487)  // "{mon} is buffeted by wind and can't move!"
-#define SUB_SEQ_WINDED_END                            (488)  // "{mon} is no longer winded!"
-#define SUB_SEQ_APPLY_DRENCHED                        (489)
-#define SUB_SEQ_DRENCHED_DAMAGE                       (490)
-#define SUB_SEQ_APPLY_FATIGUE                         (491)
-#define SUB_SEQ_FATIGUE_ATK_DROP                      (492)
-#define SUB_SEQ_APPLY_PESTER                          (493)
-#define SUB_SEQ_PESTER_DAMAGE                         (494)
-#define SUB_SEQ_APPLY_SCARED                          (495)
-#define SUB_SEQ_SCARED_SWITCH                         (496)
-#define SUB_SEQ_APPLY_BLINDED                         (497)
-#define SUB_SEQ_APPLY_IDOLIZE                         (498)
-#define SUB_SEQ_IDOLIZE_CANT_MOVE                     (499)
-#define SUB_SEQ_IDOLIZE_END                           (500)
-#define SUB_SEQ_APPLY_ALLERGIES                       (501)
-#define SUB_SEQ_ALLERGIES_STAT_DROP                   (502)
-#define SUB_SEQ_APPLY_AWESTRUCK                       (503)
-#define SUB_SEQ_AWESTRUCK_END                         (504)
-#define SUB_SEQ_APPLY_MIGRAINE                        (505)
-#define SUB_SEQ_MIGRAINE_DAMAGE                       (506)
-#define SUB_SEQ_PESTER_CANT_MOVE                      (507)
-#define SUB_SEQ_AWESTRUCK_CANT_MOVE                   (508)
-#define SUB_SEQ_BLINDED_MISS                          (509)  // "{mon} could not see its target!"
-#define SUB_SEQ_PESTER_MISS                           (510)  // "{mon} was too distracted to aim!"
-#define SUB_SEQ_WINDED_MISS                           (511)  // "{mon} was too winded to follow through!"
-#define SUB_SEQ_MIGRAINE_END                          (512)  // "{mon}'s migraine faded!"
-#define SUB_SEQ_SCARED_CANT_MOVE                      (513)  // "{mon} was too scared to move!"
-#define SUB_SEQ_FATIGUE_END                           (514)  // "{mon}'s fatigue lifted!"
 #define MAX_BASE_SUBSCRIPT_NUM 514
 
 // define your custom subscripts below like this
 // #define MOVE_SUBSCRIPT_CUSTOM_1 (MAX_BASE_SUBSCRIPT_NUM + 1)
-#define SUB_SEQ_SPLINTER_DAMAGE        (MAX_BASE_SUBSCRIPT_NUM + 1)  // 514: end-of-turn HP loss from Splinter status
-#define SUB_SEQ_BRITTLE_CONTACT        (MAX_BASE_SUBSCRIPT_NUM + 2)  // 515: contact recoil damage to attacker from Brittle status
-#define SUB_SEQ_APPLY_FROSTBITE        (MAX_BASE_SUBSCRIPT_NUM + 3)  // 516: apply Frostbite status
-#define SUB_SEQ_FROSTBITE_DAMAGE       (MAX_BASE_SUBSCRIPT_NUM + 4)  // 517: end-of-turn HP loss from Frostbite
-#define SUB_SEQ_ITEM_RECOVER_FROSTBITE (MAX_BASE_SUBSCRIPT_NUM + 5)  // 518: held item clears Frostbite
 
+#define SUB_SEQ_APPLY_FROSTBITE             (519)  // alias for SUB_SEQ_FROSTBITE_ANIM
 // Animation/effect layer subscripts (519-549): called from gate-layer infliction subscripts (0499-0513)
 #define SUB_SEQ_FROSTBITE_ANIM              (519)  // print+anim+healthbar for Frostbite infliction
 #define SUB_SEQ_FROSTBITE_DAMAGE_ANIM       (520)  // end-of-turn HP loss from Frostbite
+#define SUB_SEQ_FROSTBITE_DAMAGE            (520)  // alias
 #define SUB_SEQ_HELD_ITEM_FROSTBITE_RESTORE (521)  // held item clears Frostbite (anim+message)
+#define SUB_SEQ_ITEM_RECOVER_FROSTBITE      (521)  // alias: TryUseHeldItem path
 #define SUB_SEQ_WINDED_CANT_MOVE            (522)  // Winded move-prevention message+anim
 #define SUB_SEQ_WINDED_END                  (523)  // Winded clears: print+clear healthbar
 #define SUB_SEQ_APPLY_DRENCHED              (524)  // print+anim+healthbar+Speed-1 for Drenched
@@ -791,7 +758,6 @@
 // define your custom subscripts below like this
 // #define MOVE_SUBSCRIPT_PTR_CUSTOM_1 (MAX_BASE_SUBSCRIPT_PTR_NUM + 1)
 
-#define ADD_STATUS_EFF_APPLY_FROSTBITE (MAX_BASE_SUBSCRIPT_PTR_NUM + 1)  // 217
 
 // additional effect constants
 #define ADD_STATUS_NONE (0)

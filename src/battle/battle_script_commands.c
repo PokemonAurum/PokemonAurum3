@@ -762,7 +762,7 @@ BOOL BattleScriptCommandHandler(void *bw, struct BattleStruct *sp)
                     sp->SkillSeqWork[sp->skill_seq_no + 2] = BATTLE_ANIMATION_PESTER;
                 else if (c3 & CONDITION3_SCARED)
                     sp->SkillSeqWork[sp->skill_seq_no + 2] = BATTLE_ANIMATION_SCARED;
-                else if (sp->battlemon[battler].idolize_turns > 0)
+                else if (c3 & CONDITION3_IDOLIZE)
                     sp->SkillSeqWork[sp->skill_seq_no + 2] = BATTLE_ANIMATION_IDOLIZE;
             }
         }
@@ -5025,8 +5025,6 @@ BOOL btl_scr_cmd_116_clearcondition3(void *bw, struct BattleStruct *sp) {
     sp->battlemon[battler].winded_turns    = 0;
     sp->battlemon[battler].awestruck_turns = 0;
     sp->battlemon[battler].migraine_turns  = 0;
-    sp->battlemon[battler].idolize_turns   = 0;
-    sp->battlemon[battler].fatigue_turns   = 0;
     return FALSE;
 }
 

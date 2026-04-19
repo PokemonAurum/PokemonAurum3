@@ -1155,7 +1155,7 @@ void __attribute__((section (".init"))) BattleController_BeforeMove(struct Battl
             if (HeldItemHoldEffectGet(ctx, ctx->attack_client) == HOLD_EFFECT_POWERING_UP_MOVE_ONCE
                 && (BattleItemDataGet(ctx, ctx->battlemon[ctx->attack_client].item, 2) == ctx->move_type)
                 && (ctx->current_move_index < MOVE_WATER_PLEDGE || ctx->current_move_index > MOVE_GRASS_PLEDGE)
-                && IsAnyBattleMonHit(ctx))
+                && IsAnyBattleMonHit(bsys, ctx))
             {
                 ctx->mp.msg_tag = TAG_ITEM_MOVE;
                 //The { STRVAR_1 1, 0, 0 } strengthened\n { STRVAR_1 5, 1, 0 }’s power !
@@ -1540,7 +1540,7 @@ void BattleController_CheckPester(struct BattleSystem *bsys, struct BattleStruct
 }
 
 void BattleController_CheckIdolize(struct BattleSystem *bsys, struct BattleStruct *ctx) {
-    if (ctx->battlemon[ctx->attack_client].idolize_turns > 0) {
+    if (ctx->battlemon[ctx->attack_client].condition3 & CONDITION3_IDOLIZE) {
         if (BattleRand(bsys) % 100 < 35) {
             ctx->moveOutCheck[ctx->attack_client].stoppedFromParalysis = TRUE;
             LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_IDOLIZE_CANT_MOVE);
