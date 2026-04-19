@@ -531,6 +531,7 @@
 #define SUB_SEQ_MIGRAINE_END                (547)  // Migraine clears: print+clear healthbar
 #define SUB_SEQ_SCARED_CANT_MOVE            (548)  // Scared move-prevention message+anim
 #define SUB_SEQ_FATIGUE_END                 (549)  // Fatigue clears: print+clear healthbar
+#define SUB_SEQ_BLINDED_END                 (550)  // Blinded clears: print+clear healthbar
 
 // add status effect constants--used in battle effect scripts to queue up a subscript through the table in src/moves.c
 

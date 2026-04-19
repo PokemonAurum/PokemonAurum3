@@ -141,4 +141,6 @@
 #define BATTLE_MSG_HURT_BY_FROSTBITE            (1765)
 #define BATTLE_MSG_ITEM_HEALED_FROSTBITE        (1768)
 
+#define BATTLE_MSG_NO_LONGER_BLINDED            (1771)
+
 #endif

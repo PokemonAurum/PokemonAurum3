@@ -67,6 +67,7 @@ enum EndTurnResolutionOrder {
     ENDTURN_ALLERGIES,
     ENDTURN_AWESTRUCK,
     ENDTURN_MIGRAINE,
+    ENDTURN_BLINDED,
     ENDTURN_END,
 };
 
@@ -2185,6 +2186,31 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                             sp->battlemon[battlerId].condition3 &= ~CONDITION3_MIGRAINE;
                             sp->battlerIdTemp = battlerId;
                             LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_MIGRAINE_END);
+                            sp->next_server_seq_no = sp->server_seq_no;
+                            sp->server_seq_no = 22;
+                            ret = 1;
+                        }
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_BLINDED: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if ((sp->battlemon[battlerId].condition3 & CONDITION3_BLINDED)
+                      && sp->battlemon[battlerId].hp != 0
+                      && GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
+                        sp->battlemon[battlerId].blinded_turns--;
+                        if (sp->battlemon[battlerId].blinded_turns == 0) {
+                            sp->battlemon[battlerId].condition3 &= ~CONDITION3_BLINDED;
+                            sp->battlerIdTemp = battlerId;
+                            LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_BLINDED_END);
                             sp->next_server_seq_no = sp->server_seq_no;
                             sp->server_seq_no = 22;
                             ret = 1;
