@@ -968,14 +968,6 @@ struct BattlePokemon
     /* 0x68 */ u32 personal_rnd;             /**< personality id */
     /* 0x6C */ u32 condition;                /**< non-volatile status conditions (STATUS_* constants) */ // status
     /* 0x70 */ u32 condition2;               /**< most other status conditions (STATUS2_* constants) */  // status2
-               u8 condition3;                /**< custom volatile status conditions (CONDITION3_* constants) */
-               u8 winded_turns : 2;          /**< turns remaining for Winded (0=inactive, 1=2turns, 2=3turns) */
-               u8 awestruck_turns : 2;       /**< turns remaining for Awestruck (0=inactive, 1=4turns, 2=5turns) */
-               u8 migraine_turns : 3;        /**< turns remaining for Migraine (0=inactive, 1-4) */
-               u8 : 1;
-               u8 fatigue_turns : 3;         /**< turns remaining for Fatigue (0=inactive, 1-7) */
-               u8 idolize_turns : 3;         /**< turns remaining for Idolize (0=inactive, 1-7) */
-               u8 : 2;
     /* 0x74 */ u32 id_no;                    /**< OT ID */
     /* 0x78 */ u16 item;                     /**< held item */
     /* 0x7a */ u16 ability;                  /**< ability index -- moved from 0x27 */
@@ -987,6 +979,16 @@ struct BattlePokemon
     /* 0x80 */ u32 effect_of_moves;          /**< move effect trackers (see MOVE_EFFECT_* constants) */ // moveEffectFlags
     /* 0x84 */ u32 effect_of_moves_temp;     /**< storage for effect_of_moves */
     /* 0x88 */ struct battle_moveflag moveeffect;   // unk88
+    /* 0xbc */ u8 condition3;                /**< custom volatile status conditions (CONDITION3_* constants) */
+               u8 winded_turns : 2;          /**< turns remaining for Winded (0=inactive, 1=2turns, 2=3turns) */
+               u8 awestruck_turns : 2;       /**< turns remaining for Awestruck (0=inactive, 1=4turns, 2=5turns) */
+               u8 migraine_turns : 3;        /**< turns remaining for Migraine (0=inactive, 1-4) */
+               u8 : 1;
+               u8 fatigue_turns : 3;         /**< turns remaining for Fatigue (0=inactive, 1-7) */
+               u8 idolize_turns : 3;         /**< turns remaining for Idolize (0=inactive, 1-7) */
+               u8 : 2;
+               u8 blinded_turns : 3;         /**< stacks of Blinded (0=inactive, 1-7) */
+               u8 : 5;
 }; // size = 0xc0
 
 typedef struct {
