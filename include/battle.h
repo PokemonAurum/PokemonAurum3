@@ -336,7 +336,9 @@
 #define STATUS2_UPROAR (0x00000070)
 #define STATUS2_RAMPAGE_TURNS (0x00000C00)
 #define STATUS2_LOCKED_INTO_MOVE (0x00001000)
-#define STATUS2_BINDING_TURNS (0x0000E000) // no longer used, see sp->binding_turns
+#define STATUS2_BINDING_TURNS (0x0000E000) // bits 13-15 deprecated (see sp->binding_turns); bits 13-14 repurposed below
+#define STATUS2_SPLINTER (0x00002000) // bit 13, repurposes deprecated BINDING_TURNS
+#define STATUS2_BRITTLE  (0x00004000) // bit 14, repurposes deprecated BINDING_TURNS
 #define STATUS2_ATTRACT (0x000f0000)
 #define STATUS2_FOCUS_ENERGY (0x00100000)
 #define STATUS2_TRANSFORMED (0x00200000)

@@ -532,6 +532,7 @@
 #define SUB_SEQ_SCARED_CANT_MOVE            (548)  // Scared move-prevention message+anim
 #define SUB_SEQ_FATIGUE_END                 (549)  // Fatigue clears: print+clear healthbar
 #define SUB_SEQ_BLINDED_END                 (550)  // Blinded clears: print+clear healthbar
+#define SUB_SEQ_SPLINTER_DAMAGE             (551)  // end-of-turn HP loss from Splinter
 
 // add status effect constants--used in battle effect scripts to queue up a subscript through the table in src/moves.c
 
@@ -787,6 +788,7 @@
 #define BATTLE_ANIMATION_IDOLIZE     BATTLE_ANIMATION_INFATUATED // Fairy - temp remap
 #define BATTLE_ANIMATION_BLINDED     BATTLE_ANIMATION_ASLEEP     // Dark — temp remap (dark bar)
 #define BATTLE_ANIMATION_ALLERGIES   BATTLE_ANIMATION_FROZEN     // Grass — temp remap (blue bar)
+#define BATTLE_ANIMATION_SPLINTER    BATTLE_ANIMATION_BURNED     // Rock — temp remap
 #define BATTLE_ANIMATION_AWESTRUCK   BATTLE_ANIMATION_PARALYZED  // Dragon — temp remap (indigo bar)
 #define BATTLE_ANIMATION_MIGRAINE    BATTLE_ANIMATION_BURNED     // Psychic — temp remap (pink bar)
 #define BATTLE_ANIMATION_CONFUSED           6

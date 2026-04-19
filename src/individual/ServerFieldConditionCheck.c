@@ -68,6 +68,7 @@ enum EndTurnResolutionOrder {
     ENDTURN_AWESTRUCK,
     ENDTURN_MIGRAINE,
     ENDTURN_BLINDED,
+    ENDTURN_SPLINTER,
     ENDTURN_END,
 };
 
@@ -2215,6 +2216,33 @@ void ServerFieldConditionCheck(void *bw, struct BattleStruct *sp) {
                             sp->server_seq_no = 22;
                             ret = 1;
                         }
+                    }
+                    sp->scc_work++;
+                    break;
+                }
+                if (sp->scc_work >= client_set_max) {
+                    sp->scc_work = 0;
+                    sp->fcc_seq_no++;
+                }
+                break;
+            }
+            case ENDTURN_SPLINTER: {
+                while (sp->scc_work < client_set_max) {
+                    battlerId = sp->turnOrder[sp->scc_work];
+                    if ((sp->battlemon[battlerId].condition2 & STATUS2_SPLINTER)
+                        && sp->battlemon[battlerId].hp != 0
+                        && GetBattlerAbility(sp, battlerId) != ABILITY_WONDER_GUARD) {
+                        sp->battlerIdTemp = battlerId;
+                        if (sp->battlemon[battlerId].type1 == TYPE_ROCK
+                            || sp->battlemon[battlerId].type2 == TYPE_ROCK) {
+                            sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp * -1, 12);
+                        } else {
+                            sp->hp_calc_work = BattleDamageDivide(sp->battlemon[battlerId].maxhp * -1, 16);
+                        }
+                        LoadBattleSubSeqScript(sp, ARC_BATTLE_SUB_SEQ, SUB_SEQ_SPLINTER_DAMAGE);
+                        sp->next_server_seq_no = sp->server_seq_no;
+                        sp->server_seq_no = 22;
+                        ret = 1;
                     }
                     sp->scc_work++;
                     break;

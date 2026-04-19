@@ -1771,3 +1771,6 @@ The opposing {STRVAR_1 1, 0, 0}’s\n{STRVAR_1 8, 1, 0} healed its frostbite!
 {STRVAR_1 1, 0, 0} can\nsee clearly again!
 The wild {STRVAR_1 1, 0, 0}\ncan see clearly again!
 The opposing {STRVAR_1 1, 0, 0}\ncan see clearly again!
+{STRVAR_1 1, 0, 0} is hurt\nby the splinters!
+The wild {STRVAR_1 1, 0, 0} is hurt\nby the splinters!
+The opposing {STRVAR_1 1, 0, 0} is hurt\nby the splinters!
