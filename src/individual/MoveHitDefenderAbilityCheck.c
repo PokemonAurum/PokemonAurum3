@@ -84,26 +84,36 @@ BOOL MoveHitDefenderAbilityCheckInternal(void *bw, struct BattleStruct *sp, int 
         }
     } else if (MoldBreakerAbilityCheck(sp, sp->attack_client, sp->defence_client, ABILITY_EFFECT_SPORE)) {
         if ((sp->battlemon[sp->attack_client].hp)
-            && (sp->battlemon[sp->attack_client].condition == 0)
             && ((sp->oneSelfFlag[sp->defence_client].physical_damage) || (sp->oneSelfFlag[sp->defence_client].special_damage))
-            && (IsContactBeingMade(GetBattlerAbility(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->defence_client), sp->current_move_index, sp->moveTbl[sp->current_move_index].flag))
-            && (BattleRand(bw) % 10 < 3)) {
-            switch (BattleRand(bw) % 3) {
-            case 0:
-            default:
+            && (IsContactBeingMade(GetBattlerAbility(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->defence_client), sp->current_move_index, sp->moveTbl[sp->current_move_index].flag))) {
+            int roll = BattleRand(bw) % 100 + 1;
+            if (roll <= 3) {
+                sp->addeffect_type = ADD_STATUS_ABILITY;
+                sp->state_client = sp->attack_client;
+                sp->battlerIdTemp = sp->defence_client;
                 seq_no[0] = SUB_SEQ_APPLY_POISON;
-                break;
-            case 1:
+                ret = TRUE;
+            } else if (roll <= 6) {
+                sp->addeffect_type = ADD_STATUS_ABILITY;
+                sp->state_client = sp->attack_client;
+                sp->battlerIdTemp = sp->defence_client;
                 seq_no[0] = SUB_SEQ_APPLY_PARALYSIS;
-                break;
-            case 2:
+                ret = TRUE;
+            } else if (roll <= 9) {
+                sp->addeffect_type = ADD_STATUS_ABILITY;
+                sp->state_client = sp->attack_client;
+                sp->battlerIdTemp = sp->defence_client;
                 seq_no[0] = SUB_SEQ_APPLY_SLEEP;
-                break;
+                ret = TRUE;
+            } else if (roll <= 12) {
+                sp->battlerIdTemp = sp->defence_client;
+                seq_no[0] = SUB_SEQ_APPLY_PESTER;
+                ret = TRUE;
+            } else if (roll <= 15) {
+                sp->battlerIdTemp = sp->defence_client;
+                seq_no[0] = SUB_SEQ_APPLY_SCARED;
+                ret = TRUE;
             }
-            sp->addeffect_type = ADD_STATUS_ABILITY;
-            sp->state_client = sp->attack_client;
-            sp->battlerIdTemp = sp->defence_client;
-            ret = TRUE;
         }
     } else if (MoldBreakerAbilityCheck(sp, sp->attack_client, sp->defence_client, ABILITY_POISON_POINT)) {
         if ((sp->battlemon[sp->attack_client].hp)
