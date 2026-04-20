@@ -1774,3 +1774,12 @@ The opposing {STRVAR_1 1, 0, 0}\ncan see clearly again!
 {STRVAR_1 1, 0, 0} is hurt\nby the splinters!
 The wild {STRVAR_1 1, 0, 0} is hurt\nby the splinters!
 The opposing {STRVAR_1 1, 0, 0} is hurt\nby the splinters!
+{STRVAR_1 1, 0, 0}’s brittle body\nwas damaged by recoil!
+The wild {STRVAR_1 1, 0, 0}’s brittle\nbody was damaged by recoil!
+The opposing {STRVAR_1 1, 0, 0}’s brittle\nbody was damaged by recoil!
+{STRVAR_1 1, 0, 0} has\nbecome brittle!
+The wild {STRVAR_1 1, 0, 0} has\nbecome brittle!
+The opposing {STRVAR_1 1, 0, 0} has\nbecome brittle!
+{STRVAR_1 1, 0, 0}’s bones\nbecame brittle!
+The wild {STRVAR_1 1, 0, 0}’s bones\nbecame brittle!
+The opposing {STRVAR_1 1, 0, 0}’s bones\nbecame brittle!

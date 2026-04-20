@@ -494,6 +494,22 @@ void CalcDamageOverall(void *bw, struct BattleStruct *sp) {
         }
     }
 
+    // 6.8.3 Brittle Modifier
+
+    if (movesplit == SPLIT_PHYSICAL) {
+        // brittle increases physical damage taken by ~1.33x when contact is made
+        if ((sp->battlemon[defender].condition2 & STATUS2_BRITTLE)
+            && IsContactBeingMade(attackerAbility, HeldItemHoldEffectGet(sp, attacker), HeldItemHoldEffectGet(sp, defender), moveno, sp->moveTbl[moveno].flag)) {
+            damage = QMul_RoundDown(damage, UQ412__1_3333);
+#ifdef DEBUG_DAMAGE_ROLLS
+            for (int u = 0; u < 16; u++)
+            {
+                predamage[u] = QMul_RoundDown(predamage[u], UQ412__1_3333);
+            }
+#endif  // DEBUG_DAMAGE_ROLLS
+        }
+    }
+
 #ifdef DEBUG_DAMAGE_CALC
     debug_printf("\n=================\n");
     debug_printf("[CalcBaseDamage] 6.8.1/6.8.2 Frostbite/Migraine Modifier\n");

@@ -533,6 +533,7 @@
 #define SUB_SEQ_FATIGUE_END                 (549)  // Fatigue clears: print+clear healthbar
 #define SUB_SEQ_BLINDED_END                 (550)  // Blinded clears: print+clear healthbar
 #define SUB_SEQ_SPLINTER_DAMAGE             (551)  // end-of-turn HP loss from Splinter
+#define SUB_SEQ_BRITTLE_RECOIL              (552)  // contact recoil from Brittle status
 
 // add status effect constants--used in battle effect scripts to queue up a subscript through the table in src/moves.c
 

@@ -143,5 +143,7 @@
 
 #define BATTLE_MSG_NO_LONGER_BLINDED            (1771)
 #define BATTLE_MSG_HURT_BY_SPLINTER             (1774)
+#define BATTLE_MSG_BRITTLE_RECOIL               (1777)
+#define BATTLE_MSG_BECAME_BRITTLE               (1780)
 
 #endif

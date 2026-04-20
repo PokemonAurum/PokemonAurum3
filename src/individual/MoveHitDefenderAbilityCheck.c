@@ -82,6 +82,16 @@ BOOL MoveHitDefenderAbilityCheckInternal(void *bw, struct BattleStruct *sp, int 
             seq_no[0] = SUB_SEQ_ROUGH_SKIN;
             ret = TRUE;
         }
+    } else if (sp->battlemon[sp->defence_client].condition2 & STATUS2_BRITTLE) {
+        if ((sp->battlemon[sp->attack_client].hp)
+            && (GetBattlerAbility(sp, sp->attack_client) != ABILITY_MAGIC_GUARD)
+            && ((sp->oneSelfFlag[sp->defence_client].physical_damage) || (sp->oneSelfFlag[sp->defence_client].special_damage))
+            && (IsContactBeingMade(GetBattlerAbility(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->defence_client), sp->current_move_index, sp->moveTbl[sp->current_move_index].flag))) {
+            sp->hp_calc_work = BattleDamageDivide(sp->battlemon[sp->attack_client].maxhp * -1, 20);
+            sp->battlerIdTemp = sp->attack_client;
+            seq_no[0] = SUB_SEQ_BRITTLE_RECOIL;
+            ret = TRUE;
+        }
     } else if (MoldBreakerAbilityCheck(sp, sp->attack_client, sp->defence_client, ABILITY_EFFECT_SPORE)) {
         if ((sp->battlemon[sp->attack_client].hp)
             && ((sp->oneSelfFlag[sp->defence_client].physical_damage) || (sp->oneSelfFlag[sp->defence_client].special_damage))
