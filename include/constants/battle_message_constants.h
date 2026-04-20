@@ -145,5 +145,6 @@
 #define BATTLE_MSG_HURT_BY_SPLINTER             (1774)
 #define BATTLE_MSG_BRITTLE_RECOIL               (1777)
 #define BATTLE_MSG_BECAME_BRITTLE               (1780)
+#define BATTLE_MSG_APPLY_SPLINTER               (1783)
 
 #endif

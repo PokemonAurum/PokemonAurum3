@@ -1780,6 +1780,6 @@ The opposing {STRVAR_1 1, 0, 0}’s brittle\nbody was damaged by recoil!
 {STRVAR_1 1, 0, 0} has\nbecome brittle!
 The wild {STRVAR_1 1, 0, 0} has\nbecome brittle!
 The opposing {STRVAR_1 1, 0, 0} has\nbecome brittle!
-{STRVAR_1 1, 0, 0}’s bones\nbecame brittle!
-The wild {STRVAR_1 1, 0, 0}’s bones\nbecame brittle!
-The opposing {STRVAR_1 1, 0, 0}’s bones\nbecame brittle!
+{STRVAR_1 1, 0, 0} is embedded\nwith splinters!
+The wild {STRVAR_1 1, 0, 0}\nis embedded with splinters!
+The opposing {STRVAR_1 1, 0, 0}\nis embedded with splinters!
