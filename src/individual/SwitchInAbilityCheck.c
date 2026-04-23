@@ -692,39 +692,6 @@ int UNUSED SwitchInAbilityCheck(void *bw, struct BattleStruct *sp)
                                 default:
                                     break;
                             }
-                    // Pack Leader
-                    {
-                        if ((sp->battlemon[client_no].hp) && (GetBattlerAbility(sp, client_no) == ABILITY_PACK_LEADER)) {
-                            int dogs = CountDogPokemonInParty(bw, client_no);
-                            if (dogs > 0) {
-                                u32 client_idx = SanitizeClientForTeamAccess(bw, client_no);
-                                u32 mon_idx = sp->sel_mons_no[client_no];
-                                if (sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderAtkFlag == FALSE) {
-                                    sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderAtkFlag = TRUE;
-                                    if (dogs >= 5) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP_3;
-                                    else if (dogs >= 3) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP_2;
-                                    else sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP;
-                                    sp->addeffect_type = ADD_STATUS_ABILITY;
-                                    sp->state_client = client_no;
-                                    scriptnum = SUB_SEQ_BOOST_STATS;
-                                    ret = SWITCH_IN_CHECK_MOVE_SCRIPT;
-                                    break;
-                                }
-                                if (sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderSpeFlag == FALSE) {
-                                    sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderSpeFlag = TRUE;
-                                    if (dogs >= 5) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SPEED_UP_3;
-                                    else if (dogs >= 3) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SPEED_UP_2;
-                                    else sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SPEED_UP;
-                                    sp->addeffect_type = ADD_STATUS_ABILITY;
-                                    sp->state_client = client_no;
-                                    scriptnum = SUB_SEQ_BOOST_STATS;
-                                    ret = SWITCH_IN_CHECK_MOVE_SCRIPT;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
                             if (ret == SWITCH_IN_CHECK_MOVE_SCRIPT) {
                                 sp->battlemon[client_no].ability_activated_flag = 1;
                                 sp->attack_client = client_no; // this should allow for the seeds to affect the terrain
@@ -747,6 +714,39 @@ int UNUSED SwitchInAbilityCheck(void *bw, struct BattleStruct *sp)
                             scriptnum = SUB_SEQ_BOOST_STATS;
                             ret = SWITCH_IN_CHECK_MOVE_SCRIPT;
                             break;
+                        }
+                    }
+
+                    // Pack Leader
+                    {
+                        if ((sp->battlemon[client_no].hp) && (GetBattlerAbility(sp, client_no) == ABILITY_PACK_LEADER)) {
+                            int dogs = CountDogPokemonInParty(bw, client_no);
+                            if (dogs >= 2) {
+                                u32 client_idx = SanitizeClientForTeamAccess(bw, client_no);
+                                u32 mon_idx = sp->sel_mons_no[client_no];
+                                if (sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderAtkFlag == FALSE) {
+                                    sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderAtkFlag = TRUE;
+                                    if (dogs >= 6) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP_3;
+                                    else if (dogs >= 4) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP_2;
+                                    else sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP;
+                                    sp->addeffect_type = ADD_STATUS_ABILITY;
+                                    sp->state_client = client_no;
+                                    scriptnum = SUB_SEQ_BOOST_STATS;
+                                    ret = SWITCH_IN_CHECK_MOVE_SCRIPT;
+                                    break;
+                                }
+                                if (sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderSpeFlag == FALSE) {
+                                    sp->onceOnlyAbilityFlags[client_idx][mon_idx].packLeaderSpeFlag = TRUE;
+                                    if (dogs >= 6) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SPEED_UP_3;
+                                    else if (dogs >= 4) sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SPEED_UP_2;
+                                    else sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_SPEED_UP;
+                                    sp->addeffect_type = ADD_STATUS_ABILITY;
+                                    sp->state_client = client_no;
+                                    scriptnum = SUB_SEQ_BOOST_STATS;
+                                    ret = SWITCH_IN_CHECK_MOVE_SCRIPT;
+                                    break;
+                                }
+                            }
                         }
                     }
 

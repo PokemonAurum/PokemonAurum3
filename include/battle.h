@@ -903,7 +903,7 @@ struct __attribute__((packed)) battle_moveflag
     /* 0x22 */ u16 bindingMove;              /**< move that is binding the opponent */
     /* 0x24 */ u16 encoredMove;              /**< move that is forced by encore */
     /* 0x26 */ u16 encoredMoveIndex;         /**< move position that is forced by encore in the pokémon's move array */
-    /* 0x28 */ u16 lastResortMoves[4];       /**< which moves have been used for last resort purposes */
+    /* 0x28 */ u16 lastResortMoves[1];       /**< which moves have been used for last resort purposes */
     /* 0x2a */ u16 moveNoChoice;             /**< move number forced by choice item */
     /* 0x2c */ u16 transformGender;          /**< pokémon sex stored for transform purposes */
 // padding at 2e
@@ -992,6 +992,7 @@ struct BattlePokemon
                u8 blinded_turns : 3;         /**< stacks of Blinded (0=inactive, 1-7) */
                u8 : 5;
 }; // size = 0xc0
+_Static_assert(sizeof(struct BattlePokemon) == 0xc0, "BattlePokemon size must be 0xc0");
 
 typedef struct {
     u32 alloc_size;

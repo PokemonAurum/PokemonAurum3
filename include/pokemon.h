@@ -697,6 +697,7 @@ typedef enum EvoMethod
     //EVO_DARK_SCROLL,  // implemented through a forme-change-esque cut scene
     //EVO_WATER_SCROLL, // implemented through a forme-change-esque cut scene
     EVO_LEVEL_DUSK_HA,
+    EVO_LEVEL_DUSK_PACK,
     EVO_RAPID_SPIN_THREE_TIMES,
 } EvoMethod;
 
