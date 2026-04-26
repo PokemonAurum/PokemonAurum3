@@ -644,7 +644,7 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
             && (AttackingMon.sex == DefendingMon.sex)
             && (AttackingMon.sex != POKEMON_GENDER_UNKNOWN)
             && (DefendingMon.sex != POKEMON_GENDER_UNKNOWN)) {
-                basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__1_25);
+                basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__1_3);
                 continue;
             }
 
@@ -652,7 +652,7 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
             && (AttackingMon.sex != DefendingMon.sex)
             && (AttackingMon.sex != POKEMON_GENDER_UNKNOWN)
             && (DefendingMon.sex != POKEMON_GENDER_UNKNOWN)) {
-                basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__0_75);
+                basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__0_7);
                 continue;
             }
 
@@ -702,6 +702,20 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
                 continue;
             }
 
+            // handle Liquid Ooze — 1.1x boost to poison-sludge moves
+            if ((AttackingMon.ability == ABILITY_LIQUID_OOZE)
+            && IsElementInArray(LiquidOozeMoveTable, (u16 *)&moveno, NELEMS(LiquidOozeMoveTable), sizeof(LiquidOozeMoveTable[0]))) {
+                basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__1_1);
+                continue;
+            }
+
+            // handle Flower Gift — 1.1x boost to Grass and Fairy moves
+            if ((AttackingMon.ability == ABILITY_FLOWER_GIFT)
+            && (movetype == TYPE_GRASS || movetype == TYPE_FAIRY)) {
+                basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__1_1);
+                continue;
+            }
+
             if ((AttackingMon.ability == ABILITY_RECKLESS)
             && ((moveEffect == MOVE_EFFECT_CRASH_ON_MISS)
                 || (moveEffect == MOVE_EFFECT_RECOIL_QUARTER)
@@ -725,6 +739,22 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
             if ((AttackingMon.ability == ABILITY_SAND_FORCE)
             && (field_cond & WEATHER_SANDSTORM_ANY)
             && (movetype == TYPE_GROUND || movetype == TYPE_ROCK || movetype == TYPE_STEEL)) {
+                basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__1_3);
+                continue;
+            }
+
+            // Polar Power boosts Ice, Water, and Flying moves in snow
+            if ((AttackingMon.ability == ABILITY_POLAR_POWER)
+            && (field_cond & WEATHER_SNOW_ANY)
+            && (movetype == TYPE_ICE || movetype == TYPE_WATER || movetype == TYPE_FLYING)) {
+                basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__1_3);
+                continue;
+            }
+
+            // Water Wraith boosts Water, Electric, and Poison moves in rain
+            if ((AttackingMon.ability == ABILITY_WATER_WRAITH)
+            && (field_cond & WEATHER_RAIN_ANY)
+            && (movetype == TYPE_WATER || movetype == TYPE_ELECTRIC || movetype == TYPE_POISON)) {
                 basePowerModifier = QMul_RoundUp(basePowerModifier, UQ412__1_3);
                 continue;
             }
@@ -1071,7 +1101,7 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
         if (attacker == damageCalc->rawSpeedNonRNGClientOrder[i]) {
             // handle Slow Start
             if ((AttackingMon.ability == ABILITY_SLOW_START)
-            && ((BattleWorkMonDataGet(bw, sp, 3, 0) - BattlePokemonParamGet(sp, attacker, BATTLE_MON_DATA_SLOW_START_COUNTER, NULL)) < 5)
+            && ((BattleWorkMonDataGet(bw, sp, 3, 0) - BattlePokemonParamGet(sp, attacker, BATTLE_MON_DATA_SLOW_START_COUNTER, NULL)) < 3)
             && (movesplit == SPLIT_PHYSICAL || MoveIsZMove(moveno))) {
                 attackModifier = QMul_RoundUp(attackModifier, UQ412__0_5);
             }
@@ -1099,7 +1129,10 @@ int UNUSED CalcBaseDamageInternal(struct BattleSystem *bw, struct BattleStruct *
 
             // handle Guts
             // TODO: Is Freeze affected? (It doesn't matter)
-            if ((AttackingMon.ability == ABILITY_GUTS) && (AttackingMon.condition) && (movesplit == SPLIT_PHYSICAL)) {
+            if ((AttackingMon.ability == ABILITY_GUTS) && (movesplit == SPLIT_PHYSICAL)
+            && ((AttackingMon.condition)
+             || (AttackingMon.condition2 & (STATUS2_SPLINTER | STATUS2_BRITTLE))
+             || (sp->battlemon[attacker].condition3 & (CONDITION3_DRENCHED | CONDITION3_PESTER | CONDITION3_SCARED | CONDITION3_MIGRAINE | CONDITION3_BLINDED | CONDITION3_ALLERGIES)))) {
                 attackModifier = QMul_RoundUp(attackModifier, UQ412__1_5);
             }
 

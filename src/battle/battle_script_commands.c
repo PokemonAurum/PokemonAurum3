@@ -3556,8 +3556,10 @@ BOOL BtlCmd_EndOfTurnWeatherEffect(struct BattleSystem *bsys, struct BattleStruc
         }
         if (ctx->field_condition & WEATHER_SUNNY_ANY) {
             if (ctx->battlemon[battlerId].hp && !(ctx->battlemon[battlerId].effect_of_moves & 0x40080)) {
-                if (ability == ABILITY_DRY_SKIN || ability == ABILITY_SOLAR_POWER) {
+                if (ability == ABILITY_DRY_SKIN) {
                     ctx->hp_calc_work = BattleDamageDivide(ctx->battlemon[battlerId].maxhp * -1, 8);
+                } else if (ability == ABILITY_SOLAR_POWER) {
+                    ctx->hp_calc_work = BattleDamageDivide(ctx->battlemon[battlerId].maxhp * -1, 16);
                 }
                 if (ability == ABILITY_SOLAR_POWER) {
                     ctx->temp_work = 2;
@@ -4044,7 +4046,7 @@ u32 LoadCaptureSuccessSPANumEmitters(u32 id)
 extern const u16 sPickupTable1[18];
 extern const u16 sPickupTable2[11];
 extern const u8 sPickupWeightTable[9];
-extern const u8 sHoneyGatherChanceTable[10];
+static const u8 sHoneyGatherChanceTable[5] = { 5, 10, 15, 20, 25 };
 
 BOOL BtlCmd_GenerateEndOfBattleItem(struct BattleSystem *bw, struct BattleStruct *sp) {
     int rnd, i, j, k;
@@ -4090,21 +4092,21 @@ BOOL BtlCmd_GenerateEndOfBattleItem(struct BattleSystem *bw, struct BattleStruct
             && species != SPECIES_EGG
             && item == ITEM_NONE) {
             j   = 0;
-            k   = 10;
+            k   = 20;
             lvl = GetMonData(mon, MON_DATA_LEVEL, NULL);
             while (lvl > k) {
                 j++;
-                k += 10;
+                k += 20;
             }
 
-            GF_ASSERT(j < 10);
+            GF_ASSERT(j < 5);
 
             if ((BattleRand(bw) % 100) < sHoneyGatherChanceTable[j]) {
-                item = ITEM_HONEY;
+                item = ITEM_AMRITA_NECTAR;
                 SetMonData(mon, MON_DATA_HELD_ITEM, &item);
                 quantityPickedUp++;
                 partyIndex = i;
-                itemPickedUp = ITEM_HONEY;
+                itemPickedUp = ITEM_AMRITA_NECTAR;
             }
         }
     }

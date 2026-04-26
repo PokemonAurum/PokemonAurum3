@@ -121,7 +121,8 @@
 .equ EVO_LETS_GO, 48 // Pawmo, Bramblin, Rellor https://xcancel.com/Sibuna_Switch/status/1678027317891694593
 .equ EVO_DUMMY, 49 // Inaccessible evolution methods
 .equ EVO_LEVEL_DUSK_HA, 50
-.equ EVO_RAPID_SPIN_THREE_TIMES, 51
+.equ EVO_LEVEL_DUSK_PACK, 51
+.equ EVO_RAPID_SPIN_THREE_TIMES, 52
 //EVO_DARK_SCROLL  // implemented through an item use forme-change-esque cut scene
 //EVO_WATER_SCROLL // implemented through an item use forme-change-esque cut scene
 

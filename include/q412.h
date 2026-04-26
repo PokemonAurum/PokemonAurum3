@@ -62,6 +62,7 @@
 #define UQ412__0_75             (UQ412__0_5 + UQ412__0_25)              // 3072
 #define UQ412__0_9              (UQ412__1_0 - UQ412__0_1_BUT_HIGHER)    // 3686
 #define UQ412__0_8              (UQ412__0_5 + UQ412__0_3)               // 3277
+#define UQ412__0_7              (UQ412__0_5 + UQ412__0_2)               // 2867
 
 // The following are non-canonical estimations
 // https://web.archive.org/web/20210625213105/https://chummersone.github.io/qformat.html

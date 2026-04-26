@@ -142,7 +142,7 @@ BOOL MoveHitDefenderAbilityCheckInternal(void *bw, struct BattleStruct *sp, int 
             && (sp->battlemon[sp->attack_client].condition == 0)
             && ((sp->oneSelfFlag[sp->defence_client].physical_damage) || (sp->oneSelfFlag[sp->defence_client].special_damage))
             && (IsContactBeingMade(GetBattlerAbility(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->defence_client), sp->current_move_index, sp->moveTbl[sp->current_move_index].flag))
-            && (BattleRand(bw) % 10 < 3)) {
+            && ((sp->field_condition & WEATHER_SUNNY_ANY) ? (BattleRand(bw) % 20 < 9) : (BattleRand(bw) % 10 < 3))) {
             sp->addeffect_type = ADD_STATUS_ABILITY;
             sp->state_client = sp->attack_client;
             sp->battlerIdTemp = sp->defence_client;
@@ -483,6 +483,24 @@ BOOL MoveHitDefenderAbilityCheckInternal(void *bw, struct BattleStruct *sp, int 
                     seq_no[0] = SUB_SEQ_BOOST_STATS;
                     ret = TRUE;
                 }
+            }
+        }
+    } else if (MoldBreakerAbilityCheck(sp, sp->attack_client, sp->defence_client, ABILITY_SCORCHED_IRON)) {
+        if ((sp->battlemon[sp->defence_client].hp)
+            && (sp->battlemon[sp->defence_client].states[STAT_ATTACK] < 12)
+            && ((sp->battlemon[sp->defence_client].condition2 & STATUS2_SUBSTITUTE) == 0)
+            && ((sp->oneSelfFlag[sp->defence_client].physical_damage) || (sp->oneSelfFlag[sp->defence_client].special_damage))) {
+            u8 movetype;
+
+            movetype = GetAdjustedMoveType(sp, sp->attack_client, sp->current_move_index);
+
+            if (movetype == TYPE_FIRE) {
+                sp->addeffect_param = ADD_STATUS_EFF_BOOST_STATS_ATTACK_UP;
+                sp->addeffect_type = ADD_EFFECT_ABILITY;
+                sp->state_client = sp->defence_client;
+                sp->battlerIdTemp = sp->defence_client;
+                seq_no[0] = SUB_SEQ_BOOST_STATS;
+                ret = TRUE;
             }
         }
     } else if (MoldBreakerAbilityCheck(sp, sp->attack_client, sp->defence_client, ABILITY_ANGER_SHELL)) {

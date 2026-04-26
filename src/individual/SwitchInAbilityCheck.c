@@ -166,6 +166,17 @@ int UNUSED SwitchInAbilityCheck(void *bw, struct BattleStruct *sp)
                         || (GetBattlerAbility(sp, client_no) == ABILITY_AS_ONE_SPECTRIER)
                         || (GetBattlerAbility(sp, client_no) == ABILITY_UNNERVE))) {
                             sp->battlemon[client_no].ability_activated_flag = 1;
+                            // Unnerve: 10% chance to inflict CONDITION3_SCARED on an opposing battler
+                            if (GetBattlerAbility(sp, client_no) == ABILITY_UNNERVE && BattleRand(bw) % 10 < 1) {
+                                for (u32 num = 0; num < client_set_max; num++) {
+                                    if ((IsClientEnemy(bw, client_no) != IsClientEnemy(bw, num))
+                                    && (sp->battlemon[num].hp)
+                                    && !(sp->battlemon[num].condition3 & CONDITION3_SCARED)) {
+                                        sp->battlemon[num].condition3 |= CONDITION3_SCARED;
+                                        break;
+                                    }
+                                }
+                            }
                             sp->battlerIdTemp = client_no;
                             scriptnum = SUB_SEQ_HANDLE_UNNERVE_MESSAGE;
                             ret = SWITCH_IN_CHECK_MOVE_SCRIPT;
@@ -532,6 +543,16 @@ int UNUSED SwitchInAbilityCheck(void *bw, struct BattleStruct *sp)
 
                     // Slow Start
                     {
+                        // Adrenaline Orb: consume on switch-in to immediately end Slow Start
+                        if ((sp->battlemon[client_no].hp)
+                        && (GetBattlerAbility(sp, client_no) == ABILITY_SLOW_START)
+                        && (sp->battlemon[client_no].slow_start_end_flag == 0)
+                        && (HeldItemHoldEffectGet(sp, client_no) == HOLD_EFFECT_INTIMIDATE_BOOST_SPEED)) {
+                            sp->battlemon[client_no].slow_start_flag = 1;
+                            sp->battlemon[client_no].slow_start_end_flag = 1;
+                            sp->battlemon[client_no].item = ITEM_NONE;
+                        }
+
                         if ((sp->battlemon[client_no].slow_start_flag == 0) && (sp->battlemon[client_no].hp) && (GetBattlerAbility(sp, client_no) == ABILITY_SLOW_START) && (sp->total_turn <= sp->battlemon[client_no].moveeffect.slowStartTurns)) {
                             sp->battlemon[client_no].slow_start_flag = 1;
                             sp->battlerIdTemp = client_no;
@@ -541,7 +562,7 @@ int UNUSED SwitchInAbilityCheck(void *bw, struct BattleStruct *sp)
                         }
 
                         // check slow start end as well
-                        if ((sp->battlemon[client_no].slow_start_end_flag == 0) && (sp->battlemon[client_no].hp) && (GetBattlerAbility(sp, client_no) == ABILITY_SLOW_START) && ((sp->total_turn - sp->battlemon[client_no].moveeffect.slowStartTurns) == 5)) {
+                        if ((sp->battlemon[client_no].slow_start_end_flag == 0) && (sp->battlemon[client_no].hp) && (GetBattlerAbility(sp, client_no) == ABILITY_SLOW_START) && ((sp->total_turn - sp->battlemon[client_no].moveeffect.slowStartTurns) == 3)) {
                             sp->battlemon[client_no].slow_start_end_flag = 1;
                             sp->battlerIdTemp = client_no;
                             scriptnum = SUB_SEQ_HANDLE_SLOW_START_END;

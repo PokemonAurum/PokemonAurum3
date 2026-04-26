@@ -1335,7 +1335,7 @@ void BattleController_CheckPP(struct BattleSystem *bsys, struct BattleStruct *ct
 }
 
 void BattleController_CheckTruant(struct BattleSystem *bsys, struct BattleStruct *ctx) {
-    if (CheckTruant(ctx, ctx->attack_client) == TRUE) {
+    if (CheckTruant(ctx, ctx->attack_client) == TRUE && BattleRand(bsys) % 10 != 0) {
         LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_LOAFING);
         ctx->server_seq_no = CONTROLLER_COMMAND_RUN_SCRIPT;
         ctx->next_server_seq_no = CONTROLLER_COMMAND_39;
@@ -1510,7 +1510,8 @@ void BattleController_CheckParalysis(struct BattleSystem *bsys, struct BattleStr
 }
 
 void BattleController_CheckWinded(struct BattleSystem *bsys, struct BattleStruct *ctx) {
-    if (ctx->battlemon[ctx->attack_client].winded_turns > 0) {
+    if (ctx->battlemon[ctx->attack_client].winded_turns > 0
+    && ctx->battlemon[ctx->attack_client].ability != ABILITY_SCRAPPY) {
         if (BattleRand(bsys) % 2 == 0) {
             ctx->moveOutCheck[ctx->attack_client].stoppedFromParalysis = TRUE;
             LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_WINDED_CANT_MOVE);
@@ -3229,7 +3230,7 @@ BOOL BattleController_CheckAbilityFailures4_StatusBasedFailures(struct BattleSys
         return TRUE;
     }
 
-    if ((MoldBreakerAbilityCheck(ctx, attacker, defender, ABILITY_WATER_BUBBLE) || MoldBreakerAbilityCheck(ctx, attacker, defender, ABILITY_WATER_VEIL))
+    if ((MoldBreakerAbilityCheck(ctx, attacker, defender, ABILITY_WATER_BUBBLE) || MoldBreakerAbilityCheck(ctx, attacker, defender, ABILITY_WATER_VEIL) || MoldBreakerAbilityCheck(ctx, attacker, defender, ABILITY_SCORCHED_IRON))
     && (moveEffect == MOVE_EFFECT_STATUS_BURN)) {
         doesNotAffect = TRUE;
     }

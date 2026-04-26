@@ -330,6 +330,25 @@ BOOL MoveHitAttackerAbilityCheck(void *bw, struct BattleStruct *sp, int *seq_no)
                 ret = TRUE;
             }
             break;
+        case ABILITY_BURNING_CLAWS:
+            if ((sp->battlemon[sp->defence_client].hp)
+                && (sp->battlemon[sp->defence_client].condition == 0)
+                && ((sp->waza_status_flag & WAZA_STATUS_FLAG_NO_OUT) == 0)
+                && ((sp->server_status_flag & SERVER_STATUS_FLAG_x20) == 0)
+                && ((sp->server_status_flag2 & SERVER_STATUS_FLAG2_U_TURN) == 0)
+                && ((sp->oneSelfFlag[sp->defence_client].physical_damage) ||
+                    (sp->oneSelfFlag[sp->defence_client].special_damage))
+                && (IsContactBeingMade(GetBattlerAbility(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->attack_client), HeldItemHoldEffectGet(sp, sp->defence_client), sp->current_move_index, sp->moveTbl[sp->current_move_index].flag))
+                && (CheckSubstitute(sp, sp->defence_client) == FALSE)
+                && (BattleRand(bw) % 10 < 2))
+            {
+                sp->addeffect_type = ADD_STATUS_ABILITY;
+                sp->state_client = sp->defence_client;
+                sp->battlerIdTemp = sp->attack_client;
+                seq_no[0] = SUB_SEQ_APPLY_BURN;
+                ret = TRUE;
+            }
+            break;
         case ABILITY_BEAST_BOOST:
             if ((sp->defence_client == sp->fainting_client)
                 && BATTLERS_ON_DIFFERENT_SIDE(sp->attack_client, sp->fainting_client)
@@ -500,6 +519,7 @@ BOOL AbilityIsIgnoredByMoldBreaker (int ability) {
         case ABILITY_ICE_FACE:
         case ABILITY_PASTEL_VEIL:
         case ABILITY_THERMAL_EXCHANGE:
+        case ABILITY_SCORCHED_IRON:
         case ABILITY_PURIFYING_SALT:
         case ABILITY_WELL_BAKED_BODY:
         case ABILITY_WIND_RIDER:

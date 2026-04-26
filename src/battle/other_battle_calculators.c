@@ -150,6 +150,15 @@ u16 KickingMovesTable[19] = {
     MOVE_TROP_KICK,
 };
 
+u16 LiquidOozeMoveTable[] = {
+    MOVE_SLUDGE,
+    MOVE_SLUDGE_BOMB,
+    MOVE_BELCH,
+    MOVE_GUNK_SHOT,
+    MOVE_POISON_JAB,
+    MOVE_VENOSHOCK,
+};
+
 const u16 BulletproofMoveList[] =
 {
     MOVE_ACID_SPRAY,
@@ -977,11 +986,17 @@ u8 LONG_CALL CalcSpeed(void *bw, struct BattleStruct *sp, int client1, int clien
 
     // Step 2: Quick Feet
 
-    if ((ability1 == ABILITY_QUICK_FEET) && (sp->battlemon[client1].condition & STATUS_ANY_PERSISTENT)) {
+    if ((ability1 == ABILITY_QUICK_FEET)
+    && ((sp->battlemon[client1].condition & STATUS_ANY_PERSISTENT)
+     || (sp->battlemon[client1].condition2 & (STATUS2_SPLINTER | STATUS2_BRITTLE))
+     || (sp->battlemon[client1].condition3 & (CONDITION3_DRENCHED | CONDITION3_PESTER | CONDITION3_SCARED | CONDITION3_MIGRAINE | CONDITION3_BLINDED | CONDITION3_ALLERGIES)))) {
         speedModifier1 = QMul_RoundUp(speedModifier1, UQ412__1_5);
     }
 
-    if ((ability2 == ABILITY_QUICK_FEET) && (sp->battlemon[client2].condition & STATUS_ANY_PERSISTENT)) {
+    if ((ability2 == ABILITY_QUICK_FEET)
+    && ((sp->battlemon[client2].condition & STATUS_ANY_PERSISTENT)
+     || (sp->battlemon[client2].condition2 & (STATUS2_SPLINTER | STATUS2_BRITTLE))
+     || (sp->battlemon[client2].condition3 & (CONDITION3_DRENCHED | CONDITION3_PESTER | CONDITION3_SCARED | CONDITION3_MIGRAINE | CONDITION3_BLINDED | CONDITION3_ALLERGIES)))) {
         speedModifier2 = QMul_RoundUp(speedModifier2, UQ412__1_5);
     }
 
@@ -995,12 +1010,12 @@ u8 LONG_CALL CalcSpeed(void *bw, struct BattleStruct *sp, int client1, int clien
     // Step 3: Slow Start
 
     if ((ability1 == ABILITY_SLOW_START)
-    && ((sp->total_turn - sp->battlemon[client1].moveeffect.slowStartTurns) < 5)) {
+    && ((sp->total_turn - sp->battlemon[client1].moveeffect.slowStartTurns) < 3)) {
         speedModifier1 = QMul_RoundUp(speedModifier1, UQ412__0_5);
     }
 
     if ((ability2 == ABILITY_SLOW_START)
-    && ((sp->total_turn - sp->battlemon[client2].moveeffect.slowStartTurns) < 5)) {
+    && ((sp->total_turn - sp->battlemon[client2].moveeffect.slowStartTurns) < 3)) {
         speedModifier2 = QMul_RoundUp(speedModifier2, UQ412__0_5);
     }
 #ifdef DEBUG_SPEED_CALC
@@ -1934,8 +1949,8 @@ BOOL CantEscape(void *bw, struct BattleStruct *sp, int battlerId, MESSAGE_PARAM 
     battleType = BattleTypeGet(bw);
     item = HeldItemHoldEffectGet(sp, battlerId);
 
-    // if shed shell or no experience or has run away or has ghost type then there is nothing stopping the battler from escaping
-    if (item == HOLD_EFFECT_FLEE || (battleType & BATTLE_TYPE_NO_EXPERIENCE) || GetBattlerAbility(sp, battlerId) == ABILITY_RUN_AWAY || HasType(sp, battlerId, TYPE_GHOST)) {
+    // if shed shell or no experience or has run away then there is nothing stopping the battler from escaping
+    if (item == HOLD_EFFECT_FLEE || (battleType & BATTLE_TYPE_NO_EXPERIENCE) || GetBattlerAbility(sp, battlerId) == ABILITY_RUN_AWAY) {
         return FALSE;
     }
 
